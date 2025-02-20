@@ -1,0 +1,15 @@
+<div class="adopt-main-div">
+  <div class="text-div mt-5">
+    <h1>Inventar</h1>
+  </div>
+
+  <div class="container text-center mt-5">
+    <div class="inventory-grid">
+      <div *ngFor="let row of items" class="d-flex justify-content-center">
+        <div *ngFor="let item of row" class="inventory-item">
+          {{ item }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

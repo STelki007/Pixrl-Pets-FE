@@ -1,0 +1,16 @@
+<div class="coin-div">
+  <div class="coin-container">
+    <button class="is-error nes-btn ">
+      <i class="nes-icon coin"></i>
+      999999
+    </button>
+  </div>
+</div>
+
+<div class="daily-coin">
+  <div class="daily-coin-container">
+    <button class="is-primary nes-btn" (click)="claimDailyCoins()">
+      {{ isClaimable ? 'Daily Coins einsammeln' : 'Warten: ' + timeLeft }}
+    </button>
+  </div>
+</div>

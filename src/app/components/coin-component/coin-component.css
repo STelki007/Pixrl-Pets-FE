@@ -1,0 +1,39 @@
+.coin-div{
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.coin-container{
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+.coin-container button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+}
+.coin-container button i {
+  margin-right: 20px;
+}
+.daily-coin{
+  position: absolute;
+  top: 0;
+  right: 3%;
+  transform: translateX(-50%);
+}
+.daily-coin-container{
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  height: 60px;
+}
+
+.daily-coin-container button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

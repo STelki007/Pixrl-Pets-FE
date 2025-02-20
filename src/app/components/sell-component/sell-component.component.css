@@ -1,0 +1,57 @@
+.adopt-main-div{
+  width: calc(100vw - 300px);
+  height: 100vh;
+  overflow: hidden;
+  margin-left: 300px;
+  background-color: #653830;
+  color: white;
+}
+.text-div{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.text-div h1{
+  position: relative;
+  margin-top: 50px;
+}
+.text-div h1::before{
+  content: "";
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150%;
+  height: 2px;
+  background-color: white;
+}
+
+.container {
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.inventory-grid {
+  display: flex;
+  flex-direction: column;
+}
+
+.inventory-item {
+  width: 80px;
+  height: 80px;
+  background-color: rgba(139, 69, 19, 0.27);
+  color: white;
+  font-size: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 6px;
+  border-radius: 5px;
+  box-shadow: 2px 2px 0 black;
+}
+.inventory-item:hover {
+  transform: scale(1.1);
+  box-shadow: 6px 6px 0 black;
+  background-color: #a0522d;
+}
