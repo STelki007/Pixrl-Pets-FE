@@ -3,10 +3,12 @@
   <div class="overlay"></div>
   <div class="d-flex flex-column w-100">
     <div class="button-container">
+
       <div class="button-item">
         <i class="bi bi-house-door" (click)="selectComponent('main')"></i>
         <button type="button" class="nes-btn is-error" (click)="selectComponent('main')">Hauptseite</button>
       </div>
+
       <div class="button-item">
         <i class="bi bi-heart" (click)="selectComponent('adopt')"></i>
         <button type="button" class="nes-btn is-error" (click)="selectComponent('adopt')">Haustier</button>
@@ -21,13 +23,9 @@
         <button type="button" class="nes-btn is-error" (click)="selectComponent('setting')">Einstellung</button>
       </div>
 
-      <div class="nes-select is-error button-item" >
+      <div class="is-error button-item" >
         <i class="bi bi-cart buttonIcon"></i>
-        <select #select required id="error_select" (change)="selectedShop(select.value)">
-          <option value="default" disabled selected hidden>Shop</option>
-          <option value="buy">Einkaufen</option>
-          <option value="sell">Verkaufen</option>
-        </select>
+        <button type="button" class="nes-btn is-error" (click)="selectComponent('shop')">shop</button>
       </div>
 
     </div>
@@ -38,6 +36,6 @@
 <app-adopt-component *ngIf="selectedComponent === 'adopt'"></app-adopt-component>
 <app-inventar-component *ngIf="selectedComponent === 'inventory'"></app-inventar-component>
 <app-sell-component *ngIf="selectedComponent === 'sell'"></app-sell-component>
-<app-buy-component *ngIf="selectedComponent === 'buy'"></app-buy-component>
+<app-buy-component *ngIf="selectedComponent === 'shop'"></app-buy-component>
 <app-setting-component *ngIf="selectedComponent === 'setting'"></app-setting-component>
 <app-coin-component></app-coin-component>

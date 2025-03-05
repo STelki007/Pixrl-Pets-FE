@@ -39,7 +39,4 @@ export class AppComponent implements OnInit, OnDestroy {
     this.sideBarButtonsService.setValue(value);
   }
 
-  selectedShop(target: string) {
-    this.sideBarButtonsService.setValue(target);
-  }
 }
