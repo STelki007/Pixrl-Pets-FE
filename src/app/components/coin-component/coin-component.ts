@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import {SideBarButtonsService} from '../../services/SideBarButtonsService';
 
 @Component({
   selector: 'app-coin-component',
@@ -9,6 +10,9 @@ export class CoinComponent implements OnInit, OnDestroy {
   timeLeft: string = '';
   private timerInterval: any;
   isClaimable: boolean = false;
+
+  constructor(private sideBarButtonsService: SideBarButtonsService) {
+  }
 
   ngOnInit(): void {
     this.updateTimer();
@@ -58,4 +62,7 @@ export class CoinComponent implements OnInit, OnDestroy {
     }
   }
 
+  onCoinsClick() {
+    this.sideBarButtonsService.setValue("shop")
+  }
 }
