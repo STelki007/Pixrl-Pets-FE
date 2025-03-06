@@ -63,6 +63,14 @@ export class CoinComponent implements OnInit, OnDestroy {
   }
 
   onCoinsClick() {
-    this.sideBarButtonsService.setValue("shop")
+    const audio = new Audio("coinClickEffect2.mp3");
+    audio.volume = 1;
+
+    audio.play().then(() => {
+      audio.onended = () => {
+        this.sideBarButtonsService.setValue("shop");
+      };
+    })
   }
+
 }

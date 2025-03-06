@@ -36,7 +36,13 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   selectComponent(value: string) {
-    this.sideBarButtonsService.setValue(value);
+    const audio = new Audio("select-sound.mp3");
+    audio.volume
+    audio.play().then(() => {
+      audio.onended = () => {
+        this.sideBarButtonsService.setValue(value);
+      }
+    });
   }
 
 }
