@@ -1,19 +1,27 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import {MainPageComponentComponent} from './components/main-page-component/main-page-component.component';
-import {AdoptComponentComponent} from './components/adopt-component/adopt-component.component';
-import {NgIf} from '@angular/common';
-import {SideBarButtonsService} from './services/SideBarButtonsService';
-import {Subscription} from 'rxjs';
-import {InventarComponentComponent} from './components/inventar-component/inventar-component.component';
-import {SellComponentComponent} from './components/sell-component/sell-component.component';
-import {BuyComponentComponent} from './components/buy-component/buy-component.component';
-import {CoinComponent} from './components/coin-component/coin-component';
-import {SettingComponentComponent} from './components/setting-component/setting-component.component';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NgIf } from '@angular/common';
+import { Subscription } from 'rxjs';
+import { SideBarButtonsService } from './services/SideBarButtonsService';
+import { MainPageComponentComponent } from './components/main-page-component/main-page-component.component';
+import { AdoptComponentComponent } from './components/adopt-component/adopt-component.component';
+import { InventarComponentComponent } from './components/inventar-component/inventar-component.component';
+import { SellComponentComponent } from './components/sell-component/sell-component.component';
+import { BuyComponentComponent } from './components/buy-component/buy-component.component';
+import { CoinComponent } from './components/coin-component/coin-component';
+import { SettingComponentComponent } from './components/setting-component/setting-component.component';
 
 @Component({
   selector: 'app-root',
-  imports: [MainPageComponentComponent, AdoptComponentComponent, NgIf, InventarComponentComponent, SellComponentComponent, BuyComponentComponent, CoinComponent, SettingComponentComponent],
+  imports: [
+    MainPageComponentComponent,
+    AdoptComponentComponent,
+    NgIf,
+    InventarComponentComponent,
+    SellComponentComponent,
+    BuyComponentComponent,
+    CoinComponent,
+    SettingComponentComponent
+  ],
   templateUrl: './app.component.html',
   standalone: true,
   styleUrl: './app.component.css'
@@ -21,10 +29,14 @@ import {SettingComponentComponent} from './components/setting-component/setting-
 export class AppComponent implements OnInit, OnDestroy {
   selectedComponent: string = "";
   private subscription!: Subscription;
+  private audio!: HTMLAudioElement;
 
   constructor(private sideBarButtonsService: SideBarButtonsService) {}
 
   ngOnInit() {
+    this.audio = new Audio('select-sound.mp3');
+    this.audio.load();
+
     this.subscription = this.sideBarButtonsService.sideBarObservable()
       .subscribe(value => {
         this.selectedComponent = value;
@@ -36,13 +48,9 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   selectComponent(value: string) {
-    const audio = new Audio("select-sound.mp3");
-    audio.volume
-    audio.play().then(() => {
-      audio.onended = () => {
-        this.sideBarButtonsService.setValue(value);
-      }
-    });
+    this.audio.currentTime = 0;
+    this.audio.play().then(() => {
+      this.sideBarButtonsService.setValue(value);
+    })
   }
-
 }

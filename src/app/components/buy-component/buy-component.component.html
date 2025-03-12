@@ -6,7 +6,7 @@
   <div class="container text-center mt-5">
     <div class="inventory-grid">
       <div *ngFor="let row of items" class="d-flex justify-content-center">
-        <div *ngFor="let item of row" class="inventory-item">
+        <div *ngFor="let item of row" class="inventory-item" (click)="onClickItem()">
           {{ item }}
         </div>
       </div>

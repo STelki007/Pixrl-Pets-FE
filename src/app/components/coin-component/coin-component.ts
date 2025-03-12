@@ -72,5 +72,4 @@ export class CoinComponent implements OnInit, OnDestroy {
       };
     })
   }
-
 }
