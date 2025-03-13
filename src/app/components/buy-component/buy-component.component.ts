@@ -8,22 +8,25 @@ import {NgClass, NgForOf} from '@angular/common';
   styleUrl: './buy-component.component.css'
 })
 export class BuyComponentComponent implements OnInit {
-  private audio!: HTMLAudioElement;
+  private selectItem!: HTMLAudioElement;
+  private  switchButton!: HTMLAudioElement;
   selectedTab: string = "buy";
 
-  items = ['🐥', '👻', '🍖', '💰', '🎃', '🪙', '🛡️', '🔥', '🔑'];
+  items = ['🐥', '👻', '🍖', '💰', '🎃', '🪙', '🛡️', '🔥', '🔑', '👻', '🍖', '💰', '🎃', '🪙', '🛡️', '🔥', '🔑', '👻', '🍖', '💰', '🎃', '🪙', '🛡️', '🔥', '🔑'];
 
   ngOnInit(): void {
-    this.audio = new Audio("select-item.mp3");
-    this.audio.load();
+    this.selectItem = new Audio("select-item.mp3"); this.selectItem.load(); this.selectItem.volume = 1;
+    this.switchButton = new Audio("cabinet-door.mp3"); this.switchButton.load(); this.switchButton.volume = 1;
   }
 
   onClickItem() {
-    this.audio.currentTime = 0;
-    this.audio.play();
+    this.selectItem.currentTime = 0;
+    this.selectItem.play();
   }
 
   selectTab(tab: string) {
+    this.switchButton.currentTime = 0;
+    this.switchButton.play();
     this.selectedTab = tab;
   }
 }

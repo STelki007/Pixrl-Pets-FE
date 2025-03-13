@@ -1,6 +1,5 @@
 <div class="adopt-main-div">
   <div class="nav-buttons d-flex justify-content-center">
-
     <button
       class="nes-btn custom-btn"
       [ngClass]="{'is-active': selectedTab === 'buy' } "
@@ -17,24 +16,19 @@
 
   <div class="mt-5 d-flex justify-content-center">
     <div class="inventory-grid with-title">
+<!--      <div class="animal-food-identity mb-3">-->
+<!--        <div class="scroll-content">-->
+<!--          <img src="https://i.seadn.io/gae/L946W7OaQfWo9tBXjtRDKg1sSegw9OCSejW8tckApeeo9VBjLwT7ybjePkXaYFHpEEtO6wbS3t2srAN_g8ORiQYJ433M1HowGza_ock?auto=format&dpr=1&w=1000"-->
+<!--               alt="Item Image" class="item-image">-->
+<!--          <img src="https://i.seadn.io/gae/L946W7OaQfWo9tBXjtRDKg1sSegw9OCSejW8tckApeeo9VBjLwT7ybjePkXaYFHpEEtO6wbS3t2srAN_g8ORiQYJ433M1HowGza_ock?auto=format&dpr=1&w=1000"-->
+<!--               alt="Item Image" class="item-image">-->
+<!--          <img src="https://i.seadn.io/gae/L946W7OaQfWo9tBXjtRDKg1sSegw9OCSejW8tckApeeo9VBjLwT7ybjePkXaYFHpEEtO6wbS3t2srAN_g8ORiQYJ433M1HowGza_ock?auto=format&dpr=1&w=1000"-->
+<!--               alt="Item Image" class="item-image">-->
+<!--        </div>-->
+<!--      </div>-->
 
       <div class="items-container">
-
         <div *ngFor="let item of items" (click)="onClickItem()" class="inventory-items-container">
-          <div class="animal-food-identity mb-3">
-            <img src="https://i.seadn.io/gae/L946W7OaQfWo9tBXjtRDKg1sSegw9OCSejW8tckApeeo9VBjLwT7ybjePkXaYFHpEEtO6wbS3t2srAN_g8ORiQYJ433M1HowGza_ock?auto=format&dpr=1&w=1000"
-                 alt="Item Image" class="item-image">
-            <img src="https://i.seadn.io/gae/L946W7OaQfWo9tBXjtRDKg1sSegw9OCSejW8tckApeeo9VBjLwT7ybjePkXaYFHpEEtO6wbS3t2srAN_g8ORiQYJ433M1HowGza_ock?auto=format&dpr=1&w=1000"
-                 alt="Item Image" class="item-image">
-            <img src="https://i.seadn.io/gae/L946W7OaQfWo9tBXjtRDKg1sSegw9OCSejW8tckApeeo9VBjLwT7ybjePkXaYFHpEEtO6wbS3t2srAN_g8ORiQYJ433M1HowGza_ock?auto=format&dpr=1&w=1000"
-                 alt="Item Image" class="item-image">
-            <img src="https://i.seadn.io/gae/L946W7OaQfWo9tBXjtRDKg1sSegw9OCSejW8tckApeeo9VBjLwT7ybjePkXaYFHpEEtO6wbS3t2srAN_g8ORiQYJ433M1HowGza_ock?auto=format&dpr=1&w=1000"
-                 alt="Item Image" class="item-image">
-            <img src="https://i.seadn.io/gae/L946W7OaQfWo9tBXjtRDKg1sSegw9OCSejW8tckApeeo9VBjLwT7ybjePkXaYFHpEEtO6wbS3t2srAN_g8ORiQYJ433M1HowGza_ock?auto=format&dpr=1&w=1000"
-                 alt="Item Image" class="item-image">
-            <img src="https://i.seadn.io/gae/L946W7OaQfWo9tBXjtRDKg1sSegw9OCSejW8tckApeeo9VBjLwT7ybjePkXaYFHpEEtO6wbS3t2srAN_g8ORiQYJ433M1HowGza_ock?auto=format&dpr=1&w=1000"
-                 alt="Item Image" class="item-image">
-          </div>
           <div class="item-container">
             <div class="article-name text-center mb-3">
               {{ item }}
@@ -42,13 +36,13 @@
           </div>
 
           <div class="coin-container  mb-3">
-              <i class="nes-icon coin mx-3"></i>
-              999999
+            <i class="nes-icon coin mx-3"></i>
+            999999
           </div>
 
           <div class="item-buttons">
             <div class="info-button-div mx-3">
-              <button >
+              <button>
                 <i class="bi bi-info-circle-fill"></i>
               </button>
             </div>
@@ -57,12 +51,9 @@
               <button class="buy-button mx-3 nes-btn is-primary">Kaufen</button>
             </div>
           </div>
-
         </div>
       </div>
     </div>
   </div>
-
-
-
 </div>
+
