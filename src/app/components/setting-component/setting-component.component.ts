@@ -1,14 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {AlertCenterModalComponent} from '../modal/alert-center-modal-component/alert-center-modal-component';
 import {DeleteAccountService} from '../../services/settingAlert/DeleteAccountService';
-import {NgIf} from '@angular/common';
 import {LogoutService} from '../../services/settingAlert/LogoutService';
 
 @Component({
   selector: 'app-setting-component',
   imports: [
-    AlertCenterModalComponent,
-    NgIf
+    AlertCenterModalComponent
   ],
   templateUrl: './setting-component.component.html',
   styleUrl: './setting-component.component.css'
