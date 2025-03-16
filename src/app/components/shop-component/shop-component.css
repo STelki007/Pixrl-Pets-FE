@@ -36,6 +36,7 @@
   align-items: center;
   width: 200px;
   flex-direction: column;
+  max-height: 300px;
 }
 
 .item-buttons {
@@ -124,7 +125,7 @@
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 15px;
   overflow-y: scroll;
-  height: calc(100vh - 175px);
+  height: calc(100vh - 300px);
   padding: 10px;
 }
 
@@ -173,4 +174,25 @@
 
 .offcanvas-overlay.hide {
   opacity: 0;
+}
+
+.custom-spinner {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 1.2rem;
+}
+
+.nes-btn {
+  font-size: 1rem;
+  padding: 10px 15px;
+}
+
+.nes-btn.is-error {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.nes-btn.is-success {
+  background-color: #2ecc71;
+  color: white;
 }

@@ -2,23 +2,23 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { SideBarButtonsService } from './services/SideBarButtonsService';
-import { MainPageComponentComponent } from './components/main-page-component/main-page-component.component';
-import { AdoptComponentComponent } from './components/adopt-component/adopt-component.component';
-import { InventarComponentComponent } from './components/inventar-component/inventar-component.component';
+import { MainPageComponent } from './components/main-page-component/main-page-component';
+import { AdoptComponent } from './components/adopt-component/adopt-component';
+import { InventarComponent } from './components/inventar-component/inventar-component';
 import { SellComponentComponent } from './components/sell-component/sell-component.component';
-import { BuyComponentComponent } from './components/buy-component/buy-component.component';
+import { ShopComponent } from './components/shop-component/shop-component';
 import { CoinComponent } from './components/coin-component/coin-component';
 import { SettingComponentComponent } from './components/setting-component/setting-component.component';
 
 @Component({
   selector: 'app-root',
   imports: [
-    MainPageComponentComponent,
-    AdoptComponentComponent,
+    MainPageComponent,
+    AdoptComponent,
     NgIf,
-    InventarComponentComponent,
+    InventarComponent,
     SellComponentComponent,
-    BuyComponentComponent,
+    ShopComponent,
     CoinComponent,
     SettingComponentComponent
   ],

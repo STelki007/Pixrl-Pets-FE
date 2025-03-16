@@ -35,6 +35,13 @@
       <button class="nes-btn is-primary mx-3" (click)="confirmDeleteAccount()">Löschen</button>
     </div>
   </form>
+</app-alert-center-modal-component><app-alert-center-modal-component [title]="titleDeleteAccount" [service]="deleteAccountService">
+  <form method="dialog">
+    <div class="text-center">
+      <button class="nes-btn mx-3" (click)="closeModal()">Abbrechen</button>
+      <button class="nes-btn is-primary mx-3" (click)="confirmDeleteAccount()">Löschen</button>
+    </div>
+  </form>
 </app-alert-center-modal-component>
 
 <app-alert-center-modal-component [title]="titleLogout" [service]="logoutService">

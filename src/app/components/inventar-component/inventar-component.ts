@@ -7,10 +7,10 @@ import {audit} from 'rxjs';
   imports: [
     NgForOf
   ],
-  templateUrl: './inventar-component.component.html',
-  styleUrl: './inventar-component.component.css'
+  templateUrl: './inventar-component.html',
+  styleUrl: './inventar-component.css'
 })
-export class InventarComponentComponent implements OnInit {
+export class InventarComponent implements OnInit {
   private audio!: HTMLAudioElement;
 
   items = [

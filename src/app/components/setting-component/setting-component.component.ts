@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AlertCenterModalComponent} from '../modal/alert-center-modal-component/alert-center-modal-component';
-import {DeleteAccountService} from '../../services/settingAlert/DeleteAccountService';
-import {LogoutService} from '../../services/settingAlert/LogoutService';
+import {DeleteAccountService} from '../../services/setting/DeleteAccountService';
+import {LogoutService} from '../../services/setting/LogoutService';
 
 @Component({
   selector: 'app-setting-component',
@@ -14,7 +14,7 @@ import {LogoutService} from '../../services/settingAlert/LogoutService';
 export class SettingComponentComponent implements OnInit {
   protected alertState = false;
   protected titleDeleteAccount: string = "Möchten Sie wirklich dein Account löschen?";
-  titleLogout: string = "Möchten Sie sich wirklich abmelden?";
+  protected titleLogout: string = "Möchten Sie sich wirklich abmelden?";
   constructor(
     protected deleteAccountService: DeleteAccountService,
     protected logoutService: LogoutService
