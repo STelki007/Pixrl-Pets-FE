@@ -1,18 +1,22 @@
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {NgClass, NgForOf, NgIf} from '@angular/common';
-import {BuyService} from '../../services/shop/buyService';
 import {InputNumber} from 'primeng/inputnumber';
 import {FormsModule} from '@angular/forms';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import {Toast} from 'primeng/toast';
+import {MessageService} from 'primeng/api';
+import {ProgressSpinner} from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-shop-component',
   standalone: true,
-  imports: [NgForOf, NgClass, NgIf, InputNumber, FormsModule],
+  imports: [NgForOf, NgClass, NgIf, InputNumber, FormsModule, Toast],
   templateUrl: './shop-component.html',
-  styleUrl: './shop-component.css'
+  styleUrl: './shop-component.css',
+  providers: [MessageService]
 })
 export class ShopComponent implements OnInit {
+
   private selectItemAudio!: HTMLAudioElement;
   private switchButtonAudio!: HTMLAudioElement;
   private coinItemAudio!: HTMLAudioElement;
@@ -26,7 +30,7 @@ export class ShopComponent implements OnInit {
   protected quantityError: string | null = null;
 
 
-  constructor(private modalService: NgbModal) {}
+  constructor(private modalService: NgbModal, private messageService: MessageService) {}
 
   ngOnInit(): void {
     this.selectItemAudio = new Audio("select-item.mp3"); this.selectItemAudio.load();
@@ -78,10 +82,10 @@ export class ShopComponent implements OnInit {
     this.quantityError = null;
     this.modalRef?.close();
     this.selectItemAudio.currentTime = 0;
-    this.selectItemAudio.play()
+    this.selectItemAudio.play();
+    this.messageService.add({ severity: 'success', summary: 'Gekauft!', detail: 'Das Item wurde erfolgreich gekauft.' });
   }
-
-  openModal() {
+  openBuyModal() {
     this.modalRef = this.modalService.open(this.buyModal, {
       centered: true,
       backdrop: "static",
@@ -100,5 +104,9 @@ export class ShopComponent implements OnInit {
     this.quantityError = null;
     this.selectItemAudio.currentTime = 0;
     this.selectItemAudio.play()
+  }
+
+  show() {
+    this.messageService.add({ severity: 'success', summary: 'Erfolg', detail: 'Dies ist eine Toast-Nachricht!' });
   }
 }

@@ -29,7 +29,7 @@
             </div>
 
             <div class="buy-button-div">
-              <button class="buy-button mx-3 nes-btn is-primary" (click)="openModal()">Kaufen</button>
+                <button class="buy-button mx-3 nes-btn is-primary" (click)="openBuyModal()">Kaufen</button>
             </div>
           </div>
         </div>
@@ -57,11 +57,10 @@
     </div>
 
     <div class="text-center mt-4">
-      <button class="nes-btn is-error mx-3" (click)="closeModal()">Abbrechen</button>
+      <button class="nes-btn is-error mx-3" (click)="modal.close()">Abbrechen</button>
       <button class="nes-btn is-success mx-3" (click)="confirmBuy()" [disabled]="quantityError">Kaufen</button>
     </div>
   </section>
-
 </ng-template>
 
 
@@ -86,3 +85,6 @@
   *ngIf="isOffcanvasOpen"
   (click)="closeOffcanvas()">
 </div>
+
+<p-toast [breakpoints]="{ '920px': { width: '100%', right: '0', left: '0' } }" />
+
