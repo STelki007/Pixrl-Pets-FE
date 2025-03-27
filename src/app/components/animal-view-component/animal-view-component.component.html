@@ -1,7 +1,7 @@
 <div class="anima-view">
   <div class="container">
     <div class="scrollable-grid">
-      <div *ngFor="let item of items" class="grid-item">
+      <div *ngFor="let item of items" class="grid-item" (click)="onItemClick()">
         <img src="https://www.megavoxels.com/wp-content/uploads/2024/02/Pixel-Art-Chicken-5.webp" alt="Pixel Chick"  class="pixel-image"/>
       </div>
     </div>
