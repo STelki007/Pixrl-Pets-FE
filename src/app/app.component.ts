@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { SideBarButtonsService } from './services/SideBarButtonsService';
@@ -11,12 +11,12 @@ import { CoinComponent } from './components/coin-component/coin-component';
 import { SettingComponentComponent } from './components/setting-component/setting-component.component';
 import {InputTextModule} from 'primeng/inputtext';
 import {AnimalViewComponentComponent} from './components/animal-view-component/animal-view-component.component';
+import Keycloak from "keycloak-js";
 
 @Component({
   selector: 'app-root',
   imports: [
     MainPageComponent,
-    AdoptComponent,
     NgIf,
     InventarComponent,
     SellComponentComponent,
@@ -31,6 +31,7 @@ import {AnimalViewComponentComponent} from './components/animal-view-component/a
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit, OnDestroy {
+  private keycloak = inject(Keycloak);
   selectedComponent: string = "";
   private subscription!: Subscription;
   private audio!: HTMLAudioElement;
@@ -56,5 +57,13 @@ export class AppComponent implements OnInit, OnDestroy {
     this.audio.play().then(() => {
       this.sideBarButtonsService.setValue(value);
     })
+  }
+
+  logoutUser() {
+    if(this.keycloak.authenticated) {
+      this.keycloak.logout();
+    } else {
+      this.keycloak.login();
+    }
   }
 }
