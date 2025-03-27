@@ -10,6 +10,7 @@ import { ShopComponent } from './components/shop-component/shop-component';
 import { CoinComponent } from './components/coin-component/coin-component';
 import { SettingComponentComponent } from './components/setting-component/setting-component.component';
 import {InputTextModule} from 'primeng/inputtext';
+import {AnimalViewComponentComponent} from './components/animal-view-component/animal-view-component.component';
 
 @Component({
   selector: 'app-root',
@@ -22,7 +23,8 @@ import {InputTextModule} from 'primeng/inputtext';
     ShopComponent,
     CoinComponent,
     SettingComponentComponent,
-    InputTextModule
+    InputTextModule,
+    AnimalViewComponentComponent
   ],
   templateUrl: './app.component.html',
   standalone: true,
