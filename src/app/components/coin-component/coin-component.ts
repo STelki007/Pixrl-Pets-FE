@@ -10,15 +10,16 @@ export class CoinComponent implements OnInit, OnDestroy {
   timeLeft: string = '';
   private timerInterval: any;
   isClaimable: boolean = false;
-  private audio = HTMLAudioElement;
+  private audio: HTMLAudioElement;
 
   constructor(private sideBarButtonsService: SideBarButtonsService) {
+    this.audio = new Audio("coinClickEffect2.mp3");
   }
 
   ngOnInit(): void {
     this.updateTimer();
     this.startTimer();
-    this.audio = new Audio("coinClickEffect2.mp3");
+    // this.audio = new Audio("coinClickEffect2.mp3");
 
   }
 
