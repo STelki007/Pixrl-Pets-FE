@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AdoptComponent} from '../adopt-component/adopt-component';
+import {AnimalComponent} from '../animal-component/animal-component';
 import {NgIf} from '@angular/common';
 import {SideBarButtonsService} from '../../services/SideBarButtonsService';
 

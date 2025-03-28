@@ -10,8 +10,8 @@
       </div>
 
       <div class="button-item">
-        <i class="bi bi-heart" (click)="selectComponent('adopt')"></i>
-        <button type="button" class="nes-btn is-error" (click)="selectComponent('adopt')">Haustier</button>
+        <i class="bi bi-heart" (click)="onAnimalsBtnClick()"></i>
+        <button type="button" class="nes-btn is-error" (click)="onAnimalsBtnClick()">Haustier</button>
       </div>
 
       <div class="button-item">
@@ -33,9 +33,10 @@
 </div>
 
 <app-main-page-component *ngIf="selectedComponent === 'main'"></app-main-page-component>
-<app-animal-view-component *ngIf="selectedComponent === 'adopt'"></app-animal-view-component>
 <app-inventar-component *ngIf="selectedComponent === 'inventory'"></app-inventar-component>
 <app-sell-component *ngIf="selectedComponent === 'sell'"></app-sell-component>
 <app-shop-component *ngIf="selectedComponent === 'shop'"></app-shop-component>
 <app-setting-component *ngIf="selectedComponent === 'setting'"></app-setting-component>
+<app-animal-component *ngIf="selectedComponent == 'animal'"></app-animal-component>
+<app-animals-view-component *ngIf="selectedComponent === 'animals'"></app-animals-view-component>
 <app-coin-component></app-coin-component>

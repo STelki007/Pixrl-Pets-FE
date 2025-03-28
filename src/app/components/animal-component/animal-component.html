@@ -1,6 +1,7 @@
+
 <div class="adopt-main-div position-relative">
-  <div class="animated-banner"></div>
-  <div class="animated-banner position-absolute bottom-0 "></div>
+  <!-- <div class="animated-banner"></div>
+  <div class="animated-banner position-absolute bottom-0 "></div> -->
 
   <div class="container-fluid main-container">
     <div class="structur container">
@@ -8,39 +9,25 @@
       <div class="col-4 animal-div">
         <div class="avatar-selection">
           <img src="https://img.freepik.com/premium-vector/brown-bear-head-8-bit-pixel-art-cute-animals-game-assets-vector-illustrations_614713-1693.jpg" class="avatar">
-          <img src="https://img.freepik.com/premium-vector/brown-bear-head-8-bit-pixel-art-cute-animals-game-assets-vector-illustrations_614713-1693.jpg" class="avatar">
-          <img src="https://img.freepik.com/premium-vector/brown-bear-head-8-bit-pixel-art-cute-animals-game-assets-vector-illustrations_614713-1693.jpg" class="avatar">
-          <img src="https://img.freepik.com/premium-vector/brown-bear-head-8-bit-pixel-art-cute-animals-game-assets-vector-illustrations_614713-1693.jpg" class="avatar">
         </div>
       </div>
 
       <div class="col-7 chat-container nes-container with-title is-dark">
         <div class="chat-title-div mb-2">
-          <h6 class="title">Eggbert Keinstein</h6>
-          <button class="nes-btn is-success mx-3">Adoptieren</button>
+          <h6 class="title">Eggbert Kleinstein</h6>
           <img src="https://img.freepik.com/premium-vector/brown-bear-head-8-bit-pixel-art-cute-animals-game-assets-vector-illustrations_614713-1693.jpg">
         </div>
         <div class="chat-box">
           <div class="m-3">
             <img src="https://img.freepik.com/premium-vector/brown-bear-head-8-bit-pixel-art-cute-animals-game-assets-vector-illustrations_614713-1693.jpg">
 
+
+
             <div class="message left nes-balloon from-left" style="background: #5695B0">
               <p>Hallo, ich heiße Eggbert Keinstein :D</p>
             </div>
           </div>
 
-          <div class="message right nes-balloon from-right">
-            <p>Hallo, wie heißt du?</p>
-          </div>
-          <div class="message right nes-balloon from-right">
-            <p>Hallo, wie heißt du?</p>
-          </div>
-          <div class="message right nes-balloon from-right">
-            <p>Hallo, wie heißt du?</p>
-          </div>
-          <div class="message right nes-balloon from-right">
-            <p>Hallo, wie heißt du?</p>
-          </div>
           <div class="message right nes-balloon from-right">
             <p>Hallo, wie heißt du?</p>
           </div>
@@ -56,6 +43,21 @@
       </div>
 
     </div>
+    <div class="position-absolute" style="right: 10px; top: 100px;">
+      <div class="d-flex flex-column  nes-dialog is-dark" style="border-radius: 10px; align-items: flex-end; ">
+        <button class="nes-btn is-primary mb-2">Füttern</button>
+        <button class="nes-btn is-success mb-2">Spielen</button>
+        <button class="nes-btn is-error mb-2">Schlafen</button>
+      </div>
+    </div>
+
+    <div style="position: absolute; top: 10px; left: 10px; width: 75px; height: 75px;">
+      <button class="w-100" style="background: none; border: none; padding: 0;" (click)="onArrowClick()">
+        <img class="w-100 h-100" src="https://cdn3.iconfinder.com/data/icons/ux-game-pixel-art/100/pixel-18-512.png" alt="Pfeil-Icon" />
+      </button>
+    </div>
+
+
   </div>
 
 

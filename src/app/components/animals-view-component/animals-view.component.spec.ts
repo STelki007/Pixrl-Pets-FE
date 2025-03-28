@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AnimalViewComponentComponent } from './animal-view-component.component';
+import { AnimalsViewComponent } from './animals-view.component';
 
 describe('AnimalViewComponentComponent', () => {
-  let component: AnimalViewComponentComponent;
-  let fixture: ComponentFixture<AnimalViewComponentComponent>;
+  let component: AnimalsViewComponent;
+  let fixture: ComponentFixture<AnimalsViewComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AnimalViewComponentComponent]
+      imports: [AnimalsViewComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AnimalViewComponentComponent);
+    fixture = TestBed.createComponent(AnimalsViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

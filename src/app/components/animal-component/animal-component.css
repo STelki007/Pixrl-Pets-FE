@@ -3,7 +3,7 @@
   height: 100vh;
   overflow: hidden;
   margin-left: 300px;
-  background-color: #3C774B;
+  background-color: #187782;
   color: white;
 }
 .animated-banner {
@@ -30,9 +30,11 @@
 
 .structur{
   display: flex;
-  justify-content: space-between;
   width: 100%;
-  height: 500px;
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .left-panel {
@@ -44,15 +46,15 @@
 
 .avatar-selection {
   display: flex;
-  justify-content: start;
+  justify-content: center;
   flex-wrap: wrap;
 }
 
 .avatar {
-  width: 150px;
-  height: 150px;
+  width: 200px;
+  height: 200px;
   image-rendering: pixelated;
-  border-radius: 50%;
+  border-radius: 10px;
   background: rgba(0, 0, 0, 0.2);
   padding: 5px;
   margin: 5px;
