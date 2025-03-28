@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {Component, inject, OnDestroy, OnInit} from '@angular/core';
 import { NgIf } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { SideBarButtonsService } from './services/SideBarButtonsService';
@@ -12,7 +12,7 @@ import { SettingComponentComponent } from './components/setting-component/settin
 import {InputTextModule} from 'primeng/inputtext';
 import {AnimalsViewComponent} from './components/animals-view-component/animals-view.component';
 import {ArrowService} from './services/animal/ArrowService';
-
+import Keycloak from "keycloak-js";
 @Component({
   selector: 'app-root',
   imports: [
@@ -32,6 +32,7 @@ import {ArrowService} from './services/animal/ArrowService';
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit, OnDestroy {
+  private keycloak = inject(Keycloak);
   selectedComponent: string = "";
   private subscription!: Subscription;
   private audio!: HTMLAudioElement;
@@ -43,6 +44,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.audio = new Audio('select-sound.mp3');
     this.audio.load();
+
     this.subscription = this.sideBarButtonsService.sideBarObservable()
       .subscribe(value => {
         this.selectedComponent = value;
@@ -59,6 +61,14 @@ export class AppComponent implements OnInit, OnDestroy {
     this.audio.play().then(() => {
       this.sideBarButtonsService.setValue(value);
     })
+  }
+
+  logoutUser() {
+    if(this.keycloak.authenticated) {
+      this.keycloak.logout();
+    } else {
+      this.keycloak.login();
+    }
   }
 
   onAnimalsBtnClick() {
