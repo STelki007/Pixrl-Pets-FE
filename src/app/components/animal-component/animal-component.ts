@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {CoinComponent} from '../coin-component/coin-component';
-import {ArrowService} from '../../services/animal/ArrowService';
-import {SideBarButtonsService} from '../../services/SideBarButtonsService';
+import {ArrowService} from '@services/animal/ArrowService';
+import {SideBarButtonsService} from '@services/SideBarButtonsService';
 
 @Component({
   selector: 'app-animal-component',

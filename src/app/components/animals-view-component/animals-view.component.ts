@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {NgForOf} from '@angular/common';
-import {SideBarButtonsService} from '../../services/SideBarButtonsService';
-import {ArrowService} from '../../services/animal/ArrowService';
+import {SideBarButtonsService} from '@services/SideBarButtonsService';
+import {ArrowService} from '@services/animal/ArrowService';
 
 @Component({
   selector: 'app-animals-view-component',
