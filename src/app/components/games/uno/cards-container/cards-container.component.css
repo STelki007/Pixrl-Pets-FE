@@ -1,0 +1,95 @@
+.color-cube {
+  width: 60px;
+  height: 60px;
+  background-color: #008C4A;
+  border-radius: 10px;
+  border: 2px solid #fff;
+  box-shadow: 0  4px 10px rgba(0, 0, 0, 0.2);
+  transform: rotate(45deg);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ono-button {
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle, #444 30%, #222 100%);
+  border-radius: 50%;
+  position: relative;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: background 0.3s, transform 0.1s;
+}
+.ono-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  width: 65px;
+  height: 65px;
+  background: radial-gradient(circle, #E00028 30%, #B0001B 100%);
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.4);
+}
+.ono-button::after {
+  content: 'UNO';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  background: radial-gradient(circle, #222 30%, #000 100%);
+  box-shadow: inset 0 2px 5px rgba(255, 255, 255, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bolder;
+}
+.ono-button:active{
+  background: radial-gradient(circle, #D80027 30%, #A0001B 100%);
+  transform: scale(0.95);
+}
+.card-container{
+  width: 250px;
+  height: 200px;
+  min-width: 250px;
+  min-height: 250px;
+  position: relative;
+  border-radius:  5px;
+}
+.container-card1{
+  width: 50%;
+  height: 100%;
+  z-index: 9999;
+}
+.container-card2{
+  width: 50%;
+  height: 100%;
+  z-index: 9999;
+}
+
+@media (max-width: 750px) {
+  .card-container {
+    display: flex;
+    min-width: 150px;
+  }
+  .game-table-container{
+    display: flex;
+    flex-direction: column;
+  }
+  .color-cube-container{
+    flex-direction: row;
+
+  }
+  .color-cube{
+    margin-right: 50px;
+  }
+}
+img{
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+

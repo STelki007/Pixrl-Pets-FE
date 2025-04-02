@@ -1,0 +1,9 @@
+body, .background {
+  margin: 0;
+  height: 100vh;
+  width: calc(100vw - 300px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle, #4a90e2 30%, #002244 100%) fixed;
+}

@@ -1,0 +1,28 @@
+<div class="background">
+  <div class="container d-flex justify-content-center align-items-center flex-column">
+    <ng-container *ngIf="isGameStart; else gameMenu">
+      <app-player
+        [players]="players"
+        (cardOutPut)="handleGetCardOutPut($event)"
+        [clickedCard]="getCardOutPut"
+        [getFirstCard]="firstCardOpeningInput"
+        [turnRound]="turnEnd"
+      >
+
+      </app-player>
+      <app-cards-container
+        [card]="firstCardOpeningInput"
+        [getCardOutPut]="getCardOutPut"
+        (turnEnd)="handleTurnEnd($event)"
+      ></app-cards-container>
+    </ng-container>
+
+    <ng-template #gameMenu>
+      <app-game-start
+        (playersUpdated)="updatePlayers($event)"
+        (firstCardOpeningOutput)="handleFirstCardOpening($event)">
+      </app-game-start>
+    </ng-template>
+  </div>
+</div>
+

@@ -1,0 +1,46 @@
+
+<div class="flex justify-center items-center min-h-screen ">
+  <div class="bg-white text-gray-900 rounded-xl shadow-lg p-8 w-[800px] flex justify-between gap-6">
+
+    <div class="w-1/2 text-center border-r border-gray-300 pr-6">
+      <h2 class="text-xl font-semibold mb-4 flex items-center justify-center gap-2">
+        <i class="bi bi-robot text-blue-500 text-2xl"></i> Gegen Bot
+      </h2>
+
+      <div class="grid grid-cols-3 gap-2 mb-4">
+        <button class="py-2 rounded-md bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium transition" (click)="bot($event)">2</button>
+        <button class="py-2 rounded-md bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium transition" (click)="bot($event)">3</button>
+        <button class="py-2 rounded-md bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium transition" (click)="bot($event)">4</button>
+      </div>
+
+      <div class="mb-4 py-2 bg-gray-100 rounded-md text-lg font-semibold">
+        Spieleranzahl: <span class="text-blue-600" >{{numberOfPlayersBot}}</span>
+      </div>
+
+      <button class="w-full py-3 rounded-md bg-blue-500 hover:bg-blue-600 text-white font-semibold text-lg transition" (click)="startGameBot()">
+        Spiel starten
+      </button>
+    </div>
+
+    <div class="w-1/2 text-center pl-6">
+      <h2 class="text-xl font-semibold mb-4 flex items-center justify-center gap-2">
+        <span class="text-green-500 text-2xl">👥</span> Multiplayer
+      </h2>
+
+      <div class="grid grid-cols-3 gap-2 mb-4">
+        <button class="py-2 rounded-md bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium transition" (click)="player($event)">2</button>
+        <button class="py-2 rounded-md bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium transition" (click)="player($event)">3</button>
+        <button class="py-2 rounded-md bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium transition" (click)="player($event)">4</button>
+      </div>
+
+      <div class="mb-4 py-2 bg-gray-100 rounded-md text-lg font-semibold">
+        Spieleranzahl: <span class="text-green-600">{{numberOfPlayers}}</span>
+      </div>
+
+      <button class="w-full py-3 rounded-md bg-green-500 hover:bg-green-600 text-white font-semibold text-lg transition" (click)="startGamePlayer()">
+        Spiel starten
+      </button>
+    </div>
+
+  </div>
+</div>

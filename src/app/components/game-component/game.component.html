@@ -1,0 +1,23 @@
+<div class="anima-view">
+  <div class="container" *ngIf="!unoGameClick; else showUnoGame">
+    <div class="scrollable-grid">
+      <div class="grid-item" (click)="onAnimalCardClick()">
+        <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/470220/capsule_616x353.jpg?t=1728664374" alt="Pixel Chick"  class="pixel-image"/>
+      </div>
+      <div class="grid-item" (click)="onAnimalCardClick()">
+        <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/470220/capsule_616x353.jpg?t=1728664374" alt="Pixel Chick"  class="pixel-image"/>
+      </div>
+      <div class="grid-item" (click)="onAnimalCardClick()">
+        <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/470220/capsule_616x353.jpg?t=1728664374" alt="Pixel Chick"  class="pixel-image"/>
+      </div>
+    </div>
+  </div>
+  <ng-template #showUnoGame>
+    <div class="container">
+      <div>
+        <app-uno></app-uno>
+      </div>
+    </div>
+  </ng-template>
+</div>
+

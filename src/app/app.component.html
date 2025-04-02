@@ -25,8 +25,8 @@
       </div>
 
       <div class="button-item" >
-        <i class="bi bi-pc-display" (click)="selectComponent('game')"></i>
-        <button type="button" class="nes-btn is-error" (click)="selectComponent('game')">Spiele</button>
+        <i class="bi bi-pc-display" (click)="selectComponent('game-component')"></i>
+        <button type="button" class="nes-btn is-error" (click)="selectComponent('game-component')">Spiele</button>
       </div>
 
       <div class="button-item">
@@ -52,5 +52,5 @@
 <app-setting-component *ngIf="selectedComponent === 'setting'"></app-setting-component>
 <app-animal-component *ngIf="selectedComponent == 'animal'"></app-animal-component>
 <app-animals-view-component *ngIf="selectedComponent === 'animals'"></app-animals-view-component>
-<app-game *ngIf="selectedComponent === 'game'"></app-game>
+<app-game-component *ngIf="selectedComponent === 'game-component'"></app-game-component>
 <app-coin-component></app-coin-component>

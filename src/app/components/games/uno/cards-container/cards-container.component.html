@@ -1,0 +1,23 @@
+<div class="cards-container d-flex justify-center align-items-center w-100">
+  <div class="d-flex justify-between game-table-container" style="width: 40%">
+    <div class="card-container d-flex justify-content-center align-items-center">
+      <div class="container-card">
+        <img src="assets/figmaUnoCard0-9/backCard.svg" class="uno-card card-front">
+      </div>
+      <div class="container-card">
+        <div *ngIf="card; else noCard">
+          <img [src]="card" alt="First Card">
+        </div>
+        <ng-template #noCard>
+          <p>keine Karte.</p>
+        </ng-template>
+      </div>
+    </div>
+    <div class="d-flex flex-col justify-center align-items-center flex-column color-cube-container">
+      <span class="color-cube mb-4" [ngStyle]="{'background-color': color}"></span>
+      <button style="border: none; outline: none;" >
+        <span class="ono-button d-flex justify-center align-items-center"></span>
+      </button>
+    </div>
+  </div>
+</div>

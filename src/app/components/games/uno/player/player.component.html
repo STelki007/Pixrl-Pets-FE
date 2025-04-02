@@ -1,0 +1,27 @@
+<div class="gamer-container">
+  <div class="player-top">
+    <div *ngFor="let card of players['player1']">
+      <button (click)="discard1(card)" style="border: none; outline: none" >
+        <img [src]="card" class="card-img-top" />
+      </button>
+    </div>
+  </div>
+
+  <div  class="player-bottom">
+    <div *ngFor="let card of players['player2']">
+      <button (click)="discard2(card)" style="border: none; outline: none">
+        <img [src]="card" class="card-img-bottom" />
+      </button>
+    </div>
+  </div>
+</div>
+<div class="flex justify-center mt-4">
+
+  <div class="flex justify-center mt-4">
+    <button
+      (click)="endRound()"
+      class="uno-btn"
+    >
+      <i class="bi bi-flag-fill"></i>
+    </button>
+  </div>

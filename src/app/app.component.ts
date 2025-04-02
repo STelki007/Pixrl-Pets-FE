@@ -1,19 +1,20 @@
 import {Component, inject, OnDestroy, OnInit} from '@angular/core';
 import { NgIf } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { SideBarButtonsService } from './services/SideBarButtonsService';
-import { MainPageComponent } from './components/main-page-component/main-page-component';
-import { AnimalComponent } from './components/animal-component/animal-component';
-import { InventarComponent } from './components/inventar-component/inventar-component';
-import { SellComponentComponent } from './components/sell-component/sell-component.component';
-import { ShopComponent } from './components/shop-component/shop-component';
-import { CoinComponent } from './components/coin-component/coin-component';
-import { SettingComponentComponent } from './components/setting-component/setting-component.component';
+import { SideBarButtonsService } from '@services/SideBarButtonsService';
+import { MainPageComponent } from '@components/main-page-component/main-page-component';
+import { AnimalComponent } from '@components/animal-component/animal-component';
+import { InventarComponent } from '@components/inventar-component/inventar-component';
+import { SellComponentComponent } from '@components/sell-component/sell-component.component';
+import { ShopComponent } from '@components/shop-component/shop-component';
+import { CoinComponent } from '@components/coin-component/coin-component';
+import { SettingComponentComponent } from '@components/setting-component/setting-component.component';
 import {InputTextModule} from 'primeng/inputtext';
-import {AnimalsViewComponent} from './components/animals-view-component/animals-view.component';
-import {ArrowService} from './services/animal/ArrowService';
+import {AnimalsViewComponent} from '@components/animals-view-component/animals-view.component';
+import {ArrowService} from '@services/animal/ArrowService';
 import Keycloak from "keycloak-js";
-import {GameComponent} from '@components/game/game.component';
+import {GameComponent} from '@components/game-component/game.component';
+import {UnoComponent} from '@components/games/uno/uno.component';
 @Component({
   selector: 'app-root',
   imports: [
@@ -27,7 +28,8 @@ import {GameComponent} from '@components/game/game.component';
     SettingComponentComponent,
     InputTextModule,
     AnimalsViewComponent,
-    GameComponent
+    GameComponent,
+    UnoComponent
   ],
   templateUrl: './app.component.html',
   standalone: true,
@@ -40,18 +42,22 @@ export class AppComponent implements OnInit, OnDestroy {
   private audio!: HTMLAudioElement;
   protected arrowServiceValue: boolean = false;
 
-  constructor(private sideBarButtonsService: SideBarButtonsService,
-              private arrowService: ArrowService) {}
+  constructor(
+    private sideBarButtonsService: SideBarButtonsService,
+    private arrowService: ArrowService) {}
 
   ngOnInit() {
     this.audio = new Audio('select-sound.mp3');
     this.audio.load();
 
+    this.getSidebarValue();
+  }
+
+  getSidebarValue() {
     this.subscription = this.sideBarButtonsService.sideBarObservable()
       .subscribe(value => {
         this.selectedComponent = value;
       });
-
   }
 
   ngOnDestroy() {
