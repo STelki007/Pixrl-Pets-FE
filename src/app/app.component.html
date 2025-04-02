@@ -18,15 +18,22 @@
         <i class="bi bi-box-seam" (click)="selectComponent('inventory')"></i>
         <button type="button" class="nes-btn is-error" (click)="selectComponent('inventory')">Inventar</button>
       </div>
-      <div class="button-item">
-        <i class="bi bi-gear" (click)="selectComponent('setting')"></i>
-        <button type="button" class="nes-btn is-error" (click)="selectComponent('setting')">Einstellung</button>
-      </div>
 
       <div class="button-item" >
         <i class="bi bi-cart buttonIcon" (click)="selectComponent('shop')"></i>
         <button type="button" class="nes-btn is-error" (click)="selectComponent('shop')">shop</button>
       </div>
+
+      <div class="button-item" >
+        <i class="bi bi-pc-display" (click)="selectComponent('game')"></i>
+        <button type="button" class="nes-btn is-error" (click)="selectComponent('game')">Spiele</button>
+      </div>
+
+      <div class="button-item">
+        <i class="bi bi-gear" (click)="selectComponent('setting')"></i>
+        <button type="button" class="nes-btn is-error" (click)="selectComponent('setting')">Einstellung</button>
+      </div>
+
     </div>
 
     <div>
@@ -45,4 +52,5 @@
 <app-setting-component *ngIf="selectedComponent === 'setting'"></app-setting-component>
 <app-animal-component *ngIf="selectedComponent == 'animal'"></app-animal-component>
 <app-animals-view-component *ngIf="selectedComponent === 'animals'"></app-animals-view-component>
+<app-game *ngIf="selectedComponent === 'game'"></app-game>
 <app-coin-component></app-coin-component>

@@ -13,6 +13,7 @@ import {InputTextModule} from 'primeng/inputtext';
 import {AnimalsViewComponent} from './components/animals-view-component/animals-view.component';
 import {ArrowService} from './services/animal/ArrowService';
 import Keycloak from "keycloak-js";
+import {GameComponent} from '@components/game/game.component';
 @Component({
   selector: 'app-root',
   imports: [
@@ -25,7 +26,8 @@ import Keycloak from "keycloak-js";
     CoinComponent,
     SettingComponentComponent,
     InputTextModule,
-    AnimalsViewComponent
+    AnimalsViewComponent,
+    GameComponent
   ],
   templateUrl: './app.component.html',
   standalone: true,
