@@ -63,10 +63,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "untitled1:build:production"
+              "buildTarget": "pixelpets-frontend:build:production"
             },
             "development": {
-              "buildTarget": "untitled1:build:development"
+              "buildTarget": "pixelpets-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
