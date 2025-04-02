@@ -45,7 +45,6 @@
       <p-inputNumber
         id="quantity"
         [(ngModel)]="quantity"
-        [min]="1"
         [step]="1"
         showButtons
         class="custom-spinner"
@@ -86,5 +85,6 @@
   (click)="closeOffcanvas()">
 </div>
 
-<p-toast [breakpoints]="{ '920px': { width: '100%', right: '0', left: '0' } }" />
+<p-toast position="bottom-right" />
 
+<!--<p-image src="https://primefaces.org/cdn/primeng/images/galleria/galleria10.jpg" alt="Image" width="250" [preview]="true" />-->

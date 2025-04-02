@@ -3,5 +3,5 @@ import {MainPageComponent} from './components/main-page-component/main-page-comp
 import { canActivateAuthRole } from '@guards/auth.guard';
 
 export const routes: Routes = [
-  { path: '', component: MainPageComponent, canActivate: [canActivateAuthRole] },
+  // { path: '', component: MainPageComponent, canActivate: [canActivateAuthRole] },
 ];

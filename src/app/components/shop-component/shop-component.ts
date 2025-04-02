@@ -6,11 +6,12 @@ import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {Toast} from 'primeng/toast';
 import {MessageService} from 'primeng/api';
 import {ProgressSpinner} from 'primeng/progressspinner';
+import {Image} from 'primeng/image';
 
 @Component({
   selector: 'app-shop-component',
   standalone: true,
-  imports: [NgForOf, NgClass, NgIf, InputNumber, FormsModule, Toast],
+  imports: [NgForOf, NgClass, NgIf, InputNumber, FormsModule, Toast, Image],
   templateUrl: './shop-component.html',
   styleUrl: './shop-component.css',
   providers: [MessageService]
@@ -76,6 +77,10 @@ export class ShopComponent implements OnInit {
   confirmBuy() {
     if (this.quantity > 50) {
       this.quantityError = "Maximale Bestellmenge ist 50!";
+      return;
+    }
+    if (this.quantity <= 0) {
+      this.quantityError = "Minimale Bestellmenge ist 1!";
       return;
     }
     this.quantity = 1;
