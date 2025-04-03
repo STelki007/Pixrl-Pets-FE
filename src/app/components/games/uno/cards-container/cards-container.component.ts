@@ -3,7 +3,7 @@ import { NgIf, NgOptimizedImage, NgStyle } from '@angular/common';
 
 @Component({
   selector: 'app-cards-container',
-  imports: [NgOptimizedImage, NgIf, NgStyle],
+  imports: [NgIf, NgStyle],
   templateUrl: './cards-container.component.html',
   styleUrl: './cards-container.component.css',
 })

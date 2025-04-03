@@ -15,7 +15,7 @@ import {CardsContainerComponent} from '@components/games/uno/cards-container/car
 
 @Component({
   selector: 'app-player',
-  imports: [NgForOf, NgStyle, CardsContainerComponent],
+  imports: [NgForOf],
   templateUrl: './player.component.html',
   styleUrl: './player.component.css'
 })
@@ -32,15 +32,7 @@ export class PlayerComponent implements OnInit, OnChanges {
   private isFirstCardUsed = false;
   private player1: string = "player1";
   private player2: string = "player2";
-  protected firstCardOpeningInput: string = "";
-  protected getCardOutPut: string = "";
-  cardSpacing: number = 30;
-  cardStyles = {
-    width: '80px',
-    height: '120px',
-    overlap: '20px',
-    hoverLift: '30px'
-  };
+  private extractDrawCardColor:string = "";
 
   constructor(private cdr: ChangeDetectorRef, private deck: Deck) {}
 
@@ -55,7 +47,7 @@ export class PlayerComponent implements OnInit, OnChanges {
   }
 
   getCardTransform(index: number, totalCards: number): string {
-    const rotation = (index - (totalCards - 1) / 2) * 2; // Leichte Rotation für visuellen Effekt
+    const rotation = (index - (totalCards - 1) / 2) * 2;
     return `rotate(${rotation}deg)`;
   }
 
@@ -92,7 +84,11 @@ export class PlayerComponent implements OnInit, OnChanges {
       this.removeCard(this.player1, card);
       this.clickedCard = card;
       this.colorOfCardOutPut = this.extractCardColor(card);
-      this.nextTurn();
+      console.log(this.extractDrawCardColor)
+      console.log(this.colorOfCardOutPut)
+      if (this.extractDrawCardColor !== this.colorOfCardOutPut) {
+        this.nextTurn();
+      }
     } else if (this.isPlayer2) {
       this.drawCard(this.player1);
     }
@@ -103,10 +99,28 @@ export class PlayerComponent implements OnInit, OnChanges {
       this.removeCard(this.player2, card);
       this.clickedCard = card;
       this.colorOfCardOutPut = this.extractCardColor(card);
-      this.nextTurn();
+      this.colorOfCardOutPut = this.extractCardColor(card);
+      console.log(this.extractDrawCardColor)
+      console.log(this.colorOfCardOutPut)
+      if (this.extractDrawCardColor !== this.colorOfCardOutPut) {
+        this.nextTurn();
+      }
     } else if (!this.isPlayer2) {
       this.drawCard(this.player2);
     }
+  }
+
+  drawCard(player: string) {
+    if (this.deck.getDeck().length > 0) {
+      var card = this.deck.getDeck().shift();
+      if (card) {
+        this.players[player].push(card);
+        this.extractDrawCardColor = this.extractCardColor(card);
+        this.cdr.detectChanges();
+      }
+
+    }
+    this.nextTurn();
   }
 
   checkPlayerCardColor(player: string): boolean {
@@ -119,18 +133,6 @@ export class PlayerComponent implements OnInit, OnChanges {
       }
     }
     return false;
-  }
-
-  drawCard(player: string) {
-    if (this.deck.getDeck().length > 0) {
-      var card = this.deck.getDeck().shift();
-      if (card) {
-        this.players[player].push(card);
-        this.cdr.detectChanges();
-      }
-
-    }
-    this.nextTurn();
   }
 
   nextTurn() {

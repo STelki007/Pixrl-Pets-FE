@@ -7,7 +7,6 @@ import {Deck} from '../services/uno/Deck';
 @Component({
   selector: 'app-game-start',
   imports: [
-    NgIf,
     FormsModule
   ],
   templateUrl: './game-start.component.html',

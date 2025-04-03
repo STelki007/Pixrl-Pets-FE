@@ -28,15 +28,13 @@ import {UnoComponent} from '@components/games/uno/uno.component';
     SettingComponentComponent,
     InputTextModule,
     AnimalsViewComponent,
-    GameComponent,
-    UnoComponent
-  ],
+    GameComponent],
   templateUrl: './app.component.html',
   standalone: true,
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit, OnDestroy {
-  private keycloak = inject(Keycloak);
+  // private keycloak = inject(Keycloak);
   selectedComponent: string = "";
   private subscription!: Subscription;
   private audio!: HTMLAudioElement;
@@ -71,13 +69,13 @@ export class AppComponent implements OnInit, OnDestroy {
     })
   }
 
-  logoutUser() {
-    if(this.keycloak.authenticated) {
-      this.keycloak.logout();
-    } else {
-      this.keycloak.login();
-    }
-  }
+  // logoutUser() {
+  //   if(this.keycloak.authenticated) {
+  //     this.keycloak.logout();
+  //   } else {
+  //     this.keycloak.login();
+  //   }
+  // }
 
   onAnimalsBtnClick() {
     this.arrowService.getValue().subscribe(value => {

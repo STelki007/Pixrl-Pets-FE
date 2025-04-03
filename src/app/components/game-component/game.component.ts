@@ -6,7 +6,6 @@ import {CheckUno} from '@components/games/uno/services/uno/ShopUnoInMainView';
 @Component({
   selector: 'app-game-component',
   imports: [
-    NgForOf,
     NgIf,
     UnoComponent
   ],
