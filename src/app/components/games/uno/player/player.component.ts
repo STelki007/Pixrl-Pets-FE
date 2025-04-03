@@ -8,13 +8,14 @@ import {
   Output,
   SimpleChanges
 } from '@angular/core';
-import { NgForOf } from '@angular/common';
+import {NgForOf, NgStyle} from '@angular/common';
 import { Deck } from '../services/uno/Deck';
 import {TurnRound} from '../services/uno/TurnRound';
+import {CardsContainerComponent} from '@components/games/uno/cards-container/cards-container.component';
 
 @Component({
   selector: 'app-player',
-  imports: [NgForOf],
+  imports: [NgForOf, NgStyle, CardsContainerComponent],
   templateUrl: './player.component.html',
   styleUrl: './player.component.css'
 })
@@ -31,6 +32,15 @@ export class PlayerComponent implements OnInit, OnChanges {
   private isFirstCardUsed = false;
   private player1: string = "player1";
   private player2: string = "player2";
+  protected firstCardOpeningInput: string = "";
+  protected getCardOutPut: string = "";
+  cardSpacing: number = 30;
+  cardStyles = {
+    width: '80px',
+    height: '120px',
+    overlap: '20px',
+    hoverLift: '30px'
+  };
 
   constructor(private cdr: ChangeDetectorRef, private deck: Deck) {}
 
@@ -42,6 +52,15 @@ export class PlayerComponent implements OnInit, OnChanges {
     this.validateColorCard(changes);
     this.turnRoundOnClick(changes);
 
+  }
+
+  getCardTransform(index: number, totalCards: number): string {
+    const rotation = (index - (totalCards - 1) / 2) * 2; // Leichte Rotation für visuellen Effekt
+    return `rotate(${rotation}deg)`;
+  }
+
+  getCardZIndex(index: number): number {
+    return index;
   }
 
   validateFirstCardColor(){
@@ -159,5 +178,6 @@ export class PlayerComponent implements OnInit, OnChanges {
     }
     this.nextTurn();
   }
+
 
 }

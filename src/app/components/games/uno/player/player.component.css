@@ -1,92 +1,84 @@
-.player-top, .player-bottom {
-  position: absolute;
-  width: 900px;
-  height: 100px;
-  color: white;
-  display: grid;
-  align-items: end;
+.game-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.player-area {
+  display: flex;
   justify-content: center;
-  border-radius: 10px;
-  font-weight: bold;
-  text-align: center;
-  left: 50%;
-  transform: translateX(-50%);
-  grid-template-columns: repeat(9, minmax(100px, 1fr));
-  cursor: pointer;
+  align-items: center;
+  min-height: 160px;
+  padding: 20px;
 }
 
-.player-top {
-  top: 10%;
+.player-area.opponent {
+  align-items: flex-start;
 }
 
-.player-bottom {
-  bottom: 10%;
-  min-height: 260px;
-  overflow: hidden;
+.player-area.player {
+  align-items: flex-end;
 }
 
-@media (max-width: 750px) {
-  .player-top {
-    top: 5%;
-  }
-
-  .player-bottom {
-    bottom: 5%;
-  }
-}
-
-
-.card-img-bottom {
-  transition: transform 0.1s ease-in-out;
-  -webkit-user-drag: none;
-}
-
-.card-img-bottom:hover {
-  transform: translateY(-30px) scale(1.1);
-  z-index: 10;
+.card-wrapper {
+  margin-left: -30px;
   position: relative;
+  border: none;
+  box-shadow: none;
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
 }
 
-.card-img-top {
-  transition: transform 0.1s ease-in-out;
-  -webkit-user-drag: none;
+.card-wrapper:first-child {
+  margin-left: 0;
 }
 
-.card-img-top:hover {
-  transform: translateY(30px) scale(1.1);
-  z-index: 10;
-  position: relative;
+.card {
+  width: 80px;
+  background: none;
+  border: none;
+  box-shadow: none;
+  outline: none;
+  transition: transform 0.2s ease-out;
 }
+
+.card-wrapper:hover {
+  transform: translateY(-15px) scale(1.08);
+  z-index: 100 !important;
+  transition: transform 0.2s ease-in-out;
+
+}
+
+.card-wrapper:hover .card {
+  transform: scale(1.02);
+  transition: transform 0.2s ease-in-out;
+}
+
 
 .uno-btn {
-  width: 60px;
-  height: 60px;
-  background: linear-gradient(135deg, #FF6F61, #D96A6A);
+  background-color: #FF5722;
   color: white;
-  font-size: 28px;
   border: none;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 60px;
+  height: 60px;
+  font-size: 1.2rem;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-  text-align: center;
-  font-weight: 600;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .uno-btn:hover {
   transform: scale(1.1);
-  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  background-color: #E64A19;
 }
 
-.uno-btn:active {
-  transform: scale(0.95);
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.3);
+.action-area {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }
 
-.uno-btn i {
-  font-size: 28px;
-  color: white;
-}
+

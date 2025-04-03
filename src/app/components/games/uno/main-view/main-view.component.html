@@ -8,13 +8,13 @@
         [getFirstCard]="firstCardOpeningInput"
         [turnRound]="turnEnd"
       >
-
+        <app-cards-container
+          [card]="firstCardOpeningInput"
+          [getCardOutPut]="getCardOutPut"
+          (turnEnd)="handleTurnEnd($event)"
+        ></app-cards-container>
       </app-player>
-      <app-cards-container
-        [card]="firstCardOpeningInput"
-        [getCardOutPut]="getCardOutPut"
-        (turnEnd)="handleTurnEnd($event)"
-      ></app-cards-container>
+
     </ng-container>
 
     <ng-template #gameMenu>

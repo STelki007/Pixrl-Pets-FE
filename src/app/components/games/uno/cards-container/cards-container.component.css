@@ -58,6 +58,7 @@
   min-height: 250px;
   position: relative;
   border-radius:  5px;
+
 }
 .container-card1{
   width: 50%;
@@ -70,26 +71,11 @@
   z-index: 9999;
 }
 
-@media (max-width: 750px) {
-  .card-container {
-    display: flex;
-    min-width: 150px;
-  }
-  .game-table-container{
-    display: flex;
-    flex-direction: column;
-  }
-  .color-cube-container{
-    flex-direction: row;
 
-  }
-  .color-cube{
-    margin-right: 50px;
-  }
-}
 img{
   pointer-events: none;
   user-select: none;
   -webkit-user-drag: none;
+  width: 100%;
 }
 
