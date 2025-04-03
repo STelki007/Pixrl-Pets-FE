@@ -4,17 +4,16 @@
          class="card-wrapper"
          [style.z-index]="getCardZIndex(i)"
          [style.transform]="getCardTransform(i, players['player1']!.length)"
-         (click)="discard1(card)">
+         (click)="playCardIfValid(card, 'player1')">
       <img [src]="card" class="card" [alt]="'UNO Karte ' + card" />
     </div>
   </div>
 
-  <div class="game-middle">
-  </div>
+  <div class="game-middle"></div>
 
   <div>
     <div class="action-area">
-      <button (click)="endRound()" class="uno-btn">
+      <button (click)="completeRound()" class="uno-btn">
         <i class="bi bi-flag-fill"></i>
       </button>
     </div>
@@ -26,9 +25,8 @@
          class="card-wrapper"
          [style.z-index]="getCardZIndex(i)"
          [style.transform]="getCardTransform(i, players['player2']!.length)"
-         (click)="discard2(card)">
+         (click)="playCardIfValid(card, 'player2')">
       <img [src]="card" class="card" [alt]="'UNO Karte ' + card" />
     </div>
   </div>
-
 </div>
