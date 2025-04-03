@@ -84,11 +84,7 @@ export class PlayerComponent implements OnInit, OnChanges {
       this.removeCard(this.player1, card);
       this.clickedCard = card;
       this.colorOfCardOutPut = this.extractCardColor(card);
-      console.log(this.extractDrawCardColor)
-      console.log(this.colorOfCardOutPut)
-      if (this.extractDrawCardColor !== this.colorOfCardOutPut) {
-        this.nextTurn();
-      }
+      this.nextTurn();
     } else if (this.isPlayer2) {
       this.drawCard(this.player1);
     }
@@ -99,28 +95,29 @@ export class PlayerComponent implements OnInit, OnChanges {
       this.removeCard(this.player2, card);
       this.clickedCard = card;
       this.colorOfCardOutPut = this.extractCardColor(card);
-      this.colorOfCardOutPut = this.extractCardColor(card);
-      console.log(this.extractDrawCardColor)
-      console.log(this.colorOfCardOutPut)
-      if (this.extractDrawCardColor !== this.colorOfCardOutPut) {
+      if (!this.checkPlayerHasCardColor(this.player2, card)){
         this.nextTurn();
       }
+      console.log(this.colorOfCardOutPut);
     } else if (!this.isPlayer2) {
       this.drawCard(this.player2);
     }
   }
 
-  drawCard(player: string) {
-    if (this.deck.getDeck().length > 0) {
-      var card = this.deck.getDeck().shift();
-      if (card) {
-        this.players[player].push(card);
-        this.extractDrawCardColor = this.extractCardColor(card);
-        this.cdr.detectChanges();
+  checkPlayerHasCardColor(player: string, card: string): boolean {
+    if (this.colorOfCardOutPut) {
+      const playerCards = this.players[player];
+      const extractCardColor = this.extractCardColor(card);
+      for ( let i = 0; i < playerCards.length; i++ ) {
+        const extractPlayerCardColor = this.extractCardColor(playerCards[i]);
+        if (extractPlayerCardColor === extractCardColor) {
+          console.log("extractPlayerCardColor", extractPlayerCardColor);
+          console.log("extractCardColor", extractCardColor);
+          return true;
+        }
       }
-
     }
-    this.nextTurn();
+    return false;
   }
 
   checkPlayerCardColor(player: string): boolean {
@@ -139,6 +136,20 @@ export class PlayerComponent implements OnInit, OnChanges {
     this.isPlayer2 = !this.isPlayer2;
   }
 
+
+  drawCard(player: string) {
+    if (this.deck.getDeck().length > 0) {
+      var card = this.deck.getDeck().shift();
+      if (card) {
+        this.players[player].push(card);
+        this.extractDrawCardColor = this.extractCardColor(card);
+        this.cdr.detectChanges();
+      }
+
+    }
+    this.nextTurn();
+  }
+
   private removeCard(player: string, card: string) {
     if (this.checkPlayerCardColor(player)) {
       const index = this.players[player].indexOf(card);
@@ -152,11 +163,8 @@ export class PlayerComponent implements OnInit, OnChanges {
       this.drawCard(player);
     }
   }
-
   private extractCardColor(card: string): string {
-    if (!card) {
-      return "";
-    }
+    if (!card) return "";
 
     for (const color of this.colors) {
       if (card.includes(color)) {
