@@ -82,9 +82,15 @@ export class PlayerComponent implements OnInit, OnChanges {
 
   playCardIfValid(card: string, player: string) {
     console.log(this.extractNumFromCard(card));
+    console.log(this.players)
 
     const isCurrentPlayer = (player === this.player1 && this.isPlayer2) || (player === this.player2 && !this.isPlayer2);
     const cardColor = this.extractCardColor(card);
+    const extractNumFromCard = this.extractNumFromCard(card);
+    const extractNumFromCardOutPut = this.extractNumFromCard(this.colorOfCardOutPut);
+
+    console.log(extractNumFromCardOutPut + " extractNumFromCardOutPut");
+    console.log(extractNumFromCard + " extractNumFromCard");
 
     if (!isCurrentPlayer) {
       console.log("Nicht deinen Zug!")
@@ -96,7 +102,7 @@ export class PlayerComponent implements OnInit, OnChanges {
       return;
     }
 
-    if (cardColor === this.colorOfCardOutPut) {
+    if (cardColor === this.colorOfCardOutPut || extractNumFromCard === extractNumFromCardOutPut) {
       this.removeCardFromPlayer(player, card);
       this.clickedCard = card;
       this.colorOfCardOutPut = cardColor;
