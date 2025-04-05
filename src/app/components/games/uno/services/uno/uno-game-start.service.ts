@@ -4,16 +4,15 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class GameService {
-  private isGameStarted = new BehaviorSubject<boolean>(false);
+export class UnoGameStart {
+  private isStarted = new BehaviorSubject<boolean>(false);
 
   setValue(value: boolean) {
-    this.isGameStarted.next(value);
+    this.isStarted.next(value);
   }
 
   getValue() {
-    return this.isGameStarted.asObservable();
+    return this.isStarted.asObservable();
   }
-
 
 }

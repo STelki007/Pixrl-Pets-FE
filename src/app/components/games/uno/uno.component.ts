@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {MainViewComponent} from '@components/games/uno/main-view/main-view.component';
 
 @Component({
@@ -10,5 +10,6 @@ import {MainViewComponent} from '@components/games/uno/main-view/main-view.compo
   styleUrl: './uno.component.css'
 })
 export class UnoComponent {
+  @Input() key: any;
 
 }

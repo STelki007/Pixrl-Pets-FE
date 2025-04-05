@@ -3,6 +3,7 @@ import {NgForOf, NgIf} from '@angular/common';
 import {UnoComponent} from '@components/games/uno/uno.component';
 import {CheckUno} from '@components/games/uno/services/uno/ShopUnoInMainView';
 import {TicTacToeComponent} from '@components/games/tic-tac-toe/tic-tac-toe.component';
+import {UnoGameStart} from '@components/games/uno/services/uno/uno-game-start.service';
 
 @Component({
   selector: 'app-game-component',
@@ -19,7 +20,7 @@ export class GameComponent implements OnInit {
   protected unoGameClick = false;
   selectedGame: 'uno' | 'tic-tac-toe' | null = null;
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef, private gameService: UnoGameStart) {}
 
   ngOnInit(): void {
     this.createAudio();
@@ -46,5 +47,7 @@ export class GameComponent implements OnInit {
 
   backToMenu() {
     this.selectedGame = null;
+    this.gameService.setValue(false)
+
   }
 }

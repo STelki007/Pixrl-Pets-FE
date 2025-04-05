@@ -64,15 +64,24 @@
 }
 
 .scrollable-grid::-webkit-scrollbar-track {
-  background: #2b2b2b; /* Dezentes Dunkelgrau */
+  background: #2b2b2b;
   border-radius: 10px;
 }
 
 .scrollable-grid::-webkit-scrollbar-thumb {
-  background: #555; /* Unauffälliges Grau */
+  background: #555;
   border-radius: 10px;
 }
 
 .scrollable-grid::-webkit-scrollbar-thumb:hover {
   background: #666;
+}
+.back-btn {
+  margin: 1rem 0;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  position: absolute;
+  top: 10%;
+  right: 1%;
 }
