@@ -84,4 +84,11 @@
   position: absolute;
   top: 10%;
   right: 1%;
+  transition: 0.2s ease;
+}
+.back-btn:hover {
+  transform: scale(1.08);
+}
+.back-btn:active {
+  transform: scale(1);
 }
