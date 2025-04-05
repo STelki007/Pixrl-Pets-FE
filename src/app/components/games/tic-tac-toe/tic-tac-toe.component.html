@@ -1,1 +1,50 @@
-<p>tic-tac-toe works!</p>
+<div style="width: 100vw; height: 100vh; background: #333" class="background">
+  <div class="container d-flex justify-content-center text-center">
+
+    <div class="me-5">
+      <h1 class="mb-4 text-white">Tic-Tac-Toe</h1>
+      <div class="board d-grid">
+        <button *ngFor="let cell of board; let i = index" class="cell btn btn-light" (click)="onCellClick(i)">
+          {{ cell }}
+        </button>
+      </div>
+      <div class="w-100 d-flex justify-content-center mt-4">
+        <p class="text-success ">{{ winnerMassage }}</p>
+      </div>
+      <button class="btn bg-light mt-3" (click)="onResetTheGameClick()">
+        <i class="bi bi-arrow-clockwise text-primary" style="font-size: 25px"></i>
+      </button>
+    </div>
+
+    <div class="d-flex flex-column align-items-start text-white ms-5">
+      <div class="mb-4 d-flex">
+        <div class="d-flex flex-column me-4">
+          <i class="bi bi-person-fill text-white mb-2" style="font-size: 50px"></i>
+          <button class="btn bg-dark-subtle" (click)="playWithPlayer('player')">vs Spieler</button>
+        </div>
+        <div class="d-flex flex-column">
+          <i class="bi bi-pc-display text-white mb-2" style="font-size: 50px"></i>
+          <div>
+            <button class="btn bg-light mx-3" (click)="botEasyModus('easy')">easy</button>
+            <button class="btn bg-danger mx-3" (click)="botHardModus('hard')">hard</button>
+          </div>
+        </div>
+      </div>
+
+      <p class="text-white mx-3">{{ turn }} spielt</p>
+      <p class="text-primary mx-3">Modus: {{ gameModus }}</p>
+
+      <div class="score-div mt-3 container d-flex flex-column justify-content-center align-items-center">
+        <div class="d-flex justify-content-center">
+          <p class="mx-4 text-warning">X</p>
+          <p class="mx-4 text-danger">O</p>
+        </div>
+        <p class="score ">{{scoreX}} : {{scoreO}}</p>
+        <button class="btn bg-light mt-3" (click)="resetScore()">
+          <i class="bi bi-arrow-clockwise text-primary" style="font-size: 25px"></i>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

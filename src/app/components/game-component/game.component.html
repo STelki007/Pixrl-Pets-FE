@@ -1,20 +1,28 @@
 <div class="anima-view">
-  <div class="container" *ngIf="!unoGameClick; else showUnoGame">
+  <div class="container" *ngIf="!selectedGame">
     <div class="scrollable-grid">
-      <div class="grid-item" (click)="onAnimalCardClick()">
-        <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/470220/capsule_616x353.jpg?t=1728664374" alt="UNO"  class="pixel-image"/>
+      <div class="grid-item" (click)="onUnoClick()">
+        <img
+          src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/470220/capsule_616x353.jpg?t=1728664374"
+          alt="UNO"
+          class="pixel-image"
+        />
       </div>
-      <div class="grid-item">
-        <img src="https://w0.peakpx.com/wallpaper/671/816/HD-wallpaper-tic-tac-toe-game-green-background-ultra-games-other-games-green-game-design-background-tictactoe-chalkboard-chalk-diagonal-row-winner-xsandos-noughtsandcrosses.jpg" alt="tic tac toe"  class="pixel-image"/>
+      <div class="grid-item" (click)="onTicTacToeClick()">
+        <img
+          src="https://w0.peakpx.com/wallpaper/671/816/HD-wallpaper-tic-tac-toe-game-green-background-ultra-games-other-games-green-game-design-background-tictactoe-chalkboard-chalk-diagonal-row-winner-xsandos-noughtsandcrosses.jpg"
+          alt="Tic Tac Toe"
+          class="pixel-image"
+        />
       </div>
     </div>
   </div>
-  <ng-template #showUnoGame>
-    <div class="container">
-      <div>
-        <app-uno></app-uno>
-      </div>
-    </div>
-  </ng-template>
-</div>
 
+  <div class="container" *ngIf="selectedGame === 'uno'">
+    <app-uno></app-uno>
+  </div>
+
+  <div class="container" *ngIf="selectedGame === 'tic-tac-toe'">
+    <app-tic-tac-toe></app-tic-tac-toe>
+  </div>
+</div>

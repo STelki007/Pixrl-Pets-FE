@@ -2,12 +2,14 @@ import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {NgForOf, NgIf} from '@angular/common';
 import {UnoComponent} from '@components/games/uno/uno.component';
 import {CheckUno} from '@components/games/uno/services/uno/ShopUnoInMainView';
+import {TicTacToeComponent} from '@components/games/tic-tac-toe/tic-tac-toe.component';
 
 @Component({
   selector: 'app-game-component',
   imports: [
     NgIf,
-    UnoComponent
+    UnoComponent,
+    TicTacToeComponent
   ],
   templateUrl: './game.component.html',
   styleUrl: './game.component.css'
@@ -15,13 +17,12 @@ import {CheckUno} from '@components/games/uno/services/uno/ShopUnoInMainView';
 export class GameComponent implements OnInit {
   private gameClickAudio = HTMLAudioElement;
   protected unoGameClick = false;
-  // protected items = Array(6).fill(0);
+  selectedGame: 'uno' | 'tic-tac-toe' | null = null;
 
   constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.createAudio();
-
   }
 
   createAudio() {
@@ -29,13 +30,21 @@ export class GameComponent implements OnInit {
     this.gameClickAudio.volume = 1;
   }
 
-  onAnimalCardClick() {
+  onUnoClick() {
     this.gameClickAudio.currentTime = 0;
     this.gameClickAudio.play().then(() => {
       console.log(this.unoGameClick);
-      this.unoGameClick = !this.unoGameClick;
+      this.selectedGame = 'uno';
       this.cdr.detectChanges();
       console.log(this.unoGameClick);
     });
+  }
+
+  onTicTacToeClick() {
+    this.selectedGame = 'tic-tac-toe';
+  }
+
+  backToMenu() {
+    this.selectedGame = null;
   }
 }
