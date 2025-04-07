@@ -81,34 +81,42 @@ export class PlayerComponent implements OnInit, OnChanges {
   }
 
   playCardIfValid(card: string, player: string) {
-    console.log(this.extractNumFromCard(card));
-    console.log(this.players)
-
+    const getPlayer = this.players[player];
     const isCurrentPlayer = (player === this.player1 && this.isPlayer2) || (player === this.player2 && !this.isPlayer2);
     const cardColor = this.extractCardColor(card);
-    const extractNumFromCard = this.extractNumFromCard(card);
-    const extractNumFromCardOutPut = this.extractNumFromCard(this.colorOfCardOutPut);
+    const cardNumber = this.extractNumFromCard(card);
+    const hasPlayerSameNumCard = this.hasPlayerSameCardNumber(getPlayer, this.getFirstCard);
 
-    console.log(extractNumFromCardOutPut + " extractNumFromCardOutPut");
-    console.log(extractNumFromCard + " extractNumFromCard");
+    console.log(hasPlayerSameNumCard + " hasPlayerSameNumCard");
 
     if (!isCurrentPlayer) {
-      console.log("Nicht deinen Zug!")
+      console.log("Nicht deinen Zug!");
       return;
     }
 
-    if (!this.playerCanPlayColor(player)) {
+    if (!this.playerCanPlayAnyCard(player)) {
       this.drawCardForPlayer(player);
       return;
     }
 
-    if (cardColor === this.colorOfCardOutPut || extractNumFromCard === extractNumFromCardOutPut) {
+    // Nur dann ausspielen, wenn:
+    // - Die Farben übereinstimmen
+    // - Oder: Beide Karten haben eine Zahl UND Spieler hat passende Zahl
+    const canPlayByNumber =
+      cardNumber !== null &&
+      this.extractNumFromCard(this.getFirstCard) !== null &&
+      cardNumber === this.extractNumFromCard(this.getFirstCard);
+
+    if (cardColor === this.colorOfCardOutPut || canPlayByNumber) {
       this.removeCardFromPlayer(player, card);
       this.clickedCard = card;
+      this.getFirstCard = card;
       this.colorOfCardOutPut = cardColor;
       this.switchToNextPlayer();
+      console.log("Letzte gespielte Karte:", this.getFirstCard);
     }
   }
+
 
   drawCardForPlayer(player: string) {
     if (this.deck.getDeck().length === 0) {
@@ -146,6 +154,49 @@ export class PlayerComponent implements OnInit, OnChanges {
   switchToNextPlayer() {
     this.isPlayer2 = !this.isPlayer2;
 
+  }
+// TODO
+  hasPlayerSameCardNumber(player: string[], card: string): boolean {
+    const playerNumbers = this.extractArrNumFromPlayer(player);
+    const cardNumber = this.extractNumFromCard(card);
+
+    console.log("playerNumbers", playerNumbers);
+    console.log("cardNumber", cardNumber);
+
+    if (!playerNumbers || cardNumber === null) return false;
+
+    return playerNumbers.includes(cardNumber);
+  }
+
+  private playerCanPlayAnyCard(player: string): boolean {
+    const cards = this.players[player];
+    const topCardNumber = this.extractNumFromCard(this.getFirstCard);
+    const topCardColor = this.colorOfCardOutPut;
+
+    console.log("Aktuelle Karte auf dem Tisch:", this.getFirstCard);
+    console.log("Top-Kartenfarbe:", topCardColor);
+    console.log("Top-Kartennummer:", topCardNumber);
+
+    return cards.some(card => {
+      const cardColor = this.extractCardColor(card);
+      const cardNumber = this.extractNumFromCard(card);
+
+      console.log("Spielerkarte:", card, " | Farbe:", cardColor, " | Nummer:", cardNumber);
+
+      const colorMatches = cardColor === topCardColor;
+      const numberMatches = cardNumber === topCardNumber;
+
+      return colorMatches || numberMatches;
+    });
+  }
+
+  private extractArrNumFromPlayer(playerCard: string[]): (number | null)[] | null {
+    if (!playerCard) return null;
+
+    return playerCard.map(card => {
+      const match = card.match(/(\d+)\.svg$/);
+      return match ? parseInt(match[1], 10) : null;
+    });
   }
 
   private extractNumFromCard(card: string): number | null {
