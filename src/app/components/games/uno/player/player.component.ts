@@ -81,16 +81,15 @@ export class PlayerComponent implements OnInit, OnChanges {
   }
 
   playCardIfValid(card: string, player: string) {
-    console.log(this.extractNumFromCard(card));
-    console.log(this.players)
 
+    const getPlayer = this.players[player];
     const isCurrentPlayer = (player === this.player1 && this.isPlayer2) || (player === this.player2 && !this.isPlayer2);
     const cardColor = this.extractCardColor(card);
-    const extractNumFromCard = this.extractNumFromCard(card);
-    const extractNumFromCardOutPut = this.extractNumFromCard(this.colorOfCardOutPut);
 
-    console.log(extractNumFromCardOutPut + " extractNumFromCardOutPut");
-    console.log(extractNumFromCard + " extractNumFromCard");
+    // kommt Später
+    const hasPlayerSameNumCard = this.hasPlayerSameCardNumber(getPlayer, card);
+
+    console.log(hasPlayerSameNumCard + " hasPlayerSameNumCard");
 
     if (!isCurrentPlayer) {
       console.log("Nicht deinen Zug!")
@@ -102,7 +101,7 @@ export class PlayerComponent implements OnInit, OnChanges {
       return;
     }
 
-    if (cardColor === this.colorOfCardOutPut || extractNumFromCard === extractNumFromCardOutPut) {
+    if (cardColor === this.colorOfCardOutPut ) {
       this.removeCardFromPlayer(player, card);
       this.clickedCard = card;
       this.colorOfCardOutPut = cardColor;
@@ -112,7 +111,7 @@ export class PlayerComponent implements OnInit, OnChanges {
 
   drawCardForPlayer(player: string) {
     if (this.deck.getDeck().length === 0) {
-      console.warn("Das Deck ist leer! Karte kann nicht gezogen werden.");
+      alert("Das Deck ist leer! Karte kann nicht gezogen werden.");
       return;
     }
 
@@ -148,11 +147,40 @@ export class PlayerComponent implements OnInit, OnChanges {
 
   }
 
+  private extractArrNumFromPlayer(playerCard: string[]): (number | null)[] | null {
+    if (!playerCard) return null;
+
+    return playerCard.map(card => {
+      const match = card.match(/(\d+)\.svg$/);
+      return match ? parseInt(match[1], 10) : null;
+    });
+  }
+
   private extractNumFromCard(card: string): number | null {
     if (!card) return null;
 
-    const match = card.match(/(\d+)\.svg$/);
-    return match ? parseInt(match[1], 10) : null;
+      const match = card.match(/(\d+)\.svg$/);
+      return match ? parseInt(match[1], 10) : null;
+  }
+
+  hasPlayerSameCardNumber(player: string[], card: string): boolean {
+    const playerNumbers = this.extractArrNumFromPlayer(player);
+    const cardNumber = this.extractNumFromCard(card);
+
+    console.log(playerNumbers + " playerNumbers")
+    console.log(cardNumber + " cardNumber");
+
+    if (!playerNumbers || cardNumber === null) return false;
+
+
+    return playerNumbers.includes(cardNumber);
+  }
+
+  extractCardType(card: string): string | null {
+    if (!card) return null;
+
+    const types = ['arrow', 'Stop', '2cards'];
+    return types.find(type => card.includes(type)) || null;
   }
 
   completeRound() {
