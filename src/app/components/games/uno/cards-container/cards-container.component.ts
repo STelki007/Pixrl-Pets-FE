@@ -53,6 +53,6 @@ export class CardsContainerComponent implements OnInit, OnChanges {
   }
 
   onBackCardClick() {
-    console.log("HELLO")
+
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {ChangeDetectorRef, Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
@@ -65,4 +65,5 @@ export class Deck {
   getDeck(): string[] {
     return this.deck;
   }
+
 }
