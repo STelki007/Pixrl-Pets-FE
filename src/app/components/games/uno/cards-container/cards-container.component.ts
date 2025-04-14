@@ -51,4 +51,8 @@ export class CardsContainerComponent implements OnInit, OnChanges {
     this.color = this.colors.find(color => this.getCardOutPut?.includes(color)) || "";
     this.color = colorMapping[this.color] || this.color;
   }
+
+  onBackCardClick() {
+    console.log("HELLO")
+  }
 }

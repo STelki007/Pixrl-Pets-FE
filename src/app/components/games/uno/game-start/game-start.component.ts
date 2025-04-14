@@ -25,12 +25,9 @@ export class GameStartComponent {
 
   @Output() playersUpdated = new EventEmitter<{ [key: string]: string[] }>();
   @Output() firstCardOpeningOutput = new EventEmitter<string>();
-  protected discardPile: string[] = [];
-
 
   constructor(private gameService: UnoGameStart, private deck: Deck) {
   }
-
 
   firstCardForOpening(){
     if (this.deck.getDeck().length === 0) {
@@ -38,7 +35,6 @@ export class GameStartComponent {
       return;
     }
     const firstCard = this.deck.getDeck().shift()!;
-    this.discardPile.push(firstCard);
     this.firstCardOpeningOutput.emit(firstCard);
   }
 
@@ -64,7 +60,6 @@ export class GameStartComponent {
   public startGame(): void {
     this.shuffleDeck();
     this.firstCardForOpening();
-    console.log(this.firstCardOpeningOutput);
     this.players = {};
     for (let i = 1; i <= this.numberOfPlayers; i++) {
       this.players[`player${i}`] = [];
