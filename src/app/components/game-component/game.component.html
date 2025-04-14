@@ -19,10 +19,13 @@
   </div>
 
   <div class="container" *ngIf="selectedGame === 'uno'">
+    <button class="back-btn" (click)="backToMenu()">Spiel beenden</button>
     <app-uno></app-uno>
   </div>
 
   <div class="container" *ngIf="selectedGame === 'tic-tac-toe'">
+    <button class="back-btn" (click)="backToMenu()">Spiel beenden</button>
     <app-tic-tac-toe></app-tic-tac-toe>
   </div>
+
 </div>

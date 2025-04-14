@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { NgIf } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { SideBarButtonsService } from '@services/SideBarButtonsService';
@@ -12,9 +12,8 @@ import { SettingComponentComponent } from '@components/setting-component/setting
 import {InputTextModule} from 'primeng/inputtext';
 import {AnimalsViewComponent} from '@components/animals-view-component/animals-view.component';
 import {ArrowService} from '@services/animal/ArrowService';
-import Keycloak from "keycloak-js";
 import {GameComponent} from '@components/game-component/game.component';
-import {UnoComponent} from '@components/games/uno/uno.component';
+import {UnoGameStart} from '@components/games/uno/services/uno/UnoGameStart';
 @Component({
   selector: 'app-root',
   imports: [
@@ -39,16 +38,28 @@ export class AppComponent implements OnInit, OnDestroy {
   private subscription!: Subscription;
   private audio!: HTMLAudioElement;
   protected arrowServiceValue: boolean = false;
+  private isUnoStarted = false;
 
   constructor(
     private sideBarButtonsService: SideBarButtonsService,
-    private arrowService: ArrowService) {}
+    private arrowService: ArrowService,
+    private unoGameStart: UnoGameStart) {}
 
   ngOnInit() {
+    this.startAudio();
+    this.getSidebarValue();
+    this.getGameServiceValue();
+  }
+
+  startAudio(){
     this.audio = new Audio('select-sound.mp3');
     this.audio.load();
+  }
 
-    this.getSidebarValue();
+  getGameServiceValue(): void {
+    this.unoGameStart.getValue().subscribe((value) => {
+      this.isUnoStarted = value;
+    })
   }
 
   getSidebarValue() {
@@ -63,10 +74,14 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   selectComponent(value: string) {
-    this.audio.currentTime = 0;
-    this.audio.play().then(() => {
-      this.sideBarButtonsService.setValue(value);
-    })
+    if (!this.isUnoStarted){
+      this.audio.currentTime = 0;
+      this.audio.play().then(() => {
+        this.sideBarButtonsService.setValue(value);
+      })
+    }else {
+      alert("Spiel läuft gerade! Bitte über 'Spiel beenden' klicken.")
+    }
   }
 
   // logoutUser() {
@@ -78,13 +93,17 @@ export class AppComponent implements OnInit, OnDestroy {
   // }
 
   onAnimalsBtnClick() {
-    this.arrowService.getValue().subscribe(value => {
-      this.arrowServiceValue = value;
-    })
-    if (this.arrowServiceValue) {
-      this.sideBarButtonsService.setValue("animal")
-    }else{
-      this.sideBarButtonsService.setValue("animals")
+    if (!this.isUnoStarted) {
+      this.arrowService.getValue().subscribe(value => {
+        this.arrowServiceValue = value;
+      })
+      if (this.arrowServiceValue) {
+        this.sideBarButtonsService.setValue("animal")
+      }else{
+        this.sideBarButtonsService.setValue("animals")
+      }
+    }else {
+      alert("Spiel läuft gerade! Bitte über 'Spiel beenden' klicken.")
     }
   }
 }

@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output, output} from '@angular/core';
 import {NgIf} from '@angular/common';
-import {GameService} from '../services/uno/GameService';
 import {FormsModule} from '@angular/forms';
 import {Deck} from '../services/uno/Deck';
+import {UnoGameStart} from '@components/games/uno/services/uno/UnoGameStart';
 
 @Component({
   selector: 'app-game-start',
@@ -28,7 +28,7 @@ export class GameStartComponent {
   protected discardPile: string[] = [];
 
 
-  constructor(private gameService: GameService, private deck: Deck) {
+  constructor(private gameService: UnoGameStart, private deck: Deck) {
   }
 
 

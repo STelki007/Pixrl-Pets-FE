@@ -3,7 +3,7 @@ import {CardsContainerComponent} from '../cards-container/cards-container.compon
 import {PlayerComponent} from '../player/player.component';
 import {GameStartComponent} from '../game-start/game-start.component';
 import {NgIf} from '@angular/common';
-import {GameService} from '../services/uno/GameService';
+import {UnoGameStart} from '@components/games/uno/services/uno/UnoGameStart';
 
 @Component({
   selector: 'app-main-view',
@@ -23,7 +23,7 @@ export class MainViewComponent implements OnInit {
   protected getCardOutPut: string = "";
   protected turnEnd: boolean = false;
 
-  constructor(private gameService: GameService) {}
+  constructor(private gameService: UnoGameStart) {}
 
   ngOnInit(): void {
     this.gameService.getValue().subscribe(value => {
