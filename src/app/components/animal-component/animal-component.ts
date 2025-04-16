@@ -5,9 +5,6 @@ import {SideBarButtonsService} from '@services/SideBarButtonsService';
 
 @Component({
   selector: 'app-animal-component',
-  imports: [
-    CoinComponent
-  ],
   templateUrl: './animal-component.html',
   styleUrl: './animal-component.css'
 })

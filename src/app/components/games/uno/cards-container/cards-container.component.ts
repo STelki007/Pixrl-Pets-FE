@@ -10,10 +10,13 @@ import { NgIf, NgOptimizedImage, NgStyle } from '@angular/common';
 export class CardsContainerComponent implements OnInit, OnChanges {
   @Input() card: string | undefined;
   @Input() getCardOutPut: string | undefined;
-  @Output() turnEnd = new EventEmitter<boolean>();
+  @Output() turnEnd: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() drawCardEvent = new EventEmitter<void>();
+
   private isFirstCardSet = false;
   private colors = ["red", "green", "blue", "yellow"];
   protected color = "";
+
 
   constructor() {}
 
@@ -53,6 +56,6 @@ export class CardsContainerComponent implements OnInit, OnChanges {
   }
 
   onBackCardClick() {
-
+    this.drawCardEvent.emit();
   }
 }

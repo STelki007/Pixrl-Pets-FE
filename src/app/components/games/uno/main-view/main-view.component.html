@@ -7,11 +7,14 @@
         [clickedCard]="getCardOutPut"
         [getFirstCard]="firstCardOpeningInput"
         [turnRound]="turnEnd"
+        [drawCard]="drawCard"
+        (drawCardReset)="resetDrawCard()"
       >
         <app-cards-container
           [card]="firstCardOpeningInput"
           [getCardOutPut]="getCardOutPut"
           (turnEnd)="handleTurnEnd($event)"
+          (drawCardEvent)="handleDrawRequest()"
         ></app-cards-container>
       </app-player>
 

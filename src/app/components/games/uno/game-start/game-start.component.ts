@@ -1,48 +1,43 @@
-import {Component, EventEmitter, Input, OnInit, Output, output} from '@angular/core';
-import {NgIf} from '@angular/common';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {Deck} from '../services/uno/Deck';
 import {UnoGameStart} from '@components/games/uno/services/uno/UnoGameStart';
 
 @Component({
   selector: 'app-game-start',
-  imports: [
-    FormsModule
-  ],
+  standalone: true,
+  imports: [FormsModule],
   templateUrl: './game-start.component.html',
   styleUrl: './game-start.component.css'
 })
 export class GameStartComponent {
+  @Output() playersUpdated = new EventEmitter<{ [key: string]: string[] }>();
+  @Output() firstCardOpeningOutput = new EventEmitter<string>();
 
-  protected numberOfPlayersBot :number = 2;
-  protected numberOfPlayers :number = 2;
-
-
+  protected numberOfPlayersBot: number = 2;
+  protected numberOfPlayers: number = 2;
   protected players: { [key: string]: string[] } = {
     player1: [],
     player2: [],
   };
 
-  @Output() playersUpdated = new EventEmitter<{ [key: string]: string[] }>();
-  @Output() firstCardOpeningOutput = new EventEmitter<string>();
+  protected discardPile: string[] = [];
 
-  constructor(private gameService: UnoGameStart, private deck: Deck) {
-  }
+  constructor(private gameService: UnoGameStart, private deck: Deck) {}
 
-  firstCardForOpening(){
-    if (this.deck.getDeck().length === 0) {
-      console.error("Deck is empty! Can not draw the first card.");
-      return;
-    }
+  private firstCardForOpening(): void {
+    if (this.deck.getDeck().length === 0) return console.error("Deck ist leer.");
+
     const firstCard = this.deck.getDeck().shift()!;
+    this.discardPile.push(firstCard);
     this.firstCardOpeningOutput.emit(firstCard);
   }
 
-// hier wird  Fisher-Yates-Shuffle Algorithmen angewendet.
   private shuffleDeck(): void {
-    for (let i = this.deck.getDeck().length - 1; i > 0; i--) {
+    const deckArray = this.deck.getDeck();
+    for (let i = deckArray.length - 1; i > 0; i--) {
       const random = Math.floor(Math.random() * (i + 1));
-      [this.deck.getDeck()[i], this.deck.getDeck()[random]] = [this.deck.getDeck()[random], this.deck.getDeck()[i]];
+      [deckArray[i], deckArray[random]] = [deckArray[random], deckArray[i]];
     }
   }
 
@@ -58,32 +53,39 @@ export class GameStartComponent {
   }
 
   public startGame(): void {
-    this.shuffleDeck();
-    this.firstCardForOpening();
+    this.deck.resetDeck();
+    this.discardPile = [];
     this.players = {};
+
     for (let i = 1; i <= this.numberOfPlayers; i++) {
       this.players[`player${i}`] = [];
     }
-    this.dealCards()
+
+    this.shuffleDeck();
+    this.firstCardForOpening();
+    this.dealCards();
+
     this.playersUpdated.emit(this.players);
   }
 
-  startGameBot() {
-    this.gameService.setValue(true)
+  startGameBot(): void {
+    this.gameService.setValue(true);
     this.startGame();
   }
 
-  bot(event: Event) {
+  bot(event: Event): void {
     const targetBot = event.target as HTMLButtonElement;
     this.numberOfPlayersBot = Number(targetBot.innerText);
   }
 
-  player(event: MouseEvent) {
+  player(event: MouseEvent): void {
     const targetPlayer = event.target as HTMLButtonElement;
     this.numberOfPlayers = Number(targetPlayer.innerText);
   }
 
-  startGamePlayer() {
-    this.gameService.setValue(true)
+  startGamePlayer(): void {
+    this.gameService.setValue(true);
   }
+
+
 }

@@ -22,6 +22,8 @@ export class MainViewComponent implements OnInit {
   protected firstCardOpeningInput: string = "";
   protected getCardOutPut: string = "";
   protected turnEnd: boolean = false;
+  protected drawCard: boolean = false;
+
 
   constructor(private gameService: UnoGameStart) {}
 
@@ -30,6 +32,7 @@ export class MainViewComponent implements OnInit {
       this.isGameStart = value;
     });
   }
+
 
   updatePlayers(players: { [key: string]: string[] }) {
     this.players = players;
@@ -45,6 +48,15 @@ export class MainViewComponent implements OnInit {
 
   handleTurnEnd (turnEnd: boolean) {
     this.turnEnd = turnEnd;
+  }
+
+  handleDrawRequest(): void {
+    this.drawCard = true;
+    console.log("main-view" + this.drawCard);
+  }
+
+  resetDrawCard(): void {
+    this.drawCard = false;
   }
 
 }

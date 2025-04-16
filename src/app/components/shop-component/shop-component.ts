@@ -11,7 +11,7 @@ import {Image} from 'primeng/image';
 @Component({
   selector: 'app-shop-component',
   standalone: true,
-  imports: [NgForOf, NgClass, NgIf, InputNumber, FormsModule, Toast, Image],
+  imports: [NgForOf, NgClass, NgIf, InputNumber, FormsModule, Toast],
   templateUrl: './shop-component.html',
   styleUrl: './shop-component.css',
   providers: [MessageService]

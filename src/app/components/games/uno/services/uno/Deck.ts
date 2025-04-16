@@ -1,10 +1,10 @@
-import {ChangeDetectorRef, Injectable} from '@angular/core';
+import {Injectable, OnInit} from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Deck {
-  protected deck: string[] = [
+  private initialDeck: string[] = [
     "figmaUnoCard0-9/blue-0.svg",
     "figmaUnoCard0-9/blue-1.svg",
     "figmaUnoCard0-9/blue-2.svg",
@@ -62,8 +62,14 @@ export class Deck {
     "figmaUnoCard0-9/yellow-arrow.svg"
   ];
 
+  protected deck: string[] = [...this.initialDeck];
+
   getDeck(): string[] {
     return this.deck;
+  }
+
+  resetDeck(): void {
+    this.deck = [...this.initialDeck];
   }
 
 }

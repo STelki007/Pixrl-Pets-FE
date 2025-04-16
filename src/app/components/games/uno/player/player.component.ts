@@ -10,11 +10,14 @@ import {GameService} from '@components/games/uno/services/uno/GameService';
   styleUrl: './player.component.css'
 })
 export class PlayerComponent implements OnInit, OnChanges {
-  @Input() players: { [key: string]: string[] } = {};
   @Output() cardOutPut = new EventEmitter<string>();
+  @Output() drawCardReset = new EventEmitter<void>();
+
+  @Input() players: { [key: string]: string[] } = {};
   @Input() clickedCard: string = "";
   @Input() getFirstCard: string = "";
-  @Input() turnRound = false;
+  @Input() turnRound: boolean = false;
+  @Input() drawCard: boolean = false;
 
   protected isPlayer2 = false;
   private colorOfCardOutPut: string = "";
@@ -28,10 +31,27 @@ export class PlayerComponent implements OnInit, OnChanges {
   ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.handleGetFirstCard(changes)
+    this.handleTurnRound(changes)
+    this.handleDrawCard(changes)
+  }
+
+  handleGetFirstCard(changes: SimpleChanges) {
     if (changes['getFirstCard'] && changes['getFirstCard'].currentValue !== changes['getFirstCard'].previousValue) {
       this.colorOfCardOutPut = this.extractCardColor(this.getFirstCard);
+      this.cdr.detectChanges();
+      console.log("hier hat sich was geändert" + this.drawCard);
     }
+  }
 
+  handleDrawCard(changes: SimpleChanges) {
+    if (changes['drawCard'] && changes['drawCard'].currentValue === true) {
+      this.completeRound();
+      this.drawCardReset.emit();
+    }
+  }
+
+  handleTurnRound(changes: SimpleChanges): void {
     if (changes["turnRound"]?.currentValue !== changes["turnRound"]?.previousValue) {
       this.gameService.drawCardForPlayer(this.players, this.isPlayer2 ? this.player2 : this.player1);
       this.switchToNextPlayer();
@@ -49,12 +69,17 @@ export class PlayerComponent implements OnInit, OnChanges {
       return;
     }
 
+    console.log(this.colorOfCardOutPut)
+
     this.removeCardFromPlayer(player, card);
     this.clickedCard = card;
     this.getFirstCard = card;
     this.colorOfCardOutPut = this.extractCardColor(card);
 
     this.handleSpecialCard(card);
+    if (this.checkWinner(player)) {
+
+    }
     this.switchToNextPlayer();
   }
 
@@ -78,8 +103,15 @@ export class PlayerComponent implements OnInit, OnChanges {
         break;
 
       case "2cards":
-        this.gameService.drawCardForPlayer(this.players, nextPlayer);
-        this.gameService.drawCardForPlayer(this.players, nextPlayer);
+        setTimeout(() => {
+          this.gameService.drawCardForPlayer(this.players, nextPlayer);
+
+        }, 300)
+
+        setTimeout(() => {
+          this.gameService.drawCardForPlayer(this.players, nextPlayer);
+
+        }, 500)
         break;
 
       case "arrow":
@@ -137,41 +169,55 @@ export class PlayerComponent implements OnInit, OnChanges {
     return index;
   }
 
-  playerCanPlayColor(player: string): boolean {
-    return this.players[player]?.some(card => this.extractCardColor(card) === this.colorOfCardOutPut);
-  }
 
   private playerCanPlayAnyCard(player: string): boolean {
     const cards = this.players[player];
     return cards.some(card => this.canPlayCard(card, this.getFirstCard));
   }
 
-  hasPlayerSameCardNumber(player: string[], card: string): boolean {
-    const playerNumbers = this.extractArrNumFromPlayer(player);
-    const cardNumber = this.extractNumFromCard(card);
-    if (!playerNumbers || cardNumber === null) return false;
-    return playerNumbers.includes(cardNumber);
-  }
-
-  private extractArrNumFromPlayer(playerCard: string[]): (number | null)[] | null {
-    if (!playerCard) return null;
-    return playerCard.map(card => this.extractNumFromCard(card));
-  }
-
   completeRound(): void {
     const currentPlayer = this.isPlayer2 ? this.player2 : this.player1;
-    const drawnCard = this.deck.getDeck().shift();
 
-    if (drawnCard) {
-      this.players[currentPlayer].push(drawnCard);
-      console.log(`${currentPlayer} zieht eine Karte: ${drawnCard}`);
+    if (!this.playerCanPlayAnyCard(currentPlayer)){
+      const drawnCard = this.deck.getDeck().shift();
 
-      if (this.extractCardColor(drawnCard) === this.colorOfCardOutPut) {
-        this.removeCardFromPlayer(currentPlayer, drawnCard);
-        this.getFirstCard = drawnCard;
+      if (drawnCard) {
+        this.players[currentPlayer].push(drawnCard);
+        console.log(`${currentPlayer} zieht eine Karte: ${drawnCard}`);
+
+        if (this.extractCardColor(drawnCard) === this.colorOfCardOutPut) {
+          this.getFirstCard = drawnCard;
+          // TODO
+          if (this.playerCanPlayAnyCard(currentPlayer)){
+              return;
+          }
+        }
       }
+      this.drawCard = false;
+      this.switchToNextPlayer();
+    }else{
+      this.drawCard = false;
+      alert("Spieler kann doch spielen")
+    }
+  }
+
+  checkPlayerHasCards(player: string): boolean {
+    if (!(player in this.players)) {
+      console.warn(`Spieler "${player}" existiert nicht.`);
+      return false;
     }
 
-    this.switchToNextPlayer();
+    const cardCount = this.players[player].length;
+    console.log(`${player} hat ${cardCount} Karten`);
+    return cardCount > 0;
   }
+
+  checkWinner(player: string): boolean {
+    if (!this.checkPlayerHasCards(player)) {
+      alert(`Spieler ${player} hat gewonnen!`);
+      return true;
+    }
+    return false;
+  }
+
 }
