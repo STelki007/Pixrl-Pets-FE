@@ -14,6 +14,7 @@ import {AnimalsViewComponent} from '@components/animals-view-component/animals-v
 import {ArrowService} from '@services/animal/ArrowService';
 import {GameComponent} from '@components/game-component/game.component';
 import {UnoGameStart} from '@components/games/uno/services/uno/UnoGameStart';
+import {KiChatComponent} from '@/app/chatGPT/ki-chat/ki-chat.component';
 @Component({
   selector: 'app-root',
   imports: [
@@ -27,7 +28,9 @@ import {UnoGameStart} from '@components/games/uno/services/uno/UnoGameStart';
     SettingComponentComponent,
     InputTextModule,
     AnimalsViewComponent,
-    GameComponent],
+    GameComponent,
+    KiChatComponent
+  ],
   templateUrl: './app.component.html',
   standalone: true,
   styleUrl: './app.component.css'
@@ -94,13 +97,18 @@ export class AppComponent implements OnInit, OnDestroy {
 
   onAnimalsBtnClick() {
     if (!this.isUnoStarted) {
+      this.audio.currentTime = 0;
       this.arrowService.getValue().subscribe(value => {
         this.arrowServiceValue = value;
       })
       if (this.arrowServiceValue) {
-        this.sideBarButtonsService.setValue("animal")
+        this.audio.play().then(() => {
+          this.sideBarButtonsService.setValue("animal")
+        })
       }else{
-        this.sideBarButtonsService.setValue("animals")
+        this.audio.play().then(() => {
+          this.sideBarButtonsService.setValue("animals")
+        })
       }
     }else {
       alert("Spiel läuft gerade! Bitte über 'Spiel beenden' klicken.")
