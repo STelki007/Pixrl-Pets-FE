@@ -15,7 +15,7 @@
     </div>
     <div class="d-flex flex-col justify-center align-items-center flex-column color-cube-container">
       <span class="color-cube mb-4" [ngStyle]="{'background-color': color}"></span>
-      <button style="border: none; outline: none; background: none" >
+      <button (click)="onUnoLastCardClick()" style="border: none; outline: none; background: none">
         <span class="ono-button d-flex justify-center align-items-center"></span>
       </button>
     </div>

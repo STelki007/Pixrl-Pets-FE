@@ -12,6 +12,8 @@ export class CardsContainerComponent implements OnInit, OnChanges {
   @Input() getCardOutPut: string | undefined;
   @Output() turnEnd: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() drawCardEvent = new EventEmitter<void>();
+  @Output() unoLastCard = new EventEmitter<void>();
+
 
   private isFirstCardSet = false;
   private colors = ["red", "green", "blue", "yellow"];
@@ -57,5 +59,9 @@ export class CardsContainerComponent implements OnInit, OnChanges {
 
   onBackCardClick() {
     this.drawCardEvent.emit();
+  }
+
+  onUnoLastCardClick() {
+    this.unoLastCard.emit();
   }
 }

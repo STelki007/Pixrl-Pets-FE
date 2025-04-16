@@ -52,26 +52,26 @@ export class GameStartComponent {
     }
   }
 
-  public startGame(): void {
-    this.deck.resetDeck();
-    this.discardPile = [];
-    this.players = {};
+    public startGame(): void {
+      this.deck.resetDeck();
+      this.discardPile = [];
+      this.players = {};
 
-    for (let i = 1; i <= this.numberOfPlayers; i++) {
-      this.players[`player${i}`] = [];
+      for (let i = 1; i <= this.numberOfPlayers; i++) {
+        this.players[`player${i}`] = [];
+      }
+
+      this.shuffleDeck();
+      this.firstCardForOpening();
+      this.dealCards();
+
+      this.playersUpdated.emit(this.players);
     }
 
-    this.shuffleDeck();
-    this.firstCardForOpening();
-    this.dealCards();
-
-    this.playersUpdated.emit(this.players);
-  }
-
-  startGameBot(): void {
-    this.gameService.setValue(true);
-    this.startGame();
-  }
+    startGameBot(): void {
+      this.gameService.setValue(true);
+      this.startGame();
+    }
 
   bot(event: Event): void {
     const targetBot = event.target as HTMLButtonElement;

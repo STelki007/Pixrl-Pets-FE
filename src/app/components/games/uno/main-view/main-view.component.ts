@@ -23,6 +23,7 @@ export class MainViewComponent implements OnInit {
   protected getCardOutPut: string = "";
   protected turnEnd: boolean = false;
   protected drawCard: boolean = false;
+  protected unoLastCard: boolean = false;
 
 
   constructor(private gameService: UnoGameStart) {}
@@ -58,5 +59,14 @@ export class MainViewComponent implements OnInit {
   resetDrawCard(): void {
     this.drawCard = false;
   }
+
+  handleUnoLastCard(): void {
+    this.unoLastCard = true;
+  }
+
+  resetUnoLastCard(): void {
+    this.unoLastCard = false;
+  }
+
 
 }

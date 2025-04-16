@@ -12,12 +12,14 @@ import {GameService} from '@components/games/uno/services/uno/GameService';
 export class PlayerComponent implements OnInit, OnChanges {
   @Output() cardOutPut = new EventEmitter<string>();
   @Output() drawCardReset = new EventEmitter<void>();
+  @Output() unoLastCardReset = new EventEmitter<void>();
 
   @Input() players: { [key: string]: string[] } = {};
   @Input() clickedCard: string = "";
   @Input() getFirstCard: string = "";
   @Input() turnRound: boolean = false;
   @Input() drawCard: boolean = false;
+  @Input() unoLastCard: boolean = false;
 
   protected isPlayer2 = false;
   private colorOfCardOutPut: string = "";
@@ -34,6 +36,13 @@ export class PlayerComponent implements OnInit, OnChanges {
     this.handleGetFirstCard(changes)
     this.handleTurnRound(changes)
     this.handleDrawCard(changes)
+    this.handleUnoLastCard(changes)
+  }
+
+  handleUnoLastCard(changes: SimpleChanges): void {
+    if (changes['unoLastCard'] && changes['unoLastCard'].currentValue === true) {
+      this.unoLastCardReset.emit();
+    }
   }
 
   handleGetFirstCard(changes: SimpleChanges) {
@@ -193,10 +202,8 @@ export class PlayerComponent implements OnInit, OnChanges {
           }
         }
       }
-      this.drawCard = false;
       this.switchToNextPlayer();
     }else{
-      this.drawCard = false;
       alert("Spieler kann doch spielen")
     }
   }
@@ -213,11 +220,18 @@ export class PlayerComponent implements OnInit, OnChanges {
   }
 
   checkWinner(player: string): boolean {
-    if (!this.checkPlayerHasCards(player)) {
+    if (!this.checkPlayerHasCards(player) && this.checkPlayerPressedUno(player)) {
       alert(`Spieler ${player} hat gewonnen!`);
       return true;
+    } else if (!this.checkPlayerHasCards(player) && !this.checkPlayerPressedUno(player)) {
+      this.gameService.drawCardForPlayer(this.players, player);
+      this.gameService.drawCardForPlayer(this.players, player);
     }
     return false;
+  }
+
+  checkPlayerPressedUno (player: string): boolean {
+    return !this.checkPlayerHasCards(player) && this.unoLastCard;
   }
 
 }

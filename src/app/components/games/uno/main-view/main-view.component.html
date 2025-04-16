@@ -9,12 +9,15 @@
         [turnRound]="turnEnd"
         [drawCard]="drawCard"
         (drawCardReset)="resetDrawCard()"
+        [unoLastCard]="unoLastCard"
+        (unoLastCardReset)="resetUnoLastCard()"
       >
         <app-cards-container
           [card]="firstCardOpeningInput"
           [getCardOutPut]="getCardOutPut"
           (turnEnd)="handleTurnEnd($event)"
           (drawCardEvent)="handleDrawRequest()"
+          (unoLastCard)="handleUnoLastCard()"
         ></app-cards-container>
       </app-player>
 
