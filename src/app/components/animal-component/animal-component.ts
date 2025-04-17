@@ -20,13 +20,38 @@ import {ChatCompletionResponse} from '@components/animal-component/ChatCompletio
 export class AnimalComponent {
   private arrowServiceValue: boolean = false;
   userInput = "";
-  aiResponseList: string[] = [];
-  userTextMassages: string[] = [];
+  messagesList: { response: string; request: string }[] = [];
 
   constructor(private  arrowService: ArrowService,
               private sideBarButtonsService: SideBarButtonsService,
               private openai: OpenAIService
               ) {}
+
+  sendMassageToAI() {
+    if (!this.userInput.trim()) return;
+
+    const currentMessage = {
+      request: this.userInput,
+      response: "..."
+    };
+
+    this.messagesList.push(currentMessage);
+
+    const currentIndex = this.messagesList.length - 1;
+
+    this.openai.sendMessage(this.userInput).subscribe((res: ChatCompletionResponse) => {
+      const content = res.choices[0].message.content;
+      const usage = res.usage;
+
+      this.messagesList[currentIndex].response = content;
+
+      console.log('Prompt Tokens:', usage.prompt_tokens);
+      console.log('Completion Tokens:', usage.completion_tokens);
+      console.log('Total Tokens:', usage.total_tokens);
+    });
+
+    this.userInput = '';
+  }
 
   onArrowClick() {
     this.arrowService.setValue(false);
@@ -39,24 +64,4 @@ export class AnimalComponent {
       this.sideBarButtonsService.setValue("animals")
     }
   }
-
-  sendMassageToAI() {
-    this.userTextMassages.push(this.userInput);
-    if (!this.userInput.trim()) return;
-
-    this.openai.sendMessage(this.userInput).subscribe((res: ChatCompletionResponse) => {
-      const content = res.choices[0].message.content;
-      const usage = res.usage;
-
-      this.aiResponseList.push(content);
-
-      console.log('Prompt Tokens:', usage.prompt_tokens);
-      console.log('Completion Tokens:', usage.completion_tokens);
-      console.log('Total Tokens:', usage.total_tokens);
-      console.log(usage)
-    });
-
-    this.userInput = '';
-  }
-
 }

@@ -19,18 +19,18 @@
         </div>
         <div class="chat-box">
           <div class="m-3">
-            <div class="chat-container">
+            <div class="chat-container" *ngFor="let message of messagesList">
 
               <div class="chat-message user">
-                <div *ngFor="let userMessage of userTextMassages" class="message-content nes-balloon from-right">
-                  <p>{{userMessage}}</p>
+                <div class="message-content nes-balloon from-right">
+                  <p>{{message.request}}</p>
                 </div>
               </div>
 
               <div class="chat-message ai">
-                <img *ngIf="aiResponseList.length > 0" class="chat-avatar" src="https://img.freepik.com/premium-vector/brown-bear-head-8-bit-pixel-art-cute-animals-game-assets-vector-illustrations_614713-1693.jpg" />
-                <div *ngFor="let response of aiResponseList" class="message-content ai-style  nes-balloon from-left">
-                  <p>{{response}}</p>
+                <img *ngIf="messagesList.length > 0" class="chat-avatar" src="https://img.freepik.com/premium-vector/brown-bear-head-8-bit-pixel-art-cute-animals-game-assets-vector-illustrations_614713-1693.jpg" />
+                <div class="message-content ai-style  nes-balloon from-left">
+                  <p>{{ message.response || '...' }}</p>
                 </div>
               </div>
 
