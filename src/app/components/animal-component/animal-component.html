@@ -19,26 +19,30 @@
         </div>
         <div class="chat-box">
           <div class="m-3">
-            <img src="https://img.freepik.com/premium-vector/brown-bear-head-8-bit-pixel-art-cute-animals-game-assets-vector-illustrations_614713-1693.jpg">
+            <div class="chat-container">
 
+              <div class="chat-message user">
+                <div *ngFor="let userMessage of userTextMassages" class="message-content nes-balloon from-right">
+                  <p>{{userMessage}}</p>
+                </div>
+              </div>
 
+              <div class="chat-message ai">
+                <img *ngIf="aiResponseList.length > 0" class="chat-avatar" src="https://img.freepik.com/premium-vector/brown-bear-head-8-bit-pixel-art-cute-animals-game-assets-vector-illustrations_614713-1693.jpg" />
+                <div *ngFor="let response of aiResponseList" class="message-content ai-style  nes-balloon from-left">
+                  <p>{{response}}</p>
+                </div>
+              </div>
 
-            <div class="message left nes-balloon from-left" style="background: #5695B0">
-              <p>Hallo, ich heiße Eggbert Keinstein :D</p>
             </div>
+
           </div>
 
-          <div class="message right nes-balloon from-right">
-            <p>Hallo, wie heißt du?</p>
-          </div>
-          <div class="message right nes-balloon from-right">
-            <p>Hallo, wie heißt du?</p>
-          </div>
         </div>
 
         <div class="chat-input">
-          <input type="text" class="nes-input" placeholder="Nachricht eingeben...">
-          <button class="nes-btn is-primary">Senden</button>
+          <input (keyup.enter)="sendMassageToAI()" [(ngModel)]="userInput" type="text" class="nes-input"  placeholder="Nachricht eingeben..." />
+          <button class="nes-btn is-primary" (click)="sendMassageToAI()">Senden</button>
         </div>
       </div>
 
@@ -56,9 +60,6 @@
         <img class="w-100 h-100" src="https://cdn3.iconfinder.com/data/icons/ux-game-pixel-art/100/pixel-18-512.png" alt="Pfeil-Icon" />
       </button>
     </div>
-
-
   </div>
-
-
 </div>
+

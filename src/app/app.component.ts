@@ -14,7 +14,6 @@ import {AnimalsViewComponent} from '@components/animals-view-component/animals-v
 import {ArrowService} from '@services/animal/ArrowService';
 import {GameComponent} from '@components/game-component/game.component';
 import {UnoGameStart} from '@components/games/uno/services/uno/UnoGameStart';
-import {KiChatComponent} from '@/app/chatGPT/ki-chat/ki-chat.component';
 @Component({
   selector: 'app-root',
   imports: [
@@ -28,8 +27,7 @@ import {KiChatComponent} from '@/app/chatGPT/ki-chat/ki-chat.component';
     SettingComponentComponent,
     InputTextModule,
     AnimalsViewComponent,
-    GameComponent,
-    KiChatComponent
+    GameComponent
   ],
   templateUrl: './app.component.html',
   standalone: true,
