@@ -36,13 +36,6 @@ export class PlayerComponent implements OnInit, OnChanges {
     this.handleGetFirstCard(changes)
     this.handleTurnRound(changes)
     this.handleDrawCard(changes)
-    this.handleUnoLastCard(changes)
-  }
-
-  handleUnoLastCard(changes: SimpleChanges): void {
-    if (changes['unoLastCard'] && changes['unoLastCard'].currentValue === true) {
-      this.unoLastCardReset.emit();
-    }
   }
 
   handleGetFirstCard(changes: SimpleChanges) {
@@ -55,14 +48,14 @@ export class PlayerComponent implements OnInit, OnChanges {
 
   handleDrawCard(changes: SimpleChanges) {
     if (changes['drawCard'] && changes['drawCard'].currentValue === true) {
-      this.completeRound();
+      this.onCompleteRoundClick();
       this.drawCardReset.emit();
     }
   }
 
   handleTurnRound(changes: SimpleChanges): void {
     if (changes["turnRound"]?.currentValue !== changes["turnRound"]?.previousValue) {
-      this.gameService.drawCardForPlayer(this.players, this.isPlayer2 ? this.player2 : this.player1);
+      this.gameService.drawCardForPlayer(this.players, this.isPlayer2 ? this.player2 : this.player1, 1);
       this.switchToNextPlayer();
     }
   }
@@ -87,9 +80,10 @@ export class PlayerComponent implements OnInit, OnChanges {
 
     this.handleSpecialCard(card);
     if (this.checkWinner(player)) {
-
+      return;
     }
     this.switchToNextPlayer();
+    this.unoLastCardReset.emit();
   }
 
   private removeCardFromPlayer(player: string, card: string): void {
@@ -112,20 +106,20 @@ export class PlayerComponent implements OnInit, OnChanges {
         break;
 
       case "2cards":
-        setTimeout(() => {
-          this.gameService.drawCardForPlayer(this.players, nextPlayer);
-
-        }, 300)
-
-        setTimeout(() => {
-          this.gameService.drawCardForPlayer(this.players, nextPlayer);
-
-        }, 500)
+        this.drawMultipleCards(nextPlayer, 2);
         break;
 
       case "arrow":
         this.switchToNextPlayer();
         break;
+    }
+  }
+
+  private drawMultipleCards(player: string, count: number, delay = 300): void {
+    for (let i = 0; i < count; i++) {
+      setTimeout(() => {
+        this.gameService.drawCardForPlayer(this.players, player, 1);
+      }, delay * (i + 1));
     }
   }
 
@@ -184,7 +178,7 @@ export class PlayerComponent implements OnInit, OnChanges {
     return cards.some(card => this.canPlayCard(card, this.getFirstCard));
   }
 
-  completeRound(): void {
+  onCompleteRoundClick(): void {
     const currentPlayer = this.isPlayer2 ? this.player2 : this.player1;
 
     if (!this.playerCanPlayAnyCard(currentPlayer)){
@@ -208,30 +202,25 @@ export class PlayerComponent implements OnInit, OnChanges {
     }
   }
 
-  checkPlayerHasCards(player: string): boolean {
-    if (!(player in this.players)) {
-      console.warn(`Spieler "${player}" existiert nicht.`);
-      return false;
-    }
-
-    const cardCount = this.players[player].length;
-    console.log(`${player} hat ${cardCount} Karten`);
-    return cardCount > 0;
+  playerHasNoCards(player: string): boolean {
+    return this.players[player]?.length === 0;
   }
 
   checkWinner(player: string): boolean {
-    if (!this.checkPlayerHasCards(player) && this.checkPlayerPressedUno(player)) {
-      alert(`Spieler ${player} hat gewonnen!`);
-      return true;
-    } else if (!this.checkPlayerHasCards(player) && !this.checkPlayerPressedUno(player)) {
-      this.gameService.drawCardForPlayer(this.players, player);
-      this.gameService.drawCardForPlayer(this.players, player);
+    if (this.playerHasNoCards(player)) {
+      if (this.checkPlayerPressedUno()) {
+        alert(`Spieler ${player} hat gewonnen!`);
+        return true;
+      } else {
+        alert(`Spieler ${player} hat UNO nicht gedrückt und bekommt 2 Strafkarten!`);
+        this.gameService.drawCardForPlayer(this.players, player, 2);
+      }
     }
     return false;
   }
 
-  checkPlayerPressedUno (player: string): boolean {
-    return !this.checkPlayerHasCards(player) && this.unoLastCard;
+  checkPlayerPressedUno (): boolean {
+    return this.unoLastCard;
   }
 
 }
