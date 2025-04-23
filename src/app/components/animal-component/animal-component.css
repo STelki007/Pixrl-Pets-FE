@@ -51,8 +51,8 @@
 }
 
 .avatar {
-  width: 200px;
-  height: 200px;
+  width: 100px;
+  height: 100px;
   image-rendering: pixelated;
   border-radius: 10px;
   background: rgba(0, 0, 0, 0.2);

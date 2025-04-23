@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {CoinComponent} from '../coin-component/coin-component';
 import {ArrowService} from '@services/animal/ArrowService';
 import {SideBarButtonsService} from '@services/SideBarButtonsService';
@@ -17,7 +17,7 @@ import {ChatCompletionResponse} from '@components/animal-component/ChatCompletio
   ],
   styleUrl: './animal-component.css'
 })
-export class AnimalComponent {
+export class AnimalComponent implements OnInit {
   private arrowServiceValue: boolean = false;
   userInput = "";
   messagesList: { response: string; request: string }[] = [];
@@ -27,23 +27,41 @@ export class AnimalComponent {
               private openai: OpenAIService
               ) {}
 
+  ngOnInit(): void {
+    const savedMessages = localStorage.getItem('chatHistory');
+    if (savedMessages) {
+      this.openai.messages = JSON.parse(savedMessages);
+    }
+  }
+
   sendMassageToAI() {
     if (!this.userInput.trim()) return;
 
+    this.openai.messages.push({ role: 'user', content: this.userInput });
+
     const currentMessage = {
       request: this.userInput,
-      response: "..."
+      response: '...'
     };
 
     this.messagesList.push(currentMessage);
-
     const currentIndex = this.messagesList.length - 1;
 
-    this.openai.sendMessage(this.userInput).subscribe((res: ChatCompletionResponse) => {
-      const content = res.choices[0].message.content;
+    const lastMessages = this.openai.messages.slice(-12);
+    const systemPrompt = this.openai.messages[0];
+    const messagesToSend = [systemPrompt, ...lastMessages];
+
+    this.openai.sendMessageWithHistory(messagesToSend).subscribe((res: ChatCompletionResponse) => {
+      console.log(lastMessages)
+      const aiResponse = res.choices[0].message.content;
       const usage = res.usage;
 
-      this.messagesList[currentIndex].response = content;
+      this.openai.messages.push({ role: 'assistant', content: aiResponse });
+
+      localStorage.setItem('chatHistory', JSON.stringify(this.openai.messages));
+
+      this.messagesList[currentIndex].response = aiResponse;
+
 
       console.log('Prompt Tokens:', usage.prompt_tokens);
       console.log('Completion Tokens:', usage.completion_tokens);
@@ -52,6 +70,7 @@ export class AnimalComponent {
 
     this.userInput = '';
   }
+
 
   onArrowClick() {
     this.arrowService.setValue(false);
@@ -64,4 +83,5 @@ export class AnimalComponent {
       this.sideBarButtonsService.setValue("animals")
     }
   }
+
 }
