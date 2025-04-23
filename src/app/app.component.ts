@@ -24,8 +24,8 @@ import Keycloak from "keycloak-js";
     CoinComponent,
     SettingComponentComponent,
     InputTextModule,
-    AnimalViewComponentComponent
-  ],
+    AnimalViewComponentComponent,
+],
   templateUrl: './app.component.html',
   standalone: true,
   styleUrl: './app.component.css'
