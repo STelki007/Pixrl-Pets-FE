@@ -16,7 +16,7 @@ import {UnoGameStart} from '@components/games/uno/services/uno/UnoGameStart';
   styleUrl: './game.component.css'
 })
 export class GameComponent implements OnInit {
-  private gameClickAudio = HTMLAudioElement;
+  private gameClickAudio: HTMLAudioElement|undefined;
   protected unoGameClick = false;
   selectedGame: 'uno' | 'tic-tac-toe' | null = null;
 
@@ -32,6 +32,7 @@ export class GameComponent implements OnInit {
   }
 
   onUnoClick() {
+    if (this.gameClickAudio) {
     this.gameClickAudio.currentTime = 0;
     this.gameClickAudio.play().then(() => {
       console.log(this.unoGameClick);
@@ -39,6 +40,9 @@ export class GameComponent implements OnInit {
       this.cdr.detectChanges();
       console.log(this.unoGameClick);
     });
+    } else {
+      console.log("gameClickAudio is undefined");
+    }
   }
 
   onTicTacToeClick() {

@@ -13,7 +13,7 @@ import {ArrowService} from '@services/animal/ArrowService';
 })
 export class AnimalsViewComponent implements OnInit {
   items = Array(20).fill(0);
-  private chickenAudio = HTMLAudioElement;
+  private chickenAudio: HTMLAudioElement|undefined;
   private chickenAudiosArr:string[] = ["chickenSoundEffect2.mp3", "chickenSoundEffect3.mp3"];
 
   constructor(
@@ -32,11 +32,15 @@ export class AnimalsViewComponent implements OnInit {
   }
 
   onAnimalCardClick() {
+    if (this.chickenAudio) {
     this.generateRandomChickenAudio();
     this.chickenAudio.currentTime = 0;
     this.chickenAudio.play();
     this.sideBarButtonsService.setValue("animal");
     this.arrowService.setValue(true);
+    } else {
+      console.log("chickenAudio is undefined");
+    }
   }
 
 }
