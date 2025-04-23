@@ -2,6 +2,7 @@
   position: absolute;
   top: 0;
   right: 0;
+  display: flex;
 }
 .coin-container{
   margin-top: 10px;
