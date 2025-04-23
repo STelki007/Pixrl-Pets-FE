@@ -5,19 +5,19 @@ export class PetFactory {
     switch (type) {
       case 'chicken':
         return new Pet('chicken', {
-          hunger: 1,
-          weight: 0,
-          socialSkill: 9,
-          strengthSpeed: 8,
-          humor: 7,
+          hunger: 10,
+          weight: 10,
+          socialSkill: 10,
+          strengthSpeed: 10,
+          humor: 10,
           curiosity: 10,
-          tiredness: 0,
-          intelligence: 9,
-          confidence: 6,
+          tiredness: 10,
+          intelligence: 10,
+          confidence: 10,
           stamina: 10,
-          dexterity: 4,
-          affection: 8,
-          moneyProduction: 2
+          dexterity: 10,
+          affection: 10,
+          moneyProduction: 10
         });
       case 'cow':
         return new Pet('cow', {
@@ -71,5 +71,9 @@ export class PetFactory {
       default:
         throw new Error('Unknown pet type');
     }
+  }
+
+  static convertObjectToPetString(pet: Pet): string {
+    return ` du bist ${pet.name}. dein Zustand ist:\\n${JSON.stringify(pet.stats, null, 2)}\n`
   }
 }

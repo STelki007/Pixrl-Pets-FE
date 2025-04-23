@@ -5,7 +5,10 @@ import {SideBarButtonsService} from '@services/SideBarButtonsService';
 import {OpenAIService} from '@components/animal-component/service/openai.service';
 import {FormsModule} from '@angular/forms';
 import {NgForOf, NgIf} from '@angular/common';
-import {ChatCompletionResponse} from '@components/animal-component/ChatCompletionResponse';
+import {ChatCompletionResponse} from '@components/animal-component/service/ChatCompletionResponse';
+import {FactoryTarget} from '@angular/compiler';
+import {PetFactory} from '@components/animal-component/service/PetFactory';
+import {ChatMessage} from '@components/animal-component/service/ChatMessage';
 
 @Component({
   selector: 'app-animal-component',
@@ -35,6 +38,8 @@ export class AnimalComponent implements OnInit {
   }
 
   sendMassageToAI() {
+
+    console.log(PetFactory.convertObjectToPetString(PetFactory.createPet("chicken")))
     if (!this.userInput.trim()) return;
 
     this.openai.messages.push({ role: 'user', content: this.userInput });
@@ -47,12 +52,24 @@ export class AnimalComponent implements OnInit {
     this.messagesList.push(currentMessage);
     const currentIndex = this.messagesList.length - 1;
 
-    const lastMessages = this.openai.messages.slice(-12);
-    const systemPrompt = this.openai.messages[0];
-    const messagesToSend = [systemPrompt, ...lastMessages];
+    const lastMessages = this.openai.messages.slice(-10);
+    const currentPet = PetFactory.createPet("chicken");
+    const systemPrompt: ChatMessage = {
+      role: 'system',
+      content: `
+      Im Backend ist die Tokenbegrenzung auf 100 eingestellt – passe deine Antwort so an, dass sie nicht abgeschnitten wirkt, auch wenn sie gekürzt werden muss. also maximal 30 wörter antworten
+    Sie sind ein digitales Haustier-Simulationsmodell.
+    Ihre Aufgabe ist es, als folgendes Tier zu antworten:
+
+    ${PetFactory.convertObjectToPetString(currentPet)}
+
+    Verhalten und reagieren Sie sich entsprechend diesem Tiercharakter.
+  `
+    };
+
+    const messagesToSend: ChatMessage[] = [systemPrompt, ...lastMessages];
 
     this.openai.sendMessageWithHistory(messagesToSend).subscribe((res: ChatCompletionResponse) => {
-      console.log(lastMessages)
       const aiResponse = res.choices[0].message.content;
       const usage = res.usage;
 
