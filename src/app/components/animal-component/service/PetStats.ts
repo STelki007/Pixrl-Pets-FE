@@ -12,4 +12,5 @@ export interface PetStats {
   dexterity: number;
   affection: number;
   moneyProduction: number;
+  hateful: number;
 }

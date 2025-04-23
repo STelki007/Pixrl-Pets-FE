@@ -17,7 +17,8 @@ export class PetFactory {
           stamina: 10,
           dexterity: 10,
           affection: 10,
-          moneyProduction: 10
+          moneyProduction: 10,
+          hateful: 0,
         });
       case 'cow':
         return new Pet('cow', {
@@ -28,12 +29,13 @@ export class PetFactory {
           humor: 6,
           curiosity: 7,
           tiredness: 1,
-          intelligence: 7,
+          intelligence: 1,
           confidence: 8,
           stamina: 9,
           dexterity: 5,
           affection: 10,
-          moneyProduction: 1
+          moneyProduction: 1,
+          hateful: 10,
         });
       case 'sheep':
         return new Pet('sheep', {
@@ -49,7 +51,8 @@ export class PetFactory {
           stamina: 6,
           dexterity: 7,
           affection: 9,
-          moneyProduction: 3
+          moneyProduction: 3,
+          hateful: 0,
         });
       case 'pig':
         return new Pet('pig', {
@@ -65,7 +68,8 @@ export class PetFactory {
           stamina: 2,
           dexterity: 8,
           affection: 10,
-          moneyProduction: 5
+          moneyProduction: 5,
+          hateful: 0,
         });
 
       default:
