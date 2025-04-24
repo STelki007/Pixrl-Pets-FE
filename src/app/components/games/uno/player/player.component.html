@@ -12,12 +12,15 @@
   <div class="game-middle"></div>
 
   <div>
-    <div class="action-area">
-      <button (click)="onCompleteRoundClick()" class="uno-btn">
-        <i class="bi bi-flag-fill"></i>
-      </button>
+    <div>
+      <div class="container-card">
+        <button (click)="onCompleteRoundClick()" class="uno-btn">
+          <img #backCard src="figmaUnoCard0-9/backCard.svg" style="width: 150px" class="uno-card card-front">
+        </button>
+      </div>
+      <ng-content></ng-content>
     </div>
-    <ng-content></ng-content>
+
   </div>
 
   <div class="player-area opponent">

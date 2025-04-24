@@ -1,10 +1,8 @@
 <div class="cards-container d-flex justify-center align-items-center w-100">
   <div class="d-flex justify-between game-table-container" style="width: 40%">
     <div class="card-container d-flex justify-content-center align-items-center" style="margin-right: 100px; margin-left: 100px;">
-      <div class="container-card" (click)="onBackCardClick()">
-        <img src="figmaUnoCard0-9/backCard.svg" class="uno-card card-front" >
-      </div>
-      <div class="container-card">
+
+      <div class="container-card" style="width: 100px">
         <div *ngIf="card; else noCard">
           <img [src]="card" alt="First Card">
         </div>

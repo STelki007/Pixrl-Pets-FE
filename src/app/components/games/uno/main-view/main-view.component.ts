@@ -22,7 +22,6 @@ export class MainViewComponent implements OnInit {
   protected firstCardOpeningInput: string = "";
   protected getCardOutPut: string = "";
   protected turnEnd: boolean = false;
-  protected drawCard: boolean = false;
   protected unoLastCard: boolean = false;
 
 
@@ -49,15 +48,6 @@ export class MainViewComponent implements OnInit {
 
   handleTurnEnd (turnEnd: boolean) {
     this.turnEnd = turnEnd;
-  }
-
-  handleDrawRequest(): void {
-    this.drawCard = true;
-    console.log("main-view" + this.drawCard);
-  }
-
-  resetDrawCard(): void {
-    this.drawCard = false;
   }
 
   handleUnoLastCard(): void {

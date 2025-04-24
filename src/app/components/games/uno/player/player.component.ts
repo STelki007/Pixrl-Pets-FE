@@ -1,7 +1,19 @@
-import {ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component, ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import { NgForOf } from '@angular/common';
 import { Deck } from '../services/uno/Deck';
 import {GameService} from '@components/games/uno/services/uno/GameService';
+import gsap from 'gsap';
+import {CardAnimation} from '@components/games/uno/services/uno/CardAnimation';
 
 @Component({
   selector: 'app-player',
@@ -11,15 +23,15 @@ import {GameService} from '@components/games/uno/services/uno/GameService';
 })
 export class PlayerComponent implements OnInit, OnChanges {
   @Output() cardOutPut = new EventEmitter<string>();
-  @Output() drawCardReset = new EventEmitter<void>();
   @Output() unoLastCardReset = new EventEmitter<void>();
 
   @Input() players: { [key: string]: string[] } = {};
   @Input() clickedCard: string = "";
   @Input() getFirstCard: string = "";
   @Input() turnRound: boolean = false;
-  @Input() drawCard: boolean = false;
   @Input() unoLastCard: boolean = false;
+
+  @ViewChild('backCard', { static: true }) backCard!: ElementRef;
 
   protected isPlayer2 = false;
   private colorOfCardOutPut: string = "";
@@ -28,28 +40,24 @@ export class PlayerComponent implements OnInit, OnChanges {
   private player1: string = "player1";
   private player2: string = "player2";
 
-  constructor(private cdr: ChangeDetectorRef, private deck: Deck, private gameService: GameService) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private deck: Deck,
+    private gameService: GameService,
+    private cardAnimation: CardAnimation,
+  ) {}
 
   ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
     this.handleGetFirstCard(changes)
     this.handleTurnRound(changes)
-    this.handleDrawCard(changes)
   }
 
   handleGetFirstCard(changes: SimpleChanges) {
     if (changes['getFirstCard'] && changes['getFirstCard'].currentValue !== changes['getFirstCard'].previousValue) {
       this.colorOfCardOutPut = this.extractCardColor(this.getFirstCard);
       this.cdr.detectChanges();
-      console.log("hier hat sich was geändert" + this.drawCard);
-    }
-  }
-
-  handleDrawCard(changes: SimpleChanges) {
-    if (changes['drawCard'] && changes['drawCard'].currentValue === true) {
-      this.onCompleteRoundClick();
-      this.drawCardReset.emit();
     }
   }
 
@@ -172,7 +180,6 @@ export class PlayerComponent implements OnInit, OnChanges {
     return index;
   }
 
-
   private playerCanPlayAnyCard(player: string): boolean {
     const cards = this.players[player];
     return cards.some(card => this.canPlayCard(card, this.getFirstCard));
@@ -180,20 +187,19 @@ export class PlayerComponent implements OnInit, OnChanges {
 
   onCompleteRoundClick(): void {
     const currentPlayer = this.isPlayer2 ? this.player2 : this.player1;
+    const drawCardForPlayerAnimation = currentPlayer === this.player2;
 
     if (!this.playerCanPlayAnyCard(currentPlayer)){
       const drawnCard = this.deck.getDeck().shift();
 
       if (drawnCard) {
+        this.cardAnimation.animateDrawCard(drawCardForPlayerAnimation, this.backCard)
         this.players[currentPlayer].push(drawnCard);
         console.log(`${currentPlayer} zieht eine Karte: ${drawnCard}`);
 
         if (this.extractCardColor(drawnCard) === this.colorOfCardOutPut) {
           this.getFirstCard = drawnCard;
-          // TODO
-          if (this.playerCanPlayAnyCard(currentPlayer)){
-              return;
-          }
+          if (this.playerCanPlayAnyCard(currentPlayer)) return;
         }
       }
       this.switchToNextPlayer();
@@ -222,5 +228,6 @@ export class PlayerComponent implements OnInit, OnChanges {
   checkPlayerPressedUno (): boolean {
     return this.unoLastCard;
   }
+
 
 }

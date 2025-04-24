@@ -7,8 +7,6 @@
         [clickedCard]="getCardOutPut"
         [getFirstCard]="firstCardOpeningInput"
         [turnRound]="turnEnd"
-        [drawCard]="drawCard"
-        (drawCardReset)="resetDrawCard()"
         [unoLastCard]="unoLastCard"
         (unoLastCardReset)="resetUnoLastCard()"
       >
@@ -16,7 +14,6 @@
           [card]="firstCardOpeningInput"
           [getCardOutPut]="getCardOutPut"
           (turnEnd)="handleTurnEnd($event)"
-          (drawCardEvent)="handleDrawRequest()"
           (unoLastCard)="handleUnoLastCard()"
         ></app-cards-container>
       </app-player>

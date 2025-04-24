@@ -1,5 +1,14 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { NgIf, NgOptimizedImage, NgStyle } from '@angular/common';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
+import { NgIf, NgStyle } from '@angular/common';
 
 @Component({
   selector: 'app-cards-container',
@@ -11,16 +20,16 @@ export class CardsContainerComponent implements OnInit, OnChanges {
   @Input() card: string | undefined;
   @Input() getCardOutPut: string | undefined;
   @Output() turnEnd: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() drawCardEvent = new EventEmitter<void>();
   @Output() unoLastCard = new EventEmitter<void>();
 
 
   private isFirstCardSet = false;
   private colors = ["red", "green", "blue", "yellow"];
+  private saveCardAnimationValue: boolean = false;
   protected color = "";
 
-
-  constructor() {}
+  constructor(
+  ) {}
 
   ngOnInit(): void {
     this.checkIsFirstCardSet();
@@ -55,10 +64,6 @@ export class CardsContainerComponent implements OnInit, OnChanges {
 
     this.color = this.colors.find(color => this.getCardOutPut?.includes(color)) || "";
     this.color = colorMapping[this.color] || this.color;
-  }
-
-  onBackCardClick() {
-    this.drawCardEvent.emit();
   }
 
   onUnoLastCardClick() {
