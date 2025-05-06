@@ -14,10 +14,13 @@ import { Deck } from '../services/uno/Deck';
 import {GameService} from '@components/games/uno/services/uno/GameService';
 import gsap from 'gsap';
 import {CardAnimation} from '@components/games/uno/services/uno/CardAnimation';
+import {PickColorComponent} from '@components/pick-color/pick-color.component';
+import {PickColorService} from '@services/pickColor/PickColorService';
+import {UnoGameStart} from '@components/games/uno/services/uno/UnoGameStart';
 
 @Component({
   selector: 'app-player',
-  imports: [NgForOf],
+  imports: [NgForOf, PickColorComponent],
   templateUrl: './player.component.html',
   styleUrl: './player.component.css'
 })
@@ -34,17 +37,22 @@ export class PlayerComponent implements OnInit, OnChanges {
   @ViewChild('backCard', { static: true }) backCard!: ElementRef;
 
   protected isPlayer2 = false;
+  protected colorSelected: string = "";
+
   private colorOfCardOutPut: string = "";
   private colors = ["red", "green", "blue", "yellow"];
-
   private player1: string = "player1";
   private player2: string = "player2";
+
 
   constructor(
     private cdr: ChangeDetectorRef,
     private deck: Deck,
     private gameService: GameService,
     private cardAnimation: CardAnimation,
+    private pickColorService: PickColorService,
+    private unoGameService: UnoGameStart,
+
   ) {}
 
   ngOnInit(): void {}
@@ -70,16 +78,15 @@ export class PlayerComponent implements OnInit, OnChanges {
 
   playCardIfValid(card: string, player: string): void {
     const isCurrentPlayer = (player === this.player1 && !this.isPlayer2) || (player === this.player2 && this.isPlayer2);
+
     if (!isCurrentPlayer) {
-      console.log("Nicht dein Zug!");
+      alert("Nicht dein Zug!");
       return;
     }
 
     if (!this.canPlayCard(card, this.getFirstCard)) {
       return;
     }
-
-    console.log(this.colorOfCardOutPut)
 
     this.removeCardFromPlayer(player, card);
     this.clickedCard = card;
@@ -125,7 +132,10 @@ export class PlayerComponent implements OnInit, OnChanges {
 
       case "4CardPlus":
         this.drawMultipleCards(nextPlayer, 4);
-        console.log("hallo")
+        this.pickColorService.setValue(true);
+        break;
+      case "ChangeColor":
+        this.pickColorService.setValue(true);
         break;
 
     }
@@ -149,7 +159,7 @@ export class PlayerComponent implements OnInit, OnChanges {
     const cardSpecial = this.extractSpecialCard(card);
     const topSpecial = this.extractSpecialCard(topCard);
 
-    if (cardSpecial === '4CardPlus' || cardSpecial === 'ChangeColor') {
+    if (cardSpecial === '4CardPlus' || cardSpecial === 'ChangeColor'){
       return true;
     }
 
@@ -159,7 +169,6 @@ export class PlayerComponent implements OnInit, OnChanges {
       (cardSpecial && cardSpecial === topSpecial)
     );
   }
-
 
   private extractCardColor(card: string): string {
     if (!card) return "";
@@ -200,6 +209,11 @@ export class PlayerComponent implements OnInit, OnChanges {
     return cards.some(card => this.canPlayCard(card, this.getFirstCard));
   }
 
+  private isWildCard(card: string): boolean {
+    const special = this.extractSpecialCard(card);
+    return special === '4CardPlus' || special === 'ChangeColor';
+  }
+
   onCompleteRoundClick(): void {
     const currentPlayer = this.isPlayer2 ? this.player2 : this.player1;
     const drawCardForPlayerAnimation = currentPlayer === this.player2;
@@ -231,6 +245,7 @@ export class PlayerComponent implements OnInit, OnChanges {
     if (this.playerHasNoCards(player)) {
       if (this.checkPlayerPressedUno()) {
         alert(`Spieler ${player} hat gewonnen!`);
+        this.unoGameService.setValue(false)
         return true;
       } else {
         alert(`Spieler ${player} hat UNO nicht gedrückt und bekommt 2 Strafkarten!`);
@@ -244,8 +259,10 @@ export class PlayerComponent implements OnInit, OnChanges {
     return this.unoLastCard;
   }
 
-
-  selectColor(red: string) {
-
+  handleColorSelected(color: string) {
+    this.colorSelected = color;
+    this.colorOfCardOutPut = this.colorSelected;
+    this.getFirstCard = this.colorSelected;
+    this.cardOutPut.emit(this.colorOfCardOutPut);
   }
 }

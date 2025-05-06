@@ -1,0 +1,12 @@
+<app-alert-center-modal-component
+  [title]="'Wählen Sie eine Farbe aus'"
+  [service]="pickColorService">
+
+  <div class="color-picker">
+    <div class="color-option red" (click)="selectColor('red')">🔴 <span>Rot</span></div>
+    <div class="color-option yellow" (click)="selectColor('yellow')">🟡 <span>Gelb</span></div>
+    <div class="color-option green" (click)="selectColor('green')">🟢 <span>Grün</span></div>
+    <div class="color-option blue" (click)="selectColor('blue')">🔵 <span>Blau</span></div>
+  </div>
+
+</app-alert-center-modal-component>

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PickColorCenterComponent } from './pick-color-center.component';
+import { PickColorComponent } from './pick-color.component';
 
 describe('PickColorCenterComponent', () => {
-  let component: PickColorCenterComponent;
-  let fixture: ComponentFixture<PickColorCenterComponent>;
+  let component: PickColorComponent;
+  let fixture: ComponentFixture<PickColorComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PickColorCenterComponent]
+      imports: [PickColorComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PickColorCenterComponent);
+    fixture = TestBed.createComponent(PickColorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

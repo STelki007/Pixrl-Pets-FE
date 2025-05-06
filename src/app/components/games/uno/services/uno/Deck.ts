@@ -68,8 +68,6 @@ export class Deck {
 
     "figmaUnoCard0-9/ChangeColor.svg",
     "figmaUnoCard0-9/ChangeColor-1.svg",
-    "figmaUnoCard0-9/ChangeColor-2.svg",
-    "figmaUnoCard0-9/ChangeColor-3.svg",
   ];
 
   protected deck: string[] = [...this.initialDeck];
