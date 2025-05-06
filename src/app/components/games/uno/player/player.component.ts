@@ -55,7 +55,8 @@ export class PlayerComponent implements OnInit, OnChanges {
 
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.handleGetFirstCard(changes)
@@ -119,25 +120,30 @@ export class PlayerComponent implements OnInit, OnChanges {
 
     switch (special) {
       case "Stop":
-        this.switchToNextPlayer();
+        // Skip one turn: do nothing, just switch again
+        setTimeout(() => this.switchToNextPlayer(), 500);
         break;
 
       case "2cards":
         this.drawMultipleCards(nextPlayer, 2);
+        // Zug wird übersprungen
+        setTimeout(() => this.switchToNextPlayer(), 1000);
         break;
 
       case "arrow":
-        this.switchToNextPlayer();
+        // In 2-Spieler-Spiel ist das ein Skip
+        setTimeout(() => this.switchToNextPlayer(), 500);
         break;
 
       case "4CardPlus":
         this.drawMultipleCards(nextPlayer, 4);
-        this.pickColorService.setValue(true);
-        break;
-      case "ChangeColor":
+        // Erst Farbe wählen, dann weiterschalten
         this.pickColorService.setValue(true);
         break;
 
+      case "ChangeColor":
+        this.pickColorService.setValue(true);
+        break;
     }
   }
 
@@ -193,6 +199,80 @@ export class PlayerComponent implements OnInit, OnChanges {
 
   switchToNextPlayer(): void {
     this.isPlayer2 = !this.isPlayer2;
+
+    if (!this.isPlayer2) {
+      setTimeout(() => this.performBotTurn(), 1000);
+    }
+  }
+
+  private performBotTurn(): void {
+    const bot = this.player1;
+    const hand = this.players[bot];
+
+    const opponent = this.player2;
+    const opponentCardCount = this.players[opponent]?.length || 0;
+
+    const sortedPlayableCards = hand
+      .filter(card => this.canPlayCard(card, this.getFirstCard))
+      .sort((a, b) => this.getCardPriority(b, opponentCardCount) - this.getCardPriority(a, opponentCardCount));
+
+    const bestCard = sortedPlayableCards[0];
+
+    if (bestCard) {
+      this.playCardIfValid(bestCard, bot);
+    } else {
+      const drawnCard = this.deck.getDeck().shift();
+      if (drawnCard) {
+        this.players[bot].push(drawnCard);
+        this.cardAnimation.animateDrawCard(false, this.backCard);
+
+        if (this.canPlayCard(drawnCard, this.getFirstCard)) {
+          setTimeout(() => this.playCardIfValid(drawnCard, bot), 1000);
+        } else {
+          this.switchToNextPlayer();
+        }
+      }
+    }
+  }
+
+  private getCardPriority(card: string, opponentCardCount: number): number {
+    const special = this.extractSpecialCard(card);
+    const color = this.extractCardColor(card);
+
+    if (opponentCardCount === 1) {
+      if (special === '4CardPlus') return 100;
+      if (special === '2cards') return 90;
+      if (special === 'Stop') return 80;
+    }
+
+    const preferredColor = this.getBotPreferredColor();
+    if (color === preferredColor) return 70;
+
+    if (!special) return 50;
+
+    if (special === 'ChangeColor' || special === '4CardPlus') return 30;
+
+    return 10;
+  }
+
+  private getBotPreferredColor(): string {
+    const colorCount: { [color: string]: number } = {
+      red: 0,
+      green: 0,
+      blue: 0,
+      yellow: 0
+    };
+
+    const bot = this.player1;
+    for (const card of this.players[bot]) {
+      const color = this.extractCardColor(card);
+      if (color in colorCount) {
+        colorCount[color]++;
+      }
+    }
+
+    return Object.entries(colorCount)
+      .sort((a, b) => b[1] - a[1])[0][0];
   }
 
   getCardTransform(index: number, totalCards: number): string {
@@ -263,6 +343,10 @@ export class PlayerComponent implements OnInit, OnChanges {
     this.colorSelected = color;
     this.colorOfCardOutPut = this.colorSelected;
     this.getFirstCard = this.colorSelected;
+
     this.cardOutPut.emit(this.colorOfCardOutPut);
+
+    setTimeout(() => this.switchToNextPlayer(), 1000);
   }
+
 }

@@ -3,8 +3,7 @@
     <div *ngFor="let card of players['player1']; let i = index"
          class="card-wrapper"
          [style.z-index]="getCardZIndex(i)"
-         [style.transform]="getCardTransform(i, players['player1']!.length)"
-         (click)="playCardIfValid(card, 'player1')">
+         [style.transform]="getCardTransform(i, players['player1']!.length)">
       <img [src]="card" class="card" [alt]="'UNO Karte ' + card" />
     </div>
   </div>
