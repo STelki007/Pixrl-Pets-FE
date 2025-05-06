@@ -106,6 +106,8 @@ export class PlayerComponent implements OnInit, OnChanges {
 
   private handleSpecialCard(card: string): void {
     const special = this.extractSpecialCard(card);
+    console.log("extractSpecialCard returns:", special);
+
     const nextPlayer = this.isPlayer2 ? this.player1 : this.player2;
 
     switch (special) {
@@ -120,6 +122,12 @@ export class PlayerComponent implements OnInit, OnChanges {
       case "arrow":
         this.switchToNextPlayer();
         break;
+
+      case "4CardPlus":
+        this.drawMultipleCards(nextPlayer, 4);
+        console.log("hallo")
+        break;
+
     }
   }
 
@@ -141,12 +149,17 @@ export class PlayerComponent implements OnInit, OnChanges {
     const cardSpecial = this.extractSpecialCard(card);
     const topSpecial = this.extractSpecialCard(topCard);
 
+    if (cardSpecial === '4CardPlus' || cardSpecial === 'ChangeColor') {
+      return true;
+    }
+
     return (
       cardColor === topColor ||
       (cardNumber !== null && cardNumber === topNumber) ||
       (cardSpecial && cardSpecial === topSpecial)
     );
   }
+
 
   private extractCardColor(card: string): string {
     if (!card) return "";
@@ -160,10 +173,12 @@ export class PlayerComponent implements OnInit, OnChanges {
   }
 
   private extractSpecialCard(card: string): string {
-    if (!card) return "";
-    if (card.includes("Stop")) return "Stop";
-    if (card.includes("2cards")) return "2cards";
-    if (card.includes("arrow")) return "arrow";
+    const specials = ["Stop", "2cards", "arrow", "4CardPlus", "ChangeColor"];
+    for (let special of specials) {
+      if (card.toLowerCase().includes(special.toLowerCase())) {
+        return special;
+      }
+    }
     return "";
   }
 
@@ -230,4 +245,7 @@ export class PlayerComponent implements OnInit, OnChanges {
   }
 
 
+  selectColor(red: string) {
+
+  }
 }

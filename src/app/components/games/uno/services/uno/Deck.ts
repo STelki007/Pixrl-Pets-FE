@@ -59,7 +59,17 @@ export class Deck {
     "figmaUnoCard0-9/yellow-8.svg",
     "figmaUnoCard0-9/yellow-9.svg",
     "figmaUnoCard0-9/yellowStop.svg",
-    "figmaUnoCard0-9/yellow-arrow.svg"
+    "figmaUnoCard0-9/yellow-arrow.svg",
+
+    "figmaUnoCard0-9/4CardPlus.svg",
+    "figmaUnoCard0-9/4CardPlus-1.svg",
+    "figmaUnoCard0-9/4CardPlus-2.svg",
+    "figmaUnoCard0-9/4CardPlus-3.svg",
+
+    "figmaUnoCard0-9/ChangeColor.svg",
+    "figmaUnoCard0-9/ChangeColor-1.svg",
+    "figmaUnoCard0-9/ChangeColor-2.svg",
+    "figmaUnoCard0-9/ChangeColor-3.svg",
   ];
 
   protected deck: string[] = [...this.initialDeck];
