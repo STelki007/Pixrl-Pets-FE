@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AlertCenterModalComponent} from '../modal/alert-center-modal-component/alert-center-modal-component';
-import {DeleteAccountService} from '../../services/setting/DeleteAccountService';
-import {LogoutService} from '../../services/setting/LogoutService';
+import {DeleteAccountService} from '@services/setting/DeleteAccountService';
+import {LogoutService} from '@services/setting/LogoutService';
 
 @Component({
   selector: 'app-setting-component',

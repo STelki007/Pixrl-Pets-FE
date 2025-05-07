@@ -6,12 +6,6 @@
         <i class="bi bi-robot text-primary fs-3" style="margin-top: -10px;"></i> Gegen Bot
       </h2>
 
-      <div class="row row-cols-3 g-2 mb-3 display-grid">
-        <button class="btn btn-secondary mx-1 width100" (click)="bot($event)">2</button>
-        <button class="btn btn-secondary mx-1 width100" (click)="bot($event)">3</button>
-        <button class="btn btn-secondary mx-1 width100" (click)="bot($event)">4</button>
-      </div>
-
       <div class="mb-3 py-2 bg-light rounded text-lg fw-semibold">
         Spieleranzahl: <span class="text-primary">{{numberOfPlayersBot}}</span>
       </div>
@@ -25,12 +19,6 @@
       <h2 class="fs-4 fw-semibold mb-3 d-flex align-items-center justify-content-center gap-2">
         <span class="text-success fs-3" style="margin-top: -15px;">👥</span> Multiplayer
       </h2>
-
-      <div class="row row-cols-3 g-2 mb-3 display-grid">
-        <button class="btn btn-secondary mx-1 width100" (click)="player($event)">2</button>
-        <button class="btn btn-secondary mx-1 width100" (click)="player($event)">3</button>
-        <button class="btn btn-secondary mx-1 width100" (click)="player($event)">4</button>
-      </div>
 
       <div class="mb-3 py-2 bg-light rounded text-lg fw-semibold">
         Spieleranzahl: <span class="text-success">{{numberOfPlayers}}</span>
