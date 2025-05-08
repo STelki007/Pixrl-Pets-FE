@@ -89,6 +89,7 @@ export class AnimalComponent implements OnInit {
     this.userInput = '';
   }
 
+
   onArrowClick() {
     this.arrowService.setValue(false);
     this.arrowService.getValue().subscribe(value => {
@@ -103,5 +104,6 @@ export class AnimalComponent implements OnInit {
 
   funnySoundEffect() {
     this.soundService.playSound("chickenSoundEffect3.mp3");
+    this.soundService.soundValue(0.3)
   }
 }

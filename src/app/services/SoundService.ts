@@ -16,5 +16,11 @@ export class SoundService {
       console.warn('Audio konnte nicht abgespielt werden: + ', err);
     });
   }
+
+  soundValue(number: number) {
+    if (this.currentAudio)
+    this.currentAudio.volume = number;
+
+  }
 }
 
