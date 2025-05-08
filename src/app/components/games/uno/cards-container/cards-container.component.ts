@@ -9,6 +9,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { NgIf, NgStyle } from '@angular/common';
+import {SoundService} from '@services/SoundService';
 
 @Component({
   selector: 'app-cards-container',
@@ -25,10 +26,10 @@ export class CardsContainerComponent implements OnInit, OnChanges {
 
   private isFirstCardSet = false;
   private colors = ["red", "green", "blue", "yellow"];
-  private saveCardAnimationValue: boolean = false;
   protected color = "";
 
   constructor(
+    private soundService: SoundService,
   ) {}
 
   ngOnInit(): void {
@@ -67,6 +68,7 @@ export class CardsContainerComponent implements OnInit, OnChanges {
   }
 
   onUnoLastCardClick() {
+    this.soundService.playSound("uno.mp3")
     this.unoLastCard.emit();
   }
 }

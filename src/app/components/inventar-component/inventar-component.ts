@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {NgForOf} from '@angular/common';
 import {audit} from 'rxjs';
+import {SoundService} from '@services/SoundService';
 
 @Component({
   selector: 'app-inventar-component',
@@ -11,7 +12,11 @@ import {audit} from 'rxjs';
   styleUrl: './inventar-component.css'
 })
 export class InventarComponent implements OnInit {
-  private audio!: HTMLAudioElement;
+
+  constructor(
+    private soundService: SoundService,
+  ) {
+  }
 
   items = [
     ['🥧', '🥕', '🔥', '🥩', '🍗', '🍩', '🎃', '🍄', '💀'],
@@ -21,14 +26,11 @@ export class InventarComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    this.audio = new Audio("select-item.mp3");
-    this.audio.load();
+
   }
 
-
   onClickItem() {
-    this.audio.currentTime = 0;
-    this.audio.play();
+    this.soundService.playSound("select-item.mp3")
   }
 
 

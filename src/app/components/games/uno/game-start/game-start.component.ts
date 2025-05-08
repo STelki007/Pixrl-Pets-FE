@@ -2,6 +2,7 @@ import {Component, EventEmitter, Output} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {Deck} from '../services/uno/Deck';
 import {UnoGameStart} from '@components/games/uno/services/uno/UnoGameStart';
+import {SoundService} from '@services/SoundService';
 
 @Component({
   selector: 'app-game-start',
@@ -23,7 +24,7 @@ export class GameStartComponent {
 
   protected discardPile: string[] = [];
 
-  constructor(private gameService: UnoGameStart, private deck: Deck) {}
+  constructor(private gameService: UnoGameStart, private deck: Deck, private soundService: SoundService) {}
 
   private firstCardForOpening(): void {
     if (this.deck.getDeck().length === 0) return console.error("Deck ist leer.");
@@ -44,38 +45,48 @@ export class GameStartComponent {
   private dealCards(): void {
     for (let i = 0; i < 7; i++) {
       Object.keys(this.players).forEach(player => {
-        if (this.deck.getDeck().length > 0) {
-          const card = this.deck.getDeck().shift();
-          if (card) this.players[player].push(card);
-        }
+        let card: string | undefined;
+
+        do {
+          card = this.deck.getDeck().shift();
+          if (!card) return;
+        } while (player === "player1" && this.extractSpecialCard(card));
+
+        this.players[player].push(card);
       });
     }
   }
 
-    public startGame(): void {
-      this.deck.resetDeck();
-      this.discardPile = [];
-      this.players = {};
-
-      for (let i = 1; i <= this.numberOfPlayers; i++) {
-        this.players[`player${i}`] = [];
+  private extractSpecialCard(card: string): boolean {
+    const specials = ["4CardPlus", "ChangeColor"];
+    for (let special of specials) {
+      if (card.toLowerCase().includes(special.toLowerCase())) {
+        return true
       }
+    }
+    return false;
+  }
 
-      this.shuffleDeck();
-      this.firstCardForOpening();
-      this.dealCards();
+  public startGame(): void {
+    this.deck.resetDeck();
+    this.discardPile = [];
+    this.players = {};
 
-      this.playersUpdated.emit(this.players);
+    for (let i = 1; i <= this.numberOfPlayers; i++) {
+      this.players[`player${i}`] = [];
     }
 
-    startGameBot(): void {
-      this.gameService.setValue(true);
-      this.startGame();
-    }
+    this.shuffleDeck();
+    this.firstCardForOpening();
+    this.dealCards();
 
-  bot(event: Event): void {
-    const targetBot = event.target as HTMLButtonElement;
-    this.numberOfPlayersBot = Number(targetBot.innerText);
+    this.playersUpdated.emit(this.players);
+  }
+
+  startGameBot(): void {
+    this.soundService.playSound("select-item.mp3")
+    this.gameService.setValue(true);
+    this.startGame();
   }
 
   player(event: MouseEvent): void {
@@ -84,6 +95,7 @@ export class GameStartComponent {
   }
 
   startGamePlayer(): void {
+    this.soundService.playSound("select-item.mp3")
     this.gameService.setValue(true);
   }
 

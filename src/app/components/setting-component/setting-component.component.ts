@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AlertCenterModalComponent} from '../modal/alert-center-modal-component/alert-center-modal-component';
 import {DeleteAccountService} from '@services/setting/DeleteAccountService';
 import {LogoutService} from '@services/setting/LogoutService';
+import {SoundService} from '@services/SoundService';
 
 @Component({
   selector: 'app-setting-component',
@@ -17,8 +18,9 @@ export class SettingComponentComponent implements OnInit {
   protected titleLogout: string = "Möchten Sie sich wirklich abmelden?";
   constructor(
     protected deleteAccountService: DeleteAccountService,
-    protected logoutService: LogoutService
-    ) {
+    protected logoutService: LogoutService,
+    private soundService: SoundService,
+  ) {
   }
 
   ngOnInit() {
@@ -30,24 +32,29 @@ export class SettingComponentComponent implements OnInit {
     })
   }
 
-  deleteAccount() {
+  deleteAccount() {+
+    this.soundService.playSound("select-item.mp3")
     this.deleteAccountService.setValue(true)
   }
 
   closeModal() {
+    this.soundService.playSound("select-item.mp3")
     this.deleteAccountService.setValue(false)
     this.logoutService.setValue(false);
   }
 
   confirmDeleteAccount() {
+    this.soundService.playSound("select-item.mp3")
     this.deleteAccountService.setValue(false);
   }
 
   logout() {
+    this.soundService.playSound("select-item.mp3")
     this.logoutService.setValue(true)
   }
 
   confirmLogout() {
+    this.soundService.playSound("select-item.mp3");
     this.logoutService.setValue(false)
   }
 }

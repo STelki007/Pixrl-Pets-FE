@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {SideBarButtonsService} from '../../services/SideBarButtonsService';
+import {SoundService} from '@services/SoundService';
 
 @Component({
   selector: 'app-coin-component',
@@ -10,16 +11,14 @@ export class CoinComponent implements OnInit, OnDestroy {
   timeLeft: string = '';
   private timerInterval: any;
   isClaimable: boolean = false;
-  private audio: HTMLAudioElement;
 
-  constructor(private sideBarButtonsService: SideBarButtonsService) {
-    this.audio = new Audio("coinClickEffect2.mp3");
+  constructor(private sideBarButtonsService: SideBarButtonsService,
+              private soundService: SoundService) {
   }
 
   ngOnInit(): void {
     this.updateTimer();
     this.startTimer();
-    // this.audio = new Audio("coinClickEffect2.mp3");
 
   }
 
@@ -67,11 +66,7 @@ export class CoinComponent implements OnInit, OnDestroy {
   }
 
   onCoinsClick() {
-
-    this.audio.play().then(() => {
-      this.audio.onended = () => {
-        this.sideBarButtonsService.setValue("shop");
-      };
-    })
+    this.soundService.playSound("coinClickEffect2.mp3")
+    this.sideBarButtonsService.setValue("shop");
   }
 }

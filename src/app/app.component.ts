@@ -14,6 +14,7 @@ import {AnimalsViewComponent} from '@components/animals-view-component/animals-v
 import {ArrowService} from '@services/animal/ArrowService';
 import {GameComponent} from '@components/game-component/game.component';
 import {UnoGameStart} from '@components/games/uno/services/uno/UnoGameStart';
+import {SoundService} from '@services/SoundService';
 @Component({
   selector: 'app-root',
   imports: [
@@ -37,14 +38,16 @@ export class AppComponent implements OnInit, OnDestroy {
   // private keycloak = inject(Keycloak);
   selectedComponent: string = "";
   private subscription!: Subscription;
-  private audio!: HTMLAudioElement;
   protected arrowServiceValue: boolean = false;
   private isUnoStarted = false;
 
   constructor(
     private sideBarButtonsService: SideBarButtonsService,
     private arrowService: ArrowService,
-    private unoGameStart: UnoGameStart) {}
+    private unoGameStart: UnoGameStart,
+    private soundService: SoundService,
+
+  ) {}
 
   ngOnInit() {
     this.startAudio();
@@ -53,8 +56,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   startAudio(){
-    this.audio = new Audio('select-sound.mp3');
-    this.audio.load();
+    this.soundService.playSound("select-sound.mp3");
   }
 
   getGameServiceValue(): void {
@@ -76,10 +78,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   selectComponent(value: string) {
     if (!this.isUnoStarted){
-      this.audio.currentTime = 0;
-      this.audio.play().then(() => {
-        this.sideBarButtonsService.setValue(value);
-      })
+      this.soundService.playSound("select-sound.mp3");
+      this.sideBarButtonsService.setValue(value);
     }else {
       alert("Spiel läuft gerade! Bitte über 'Spiel beenden' klicken.")
     }
@@ -95,18 +95,15 @@ export class AppComponent implements OnInit, OnDestroy {
 
   onAnimalsBtnClick() {
     if (!this.isUnoStarted) {
-      this.audio.currentTime = 0;
       this.arrowService.getValue().subscribe(value => {
         this.arrowServiceValue = value;
       })
       if (this.arrowServiceValue) {
-        this.audio.play().then(() => {
-          this.sideBarButtonsService.setValue("animal")
-        })
+        this.soundService.playSound("select-sound.mp3");
+        this.sideBarButtonsService.setValue("animal")
       }else{
-        this.audio.play().then(() => {
-          this.sideBarButtonsService.setValue("animals")
-        })
+        this.soundService.playSound("select-sound.mp3");
+        this.sideBarButtonsService.setValue("animals")
       }
     }else {
       alert("Spiel läuft gerade! Bitte über 'Spiel beenden' klicken.")

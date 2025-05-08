@@ -12,11 +12,12 @@ import {
 import { NgForOf } from '@angular/common';
 import { Deck } from '../services/uno/Deck';
 import {GameService} from '@components/games/uno/services/uno/GameService';
-import gsap from 'gsap';
 import {CardAnimation} from '@components/games/uno/services/uno/CardAnimation';
-import {PickColorComponent} from '@components/pick-color/pick-color.component';
+import {PickColorComponent} from '@components/games/uno/pick-color/pick-color.component';
 import {PickColorService} from '@services/pickColor/PickColorService';
 import {UnoGameStart} from '@components/games/uno/services/uno/UnoGameStart';
+import {CardService} from '@components/games/uno/services/uno/CardService';
+import {SoundService} from '@services/SoundService';
 
 @Component({
   selector: 'app-player',
@@ -40,9 +41,9 @@ export class PlayerComponent implements OnInit, OnChanges {
   protected colorSelected: string = "";
 
   private colorOfCardOutPut: string = "";
-  private colors = ["red", "green", "blue", "yellow"];
   private player1: string = "player1";
   private player2: string = "player2";
+  private isWaitingForColorPick: boolean = false;
 
 
   constructor(
@@ -52,10 +53,12 @@ export class PlayerComponent implements OnInit, OnChanges {
     private cardAnimation: CardAnimation,
     private pickColorService: PickColorService,
     private unoGameService: UnoGameStart,
-
+    private cardService: CardService,
+    private soundService: SoundService,
   ) {}
 
   ngOnInit(): void {
+
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -64,9 +67,22 @@ export class PlayerComponent implements OnInit, OnChanges {
   }
 
   handleGetFirstCard(changes: SimpleChanges) {
-    if (changes['getFirstCard'] && changes['getFirstCard'].currentValue !== changes['getFirstCard'].previousValue) {
-      this.colorOfCardOutPut = this.extractCardColor(this.getFirstCard);
-      this.cdr.detectChanges();
+    if (changes['getFirstCard'] && changes['getFirstCard'].currentValue) {
+      const color = this.cardService.extractCardColor(this.getFirstCard) || this.cardService.randomColor();
+
+      if (this.cardService.checkIfChangeColorOr4PlusCard(this.getFirstCard)) {
+        const newColor = this.cardService.randomColor();
+
+        setTimeout(() => {
+          this.colorOfCardOutPut = newColor;
+          this.cardOutPut.emit(this.colorOfCardOutPut);
+          this.cardOutPut.emit(this.getFirstCard);
+        });
+      } else {
+        setTimeout(() => {
+          this.colorOfCardOutPut = color;
+        });
+      }
     }
   }
 
@@ -80,19 +96,15 @@ export class PlayerComponent implements OnInit, OnChanges {
   playCardIfValid(card: string, player: string): void {
     const isCurrentPlayer = (player === this.player1 && !this.isPlayer2) || (player === this.player2 && this.isPlayer2);
 
-    if (!isCurrentPlayer) {
-      alert("Nicht dein Zug!");
-      return;
-    }
+    if (!isCurrentPlayer) return;
 
-    if (!this.canPlayCard(card, this.getFirstCard)) {
-      return;
-    }
+    if (!this.cardService.canPlayCard(card, this.getFirstCard)) return;
 
+    this.soundService.playSound("card-pick.mp3");
     this.removeCardFromPlayer(player, card);
     this.clickedCard = card;
     this.getFirstCard = card;
-    this.colorOfCardOutPut = this.extractCardColor(card);
+    this.colorOfCardOutPut = this.cardService.extractCardColor(card);
 
     this.handleSpecialCard(card);
     if (this.checkWinner(player)) {
@@ -113,91 +125,45 @@ export class PlayerComponent implements OnInit, OnChanges {
   }
 
   private handleSpecialCard(card: string): void {
-    const special = this.extractSpecialCard(card);
+    const special = this.cardService.extractSpecialCard(card);
     console.log("extractSpecialCard returns:", special);
 
     const nextPlayer = this.isPlayer2 ? this.player1 : this.player2;
 
     switch (special) {
       case "Stop":
-        // Skip one turn: do nothing, just switch again
-        setTimeout(() => this.switchToNextPlayer(), 500);
+        this.manageDelayCardSpeed(500)
         break;
 
       case "2cards":
-        this.drawMultipleCards(nextPlayer, 2);
-        // Zug wird übersprungen
-        setTimeout(() => this.switchToNextPlayer(), 1000);
+        this.gameService.drawMultipleCards(nextPlayer, this.players, 2);
+        this.manageDelayCardSpeed(1000)
         break;
 
       case "arrow":
-        // In 2-Spieler-Spiel ist das ein Skip
-        setTimeout(() => this.switchToNextPlayer(), 500);
+        this.manageDelayCardSpeed(500)
         break;
 
       case "4CardPlus":
-        this.drawMultipleCards(nextPlayer, 4);
-        // Erst Farbe wählen, dann weiterschalten
+        this.gameService.drawMultipleCards(nextPlayer, this.players, 4);
+        this.isWaitingForColorPick = true;
         this.pickColorService.setValue(true);
         break;
 
       case "ChangeColor":
         this.pickColorService.setValue(true);
+        this.isWaitingForColorPick = true;
         break;
     }
   }
 
-  private drawMultipleCards(player: string, count: number, delay = 300): void {
-    for (let i = 0; i < count; i++) {
-      setTimeout(() => {
-        this.gameService.drawCardForPlayer(this.players, player, 1);
-      }, delay * (i + 1));
-    }
+  private manageDelayCardSpeed (delaySpeed: number): void{
+    setTimeout(() => this.switchToNextPlayer(), delaySpeed);
   }
 
-  private canPlayCard(card: string, topCard: string): string | boolean {
-    const cardColor = this.extractCardColor(card);
-    const topColor = this.extractCardColor(topCard);
+  private switchToNextPlayer(): void {
+    if (this.isWaitingForColorPick) return;
 
-    const cardNumber = this.extractNumFromCard(card);
-    const topNumber = this.extractNumFromCard(topCard);
-
-    const cardSpecial = this.extractSpecialCard(card);
-    const topSpecial = this.extractSpecialCard(topCard);
-
-    if (cardSpecial === '4CardPlus' || cardSpecial === 'ChangeColor'){
-      return true;
-    }
-
-    return (
-      cardColor === topColor ||
-      (cardNumber !== null && cardNumber === topNumber) ||
-      (cardSpecial && cardSpecial === topSpecial)
-    );
-  }
-
-  private extractCardColor(card: string): string {
-    if (!card) return "";
-    return this.colors.find(color => card.includes(color)) || "";
-  }
-
-  private extractNumFromCard(card: string): number | null {
-    if (!card) return null;
-    const match = card.match(/(\d+)\.svg$/);
-    return match ? parseInt(match[1], 10) : null;
-  }
-
-  private extractSpecialCard(card: string): string {
-    const specials = ["Stop", "2cards", "arrow", "4CardPlus", "ChangeColor"];
-    for (let special of specials) {
-      if (card.toLowerCase().includes(special.toLowerCase())) {
-        return special;
-      }
-    }
-    return "";
-  }
-
-  switchToNextPlayer(): void {
     this.isPlayer2 = !this.isPlayer2;
 
     if (!this.isPlayer2) {
@@ -207,37 +173,60 @@ export class PlayerComponent implements OnInit, OnChanges {
 
   private performBotTurn(): void {
     const bot = this.player1;
-    const hand = this.players[bot];
 
-    const opponent = this.player2;
-    const opponentCardCount = this.players[opponent]?.length || 0;
+    const tryPlayOrDraw = () => {
+      const hand = this.players[bot];
+      const playableCards = hand.filter(card => this.cardService.canPlayCard(card, this.getFirstCard));
 
-    const sortedPlayableCards = hand
-      .filter(card => this.canPlayCard(card, this.getFirstCard))
-      .sort((a, b) => this.getCardPriority(b, opponentCardCount) - this.getCardPriority(a, opponentCardCount));
+      if (playableCards.length > 0) {
+        const bestCard = playableCards.sort((a, b) =>
+          this.getCardPriority(b, this.players[this.player2]?.length || 0) -
+          this.getCardPriority(a, this.players[this.player2]?.length || 0)
+        )[0];
 
-    const bestCard = sortedPlayableCards[0];
+        if (bestCard) {
+          this.playCardIfValid(bestCard, bot);
+        }
+        return;
+      }
 
-    if (bestCard) {
-      this.playCardIfValid(bestCard, bot);
-    } else {
-      const drawnCard = this.deck.getDeck().shift();
-      if (drawnCard) {
-        this.players[bot].push(drawnCard);
-        this.cardAnimation.animateDrawCard(false, this.backCard);
+      let drawnCard: string | undefined;
+      let maxTries = this.deck.getDeck().length;
 
-        if (this.canPlayCard(drawnCard, this.getFirstCard)) {
-          setTimeout(() => this.playCardIfValid(drawnCard, bot), 1000);
+      while (maxTries-- > 0) {
+        const nextCard = this.deck.getDeck().shift();
+        if (!nextCard) break;
+
+        if (!this.cardService.checkIfChangeColorOr4PlusCard(nextCard)) {
+          drawnCard = nextCard;
+          break;
         } else {
-          this.switchToNextPlayer();
+          this.deck.getDeck().push(nextCard);
         }
       }
-    }
+
+      if (!drawnCard) {
+        this.switchToNextPlayer();
+        return;
+      }
+
+      this.players[bot].push(drawnCard);
+      this.cardAnimation.animateDrawCard(false, this.backCard);
+      this.cdr.detectChanges();
+
+      if (this.cardService.canPlayCard(drawnCard, this.getFirstCard)) {
+        setTimeout(() => this.playCardIfValid(drawnCard!, bot), 1000);
+      } else {
+        setTimeout(() => tryPlayOrDraw(), 800);
+      }
+    };
+
+    tryPlayOrDraw();
   }
 
   private getCardPriority(card: string, opponentCardCount: number): number {
-    const special = this.extractSpecialCard(card);
-    const color = this.extractCardColor(card);
+    const special = this.cardService.extractSpecialCard(card);
+    const color = this.cardService.extractCardColor(card);
 
     if (opponentCardCount === 1) {
       if (special === '4CardPlus') return 100;
@@ -265,7 +254,7 @@ export class PlayerComponent implements OnInit, OnChanges {
 
     const bot = this.player1;
     for (const card of this.players[bot]) {
-      const color = this.extractCardColor(card);
+      const color = this.cardService.extractCardColor(card);
       if (color in colorCount) {
         colorCount[color]++;
       }
@@ -284,39 +273,26 @@ export class PlayerComponent implements OnInit, OnChanges {
     return index;
   }
 
-  private playerCanPlayAnyCard(player: string): boolean {
-    const cards = this.players[player];
-    return cards.some(card => this.canPlayCard(card, this.getFirstCard));
-  }
-
-  private isWildCard(card: string): boolean {
-    const special = this.extractSpecialCard(card);
-    return special === '4CardPlus' || special === 'ChangeColor';
-  }
-
   onCompleteRoundClick(): void {
     const currentPlayer = this.isPlayer2 ? this.player2 : this.player1;
-    const drawCardForPlayerAnimation = currentPlayer === this.player2;
 
-    if (!this.playerCanPlayAnyCard(currentPlayer)){
-      const drawnCard = this.deck.getDeck().shift();
+    const playableCards = this.players[currentPlayer].filter(card => this.cardService.canPlayCard(card, this.getFirstCard));
 
-      if (drawnCard) {
-        this.cardAnimation.animateDrawCard(drawCardForPlayerAnimation, this.backCard)
-        this.players[currentPlayer].push(drawnCard);
-        console.log(`${currentPlayer} zieht eine Karte: ${drawnCard}`);
+    if (playableCards.length > 0) {
+      return;
+    }
 
-        if (this.extractCardColor(drawnCard) === this.colorOfCardOutPut) {
-          this.getFirstCard = drawnCard;
-          if (this.playerCanPlayAnyCard(currentPlayer)) return;
-        }
-      }
-      this.switchToNextPlayer();
-    }else{
-      alert("Spieler kann doch spielen")
+    const drawnCard = this.deck.getDeck().shift();
+    if (drawnCard) {
+      this.soundService.playSound("card-draw.mp3");
+      const isAnimation = currentPlayer === this.player2;
+      this.players[currentPlayer].push(drawnCard);
+      this.cardAnimation.animateDrawCard(isAnimation, this.backCard);
+      this.cdr.detectChanges();
+    } else {
+      alert("Deck ist leer.");
     }
   }
-
   playerHasNoCards(player: string): boolean {
     return this.players[player]?.length === 0;
   }
@@ -326,6 +302,7 @@ export class PlayerComponent implements OnInit, OnChanges {
       if (this.checkPlayerPressedUno()) {
         alert(`Spieler ${player} hat gewonnen!`);
         this.unoGameService.setValue(false)
+        this.pickColorService.setValue(false)
         return true;
       } else {
         alert(`Spieler ${player} hat UNO nicht gedrückt und bekommt 2 Strafkarten!`);
@@ -345,6 +322,7 @@ export class PlayerComponent implements OnInit, OnChanges {
     this.getFirstCard = this.colorSelected;
 
     this.cardOutPut.emit(this.colorOfCardOutPut);
+    this.isWaitingForColorPick = false;
 
     setTimeout(() => this.switchToNextPlayer(), 1000);
   }

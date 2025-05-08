@@ -3,6 +3,7 @@ import { NgIf } from '@angular/common';
 import {UnoComponent} from '@components/games/uno/uno.component';
 import {TicTacToeComponent} from '@components/games/tic-tac-toe/tic-tac-toe.component';
 import {UnoGameStart} from '@components/games/uno/services/uno/UnoGameStart';
+import {SoundService} from '@services/SoundService';
 
 
 @Component({
@@ -16,33 +17,27 @@ import {UnoGameStart} from '@components/games/uno/services/uno/UnoGameStart';
   styleUrl: './game.component.css'
 })
 export class GameComponent implements OnInit {
-  private gameClickAudio: HTMLAudioElement|undefined;
   protected unoGameClick = false;
   selectedGame: 'uno' | 'tic-tac-toe' | null = null;
 
-  constructor(private cdr: ChangeDetectorRef, private gameService: UnoGameStart) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private gameService: UnoGameStart,
+    private soundService: SoundService,
+  ) {}
 
   ngOnInit(): void {
-    this.createAudio();
   }
 
   createAudio() {
-    this.gameClickAudio = new Audio("select-item.mp3");
-    this.gameClickAudio.volume = 1;
+    this.soundService.playSound("select-item.mp3")
   }
 
   onUnoClick() {
-    if (this.gameClickAudio) {
-    this.gameClickAudio.currentTime = 0;
-    this.gameClickAudio.play().then(() => {
-      console.log(this.unoGameClick);
-      this.selectedGame = 'uno';
-      this.cdr.detectChanges();
-      console.log(this.unoGameClick);
-    });
-    } else {
-      console.log("gameClickAudio is undefined");
-    }
+    this.createAudio();
+    this.selectedGame = 'uno';
+    this.cdr.detectChanges();
+
   }
 
   onTicTacToeClick() {

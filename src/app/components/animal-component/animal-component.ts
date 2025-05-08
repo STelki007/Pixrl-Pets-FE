@@ -9,6 +9,7 @@ import {ChatCompletionResponse} from '@components/animal-component/service/ChatC
 import {FactoryTarget} from '@angular/compiler';
 import {PetFactory} from '@components/animal-component/service/PetFactory';
 import {ChatMessage} from '@components/animal-component/service/ChatMessage';
+import {SoundService} from '@services/SoundService';
 
 @Component({
   selector: 'app-animal-component',
@@ -27,8 +28,9 @@ export class AnimalComponent implements OnInit {
 
   constructor(private  arrowService: ArrowService,
               private sideBarButtonsService: SideBarButtonsService,
-              private openai: OpenAIService
-              ) {}
+              private openai: OpenAIService,
+              private soundService: SoundService,
+  ) {}
 
   ngOnInit(): void {
     const savedMessages = localStorage.getItem('chatHistory');
@@ -38,7 +40,6 @@ export class AnimalComponent implements OnInit {
   }
 
   sendMassageToAI() {
-
     console.log(PetFactory.convertObjectToPetString(PetFactory.createPet("cow")))
     if (!this.userInput.trim()) return;
 
@@ -88,7 +89,6 @@ export class AnimalComponent implements OnInit {
     this.userInput = '';
   }
 
-
   onArrowClick() {
     this.arrowService.setValue(false);
     this.arrowService.getValue().subscribe(value => {
@@ -101,4 +101,7 @@ export class AnimalComponent implements OnInit {
     }
   }
 
+  funnySoundEffect() {
+    this.soundService.playSound("chickenSoundEffect3.mp3");
+  }
 }

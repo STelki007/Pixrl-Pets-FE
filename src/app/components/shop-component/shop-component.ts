@@ -7,6 +7,7 @@ import {Toast} from 'primeng/toast';
 import {MessageService} from 'primeng/api';
 import {ProgressSpinner} from 'primeng/progressspinner';
 import {Image} from 'primeng/image';
+import {SoundService} from '@services/SoundService';
 
 @Component({
   selector: 'app-shop-component',
@@ -17,53 +18,44 @@ import {Image} from 'primeng/image';
   providers: [MessageService]
 })
 export class ShopComponent implements OnInit {
-
-  private selectItemAudio!: HTMLAudioElement;
-  private switchButtonAudio!: HTMLAudioElement;
-  private coinItemAudio!: HTMLAudioElement;
   protected selectedTab: string = "buy";
   protected isOffcanvasOpen: boolean = false;
   protected items = new Array(15);
-  protected buyTitle: string = "Magische Ketchup kaufen";
   @ViewChild('buyModal') buyModal!: TemplateRef<any>;
   private modalRef?: NgbModalRef;
   protected quantity: number = 1;
   protected quantityError: string | null = null;
 
 
-  constructor(private modalService: NgbModal, private messageService: MessageService) {}
+  constructor(private modalService: NgbModal,
+              private messageService: MessageService,
+              private soundService: SoundService,
+) {}
 
   ngOnInit(): void {
-    this.selectItemAudio = new Audio("select-item.mp3"); this.selectItemAudio.load();
-    this.switchButtonAudio = new Audio("cabinet-door.mp3"); this.switchButtonAudio.load();
-    this.coinItemAudio = new Audio("coinClickEffect2.mp3"); this.coinItemAudio.load();
   }
 
   onClickItem() {
-    this.selectItemAudio.currentTime = 0;
-    this.selectItemAudio.play();
+    this.soundService.playSound("select-item.mp3");
   }
 
   closeOffcanvas() {
+    this.soundService.playSound("select-item.mp3");
     this.isOffcanvasOpen = false;
   }
 
   selectTab(tab: string) {
-    this.switchButtonAudio.currentTime = 0;
-    this.switchButtonAudio.play();
+    this.soundService.playSound("cabinet-door.mp3");
     this.selectedTab = tab;
   }
 
-  onClickInfo(index: number) {
+  onClickInfo() {
     this.isOffcanvasOpen = true;
-    console.log(index);
-    this.selectItemAudio.currentTime = 0;
-    this.selectItemAudio.play()
+    this.soundService.playSound("select-item.mp3");
   }
 
   onClickCoin() {
-    this.coinItemAudio.currentTime = 0;
-    this.coinItemAudio.play();
+    this.soundService.playSound("coinClickEffect2.mp3");
   }
 
   validateQuantity() {
@@ -83,14 +75,14 @@ export class ShopComponent implements OnInit {
       this.quantityError = "Minimale Bestellmenge ist 1!";
       return;
     }
+    this.soundService.playSound("select-item.mp3");
     this.quantity = 1;
     this.quantityError = null;
     this.modalRef?.close();
-    this.selectItemAudio.currentTime = 0;
-    this.selectItemAudio.play();
     this.messageService.add({ severity: 'success', summary: 'Gekauft!', detail: 'Das Item wurde erfolgreich gekauft.' });
   }
   openBuyModal() {
+    this.soundService.playSound("select-item.mp3");
     this.modalRef = this.modalService.open(this.buyModal, {
       centered: true,
       backdrop: "static",
@@ -98,20 +90,6 @@ export class ShopComponent implements OnInit {
     });
     this.quantity = 1;
     this.quantityError = null;
-    this.selectItemAudio.currentTime = 0;
-    this.selectItemAudio.play()
   }
 
-  closeModal() {
-    this.modalRef?.close();
-    this.modalRef = undefined;
-    this.quantity = 1;
-    this.quantityError = null;
-    this.selectItemAudio.currentTime = 0;
-    this.selectItemAudio.play()
-  }
-
-  show() {
-    this.messageService.add({ severity: 'success', summary: 'Erfolg', detail: 'Dies ist eine Toast-Nachricht!' });
-  }
 }

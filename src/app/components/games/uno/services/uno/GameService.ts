@@ -18,4 +18,16 @@ export class GameService {
     }
   }
 
+  drawMultipleCards(player: string, players: { [key: string]: string[] }, count: number, delay = 300): void {
+    for (let i = 0; i < count; i++) {
+      setTimeout(() => {
+        this.drawCardForPlayer(players, player, 1);
+      }, delay * (i + 1));
+    }
+  }
+
+
+
+
+
 }

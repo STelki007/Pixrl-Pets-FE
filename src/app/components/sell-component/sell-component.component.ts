@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {NgForOf} from '@angular/common';
+import {SoundService} from '@services/SoundService';
 
 @Component({
   selector: 'app-sell-component',
@@ -10,7 +11,12 @@ import {NgForOf} from '@angular/common';
   styleUrl: './sell-component.component.css'
 })
 export class SellComponentComponent implements OnInit {
-  private audio!: HTMLAudioElement;
+
+  constructor(
+    private soundService: SoundService,
+  ) {
+  }
+
   items = [
     ['🥧', '🥕', '🔥', '🥩', '🍗', '🍩', '🎃', '🍄', '💀'],
     ['🥧', '🥕', '🔥', '🥩', '🍗', '🍩', '🎃', '🍄', '💀'],
@@ -19,12 +25,10 @@ export class SellComponentComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    this.audio = new Audio("select-item.mp3");
-    this.audio.load()
+
   }
 
   onClickItem() {
-    this.audio.currentTime = 0;
-    this.audio.play()
+    this.soundService.playSound("select-item.mp3")
   }
 }

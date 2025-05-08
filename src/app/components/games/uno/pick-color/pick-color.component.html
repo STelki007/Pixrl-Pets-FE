@@ -1,0 +1,12 @@
+<app-alert-center-modal-component
+  [title]="'Wählen Sie eine Farbe aus'"
+  [service]="pickColorService">
+
+  <div class=" d-flex justify-content-around align-items-center w-100">
+    <div class="color-option red mx-3" (click)="selectColor('red')">🔴</div>
+    <div class="color-option yellow mx-3" (click)="selectColor('yellow')">🟡</div>
+    <div class="color-option green mx-3" (click)="selectColor('green')">🟢</div>
+    <div class="color-option blue mx-3" (click)="selectColor('blue')">🔵</div>
+  </div>
+
+</app-alert-center-modal-component>
