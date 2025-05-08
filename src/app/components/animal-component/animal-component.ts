@@ -40,7 +40,7 @@ export class AnimalComponent implements OnInit {
   }
 
   sendMassageToAI() {
-    console.log(PetFactory.convertObjectToPetString(PetFactory.createPet("cow")))
+    console.log(PetFactory.convertObjectToPetString(PetFactory.createPet("sheep")))
     if (!this.userInput.trim()) return;
 
     this.openai.messages.push({ role: 'user', content: this.userInput });
@@ -54,7 +54,7 @@ export class AnimalComponent implements OnInit {
     const currentIndex = this.messagesList.length - 1;
 
     const lastMessages = this.openai.messages.slice(-10);
-    const currentPet = PetFactory.createPet("cow");
+    const currentPet = PetFactory.createPet("sheep");
     const systemPrompt: ChatMessage = {
       role: 'system',
       content: `

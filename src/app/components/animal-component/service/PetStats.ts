@@ -1,3 +1,5 @@
+import {PetCultureInterface} from '@components/animal-component/service/PetCultureInterface';
+
 export interface PetStats {
   hunger: number;
   weight: number;
@@ -13,4 +15,5 @@ export interface PetStats {
   affection: number;
   moneyProduction: number;
   hateful: number;
+  history: PetCultureInterface;
 }

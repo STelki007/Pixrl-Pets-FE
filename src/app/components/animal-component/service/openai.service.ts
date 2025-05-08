@@ -7,7 +7,6 @@ import {ChatMessage} from '@components/animal-component/service/ChatMessage';
 @Injectable({ providedIn: 'root' })
 export class OpenAIService {
   private backendUrl = 'http://localhost:8080/api/chat';
-  private pets = ["cow", "pig", "chicken", "sheep"];
 
   messages: ChatMessage[] = [
     {
@@ -30,7 +29,7 @@ export class OpenAIService {
       - affection (0-10)
       - moneyProduction (0-10)
 
-      ${PetFactory.convertObjectToPetString(PetFactory.createPet("chicken"))}, regiere und verhalte dich, als ob du dieser Tier bis ;).`
+      ${PetFactory.convertObjectToPetString(PetFactory.createPet("sheep"))}, regiere und verhalte dich, als ob du dieser Tier bis ;).`
     }
   ];
 
