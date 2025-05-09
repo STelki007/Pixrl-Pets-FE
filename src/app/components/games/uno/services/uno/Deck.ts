@@ -68,14 +68,28 @@ export class Deck {
     "figmaUnoCard0-9/ChangeColor-1.svg",
   ];
 
+  private drawnCardArr: string[] = []
+
   protected deck: string[] = [...this.initialDeck];
 
   getDeck(): string[] {
     return this.deck;
   }
 
+  setDeck (cards: string[]) {
+    this.deck = cards;
+  }
+
   resetDeck(): void {
     this.deck = [...this.initialDeck];
+  }
+
+  drawnCards(card: string): void {
+    this.drawnCardArr.push(card);
+  }
+
+  getDrawnCard (){
+    return this.drawnCardArr;
   }
 
 }

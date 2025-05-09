@@ -67,22 +67,9 @@ export class PlayerComponent implements OnInit, OnChanges {
   }
 
   handleGetFirstCard(changes: SimpleChanges) {
-    if (changes['getFirstCard'] && changes['getFirstCard'].currentValue) {
-      const color = this.cardService.extractCardColor(this.getFirstCard) || this.cardService.randomColor();
-
-      if (this.cardService.checkIfChangeColorOr4PlusCard(this.getFirstCard)) {
-        const newColor = this.cardService.randomColor();
-
-        setTimeout(() => {
-          this.colorOfCardOutPut = newColor;
-          this.cardOutPut.emit(this.colorOfCardOutPut);
-          this.cardOutPut.emit(this.getFirstCard);
-        });
-      } else {
-        setTimeout(() => {
-          this.colorOfCardOutPut = color;
-        });
-      }
+    if (changes['getFirstCard'] && changes['getFirstCard'].currentValue !== changes['getFirstCard'].previousValue) {
+      this.colorOfCardOutPut = this.cardService.extractCardColor(this.getFirstCard);
+      this.cdr.detectChanges();
     }
   }
 
@@ -94,6 +81,7 @@ export class PlayerComponent implements OnInit, OnChanges {
   }
 
   playCardIfValid(card: string, player: string): void {
+    this.shuffelAgain()
     const isCurrentPlayer = (player === this.player1 && !this.isPlayer2) || (player === this.player2 && this.isPlayer2);
 
     if (!isCurrentPlayer) return;
@@ -112,11 +100,13 @@ export class PlayerComponent implements OnInit, OnChanges {
     }
     this.switchToNextPlayer();
     this.unoLastCardReset.emit();
+    console.log(this.deck.getDrawnCard())
   }
 
   private removeCardFromPlayer(player: string, card: string): void {
     const index = this.players[player].indexOf(card);
     if (index > -1) {
+      this.deck.drawnCards(card)
       this.players[player].splice(index, 1);
       this.players = { ...this.players };
       this.cdr.detectChanges();
@@ -190,26 +180,15 @@ export class PlayerComponent implements OnInit, OnChanges {
         return;
       }
 
-      let drawnCard: string | undefined;
-      let maxTries = this.deck.getDeck().length;
-
-      while (maxTries-- > 0) {
-        const nextCard = this.deck.getDeck().shift();
-        if (!nextCard) break;
-
-        if (!this.cardService.checkIfChangeColorOr4PlusCard(nextCard)) {
-          drawnCard = nextCard;
-          break;
-        } else {
-          this.deck.getDeck().push(nextCard);
-        }
-      }
+      let drawnCard = this.deck.getDeck().shift();
+      this.deck.getDeck().push(drawnCard!);
 
       if (!drawnCard) {
         this.switchToNextPlayer();
         return;
       }
 
+      this.soundService.playSound("card-draw.mp3");
       this.players[bot].push(drawnCard);
       this.cardAnimation.animateDrawCard(false, this.backCard);
       this.cdr.detectChanges();
@@ -274,6 +253,7 @@ export class PlayerComponent implements OnInit, OnChanges {
   }
 
   onCompleteRoundClick(): void {
+    this.shuffelAgain()
     const currentPlayer = this.isPlayer2 ? this.player2 : this.player1;
 
     const playableCards = this.players[currentPlayer].filter(card => this.cardService.canPlayCard(card, this.getFirstCard));
@@ -285,14 +265,39 @@ export class PlayerComponent implements OnInit, OnChanges {
     const drawnCard = this.deck.getDeck().shift();
     if (drawnCard) {
       this.soundService.playSound("card-draw.mp3");
-      const isAnimation = currentPlayer === this.player2;
+      const isAnimation: boolean = currentPlayer === this.player2;
       this.players[currentPlayer].push(drawnCard);
       this.cardAnimation.animateDrawCard(isAnimation, this.backCard);
       this.cdr.detectChanges();
     } else {
-      alert("Deck ist leer.");
+      this.shuffelAgain()
     }
   }
+
+  shuffelAgain(): void {
+    const currentDeck = this.deck.getDeck();
+
+    if (currentDeck.length <= 1) {
+      const discardPile = this.deck.getDrawnCard();
+
+      if (discardPile.length === 0) return;
+
+      const newDeck = discardPile.slice(0, -1);
+      this.shuffleArray(newDeck);
+
+      this.deck.setDeck(newDeck);
+
+      alert("Deck wurde neu gemischt.");
+    }
+  }
+
+  private shuffleArray(array: string[]): void {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  }
+
   playerHasNoCards(player: string): boolean {
     return this.players[player]?.length === 0;
   }

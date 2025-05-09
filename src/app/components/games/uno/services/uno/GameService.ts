@@ -26,7 +26,12 @@ export class GameService {
     }
   }
 
-
+   shuffleDeck(deckArray: string[]): void {
+    for (let i = deckArray.length - 1; i > 0; i--) {
+      const random = Math.floor(Math.random() * (i + 1));
+      [deckArray[i], deckArray[random]] = [deckArray[random], deckArray[i]];
+    }
+  }
 
 
 

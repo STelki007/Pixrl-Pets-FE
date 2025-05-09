@@ -1,17 +1,17 @@
 import {Component, OnInit} from '@angular/core';
-import {CardsContainerComponent} from '../cards-container/cards-container.component';
-import {PlayerComponent} from '../player/player.component';
 import {GameStartComponent} from '../game-start/game-start.component';
 import {NgIf} from '@angular/common';
 import {UnoGameStart} from '@components/games/uno/services/uno/UnoGameStart';
+import {CardsContainerComponent} from '@components/games/uno/cards-container/cards-container.component';
+import {PlayerComponent} from '@components/games/uno/player/player.component';
 
 @Component({
   selector: 'app-main-view',
   imports: [
-    CardsContainerComponent,
-    PlayerComponent,
     GameStartComponent,
-    NgIf
+    NgIf,
+    CardsContainerComponent,
+    PlayerComponent
   ],
   templateUrl: './main-view.component.html',
   styleUrl: './main-view.component.css'
@@ -32,7 +32,6 @@ export class MainViewComponent implements OnInit {
       this.isGameStart = value;
     });
   }
-
 
   updatePlayers(players: { [key: string]: string[] }) {
     this.players = players;
