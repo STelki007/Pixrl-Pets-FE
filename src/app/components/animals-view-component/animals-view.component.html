@@ -1,10 +1,12 @@
 <div class="anima-view">
   <div class="container">
     <div class="scrollable-grid">
-      <div *ngFor="let item of items" class="grid-item" (click)="onAnimalCardClick()">
-        <img src="https://www.megavoxels.com/wp-content/uploads/2024/02/Pixel-Art-Chicken-5.webp" alt="Pixel Chick"  class="pixel-image"/>
+      <div *ngFor="let animal of animalList" class="grid-item" (click)="onAnimalCardClick(animal)">
+        <div
+          [ngClass]="[animal.getAnimationCss().image, animal.getAnimationCss().current]"
+          [ngStyle]="{ 'background-image': 'url(' + animal.getImagePath() + ')' }">
+        </div>
       </div>
     </div>
   </div>
-
 </div>

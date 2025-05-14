@@ -5,6 +5,7 @@ import {SoundService} from '@services/SoundService';
 @Component({
   selector: 'app-coin-component',
   templateUrl: './coin-component.html',
+  standalone: true,
   styleUrls: ['./coin-component.css']
 })
 export class CoinComponent implements OnInit, OnDestroy {

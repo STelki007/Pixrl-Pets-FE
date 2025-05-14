@@ -8,14 +8,22 @@
 
       <div class="col-4 animal-div">
         <div class="avatar-selection">
-          <img src="https://img.freepik.com/premium-vector/brown-bear-head-8-bit-pixel-art-cute-animals-game-assets-vector-illustrations_614713-1693.jpg" class="avatar">
+            <h6>{{ animal?.getName() }}</h6>
+            <div
+              [ngClass]="[animal?.getAnimationCss().image, animal?.getAnimationCss().current]"
+              [ngStyle]="{ 'background-image': 'url(' + animal?.getImagePath() + ')' }">
+            </div>
         </div>
       </div>
 
       <div class="col-7 chat-container nes-container with-title is-dark">
         <div class="chat-title-div mb-2">
-          <h6 class="title">Eggbert Kleinstein</h6>
-          <img src="https://img.freepik.com/premium-vector/brown-bear-head-8-bit-pixel-art-cute-animals-game-assets-vector-illustrations_614713-1693.jpg">
+          <h6 class="title">{{animal?.getName()}}</h6>
+
+          <div
+            [ngClass]="[animal?.getAnimationCss().icon, animal?.getAnimationCss().animations.static]"
+            [ngStyle]="{ 'background-image': 'url(' + animal?.getImagePath() + ')' }">
+          </div>
         </div>
         <div class="chat-box">
           <div class="m-3">
@@ -49,7 +57,7 @@
     </div>
     <div class="position-absolute" style="right: 10px; top: 100px;">
       <div class="d-flex flex-column  nes-dialog is-dark" style="border-radius: 10px; align-items: flex-end; ">
-        <button class="nes-btn is-primary mb-2">Füttern</button>
+        <button class="nes-btn is-primary mb-2" (click)="eat()">Füttern</button>
         <button class="nes-btn is-success mb-2">Spielen</button>
         <button class="nes-btn is-error mb-2">Schlafen</button>
       </div>

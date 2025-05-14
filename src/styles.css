@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -12,4 +12,124 @@
   -webkit-user-select: none;
   -webkit-user-drag: none;
   -ms-user-select: none;
+}
+
+
+/*CSS for sprite rendering and animation*/
+/*sprite sheets*/
+.pixel-image-default {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  width: calc(32px * 8);
+  height: calc(32px * 8);
+  background-size: calc(256px * 8) calc(256px * 8);
+  background-repeat: no-repeat;
+  background-position: 0 0;
+}
+
+.pixel-image-pig {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  width: calc(32px * 8);
+  height: calc(32px * 8);
+  background-size: calc(288px * 8) calc(288px * 8);
+  background-repeat: no-repeat;
+  background-position: 0 0;
+}
+
+.pixel-image-cow {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  width: calc(32px * 8);
+  height: calc(32px * 8);
+  background-size: calc(256px * 8) calc(288px * 8);
+  background-repeat: no-repeat;
+  background-position: 0 0;
+}
+
+.pixel-image-sheep {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  width: calc(32px * 8);
+  height: calc(32px * 8);
+  background-size: calc(256px * 8) calc(288px * 8);
+  background-repeat: no-repeat;
+  background-position: 0 0;
+}
+
+.pixel-icon-default {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  width: calc(32px * 4);
+  height: calc(32px * 4);
+  background-size: calc(256px * 4) calc(256px * 4);
+  background-repeat: no-repeat;
+  background-position: 0 0;
+}
+
+/*animations*/
+.animate-sprite-default-idle {
+  animation: spriteAnimRow1Length2 1s steps(2) infinite;
+}
+
+.animate-sprite-default-walk {
+  animation: spriteAnimRow2Length8 1s steps(8) infinite;
+}
+
+.animate-sprite-chicken-walk {
+  animation: spriteAnimRow2Length6 1s steps(6) infinite;
+}
+
+.animate-sprite-default-eat {
+  animation: spriteAnimRow3Length8 1s steps(8) infinite;
+}
+
+.animate-sprite-pig-eat {
+  animation: spriteAnimRow3Length9 1s steps(9) infinite;
+}
+
+/*keyframes*/
+@keyframes spriteAnimRow1Length2 {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: calc(-32px * 8 * 2) 0;
+  }
+}
+
+@keyframes spriteAnimRow2Length6 {
+  from {
+    background-position: 0 calc(-32px * 8);
+  }
+  to {
+    background-position: calc(-32px * 8 * 6) calc(-32px * 8);
+  }
+}
+
+@keyframes spriteAnimRow2Length8 {
+  from {
+    background-position: 0 calc(-32px * 8);
+  }
+  to {
+    background-position: calc(-32px * 8 * 8) calc(-32px * 8);
+  }
+}
+
+@keyframes spriteAnimRow3Length8 {
+  from {
+    background-position: 0 calc(-32px * 8 * 2);
+  }
+  to {
+    background-position: calc(-32px * 8 * 8) calc(-32px * 8 * 2);
+  }
+}
+
+@keyframes spriteAnimRow3Length9 {
+  from {
+    background-position: 0 calc(-32px * 8 * 2);
+  }
+  to {
+    background-position: calc(-32px * 8 * 9) calc(-32px * 8 * 2);
+  }
 }
