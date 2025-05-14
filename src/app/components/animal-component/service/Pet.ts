@@ -1,4 +1,5 @@
 import {PetStats} from '@components/animal-component/service/PetStats';
+import {PetCulture} from '@components/animal-component/service/PetCulture';
 
 export class Pet {
   private readonly imagePath: string = "";
@@ -153,6 +154,7 @@ export class Pet {
           affection: 10,
           moneyProduction: 10,
           hateful: 0,
+          history: PetCulture.chicken()
         }, 100);
       case PetType.cow:
         return new Pet(0, "", "Cow", PetType.cow, {
@@ -170,6 +172,7 @@ export class Pet {
           affection: 10,
           moneyProduction: 10,
           hateful: 0,
+          history: PetCulture.cow()
         }, 100);
       case PetType.pig:
         return new Pet(0, "", "Pig", PetType.pig, {
@@ -187,6 +190,7 @@ export class Pet {
           affection: 10,
           moneyProduction: 10,
           hateful: 0,
+          history: PetCulture.pig()
         }, 100);
       case PetType.sheep:
         return new Pet(0, "", "Sheep", PetType.sheep, {
@@ -204,6 +208,7 @@ export class Pet {
           affection: 10,
           moneyProduction: 10,
           hateful: 0,
+          history: PetCulture.sheep()
         }, 100);
       default:
         throw new Error(animal + " animal not defined in the getTestAnimal() method");

@@ -1,6 +1,5 @@
-import { Pet } from '@components/animal-component/service/Pet';
-import {PetCulture} from '@components/animal-component/service/PetCulture';
 import {Pet, PetType} from '@components/animal-component/service/Pet';
+import {PetCulture} from '@components/animal-component/service/PetCulture';
 
 export class PetFactory {
   static createPet(type: "cow" | "chicken" | "pig" | "sheep"): Pet {
