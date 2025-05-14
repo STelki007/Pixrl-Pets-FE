@@ -11,6 +11,7 @@ import {SelectedAnimalServiceService} from '@services/animal/selected-animal-ser
 import {Observable} from 'rxjs';
 import {Pet, PetAnimation} from '@components/animal-component/service/Pet';
 import {NgClass, NgForOf, NgIf, NgStyle} from '@angular/common';
+import {GetPetNameService} from '@components/animal-component/service/get-pet-name.service';
 
 @Component({
   selector: 'app-animal-component',
@@ -31,25 +32,41 @@ export class AnimalComponent implements OnInit {
   selectedAnimal$: Observable<Pet | null>;
   userInput = "";
   messagesList: { response: string; request: string }[] = [];
+  private petNameValue = "";
 
   constructor(private arrowService: ArrowService,
               private sideBarButtonsService: SideBarButtonsService,
               private openai: OpenAIService,
               private soundService: SoundService,
-              private selectedAnimalService: SelectedAnimalServiceService
+              private selectedAnimalService: SelectedAnimalServiceService,
+              private getPetName: GetPetNameService,
   ) {
     this.selectedAnimal$ = this.selectedAnimalService.getSelectedAnimalObservable();
   }
 
   ngOnInit(): void {
+    this.getAnimal();
+    this.saveMessages();
+    this.petName();
+  }
+
+  getAnimal() {
     this.selectedAnimal$.subscribe((animal) => {
       this.animal = animal;
     })
+  }
 
+  saveMessages () {
     const savedMessages = localStorage.getItem('chatHistory');
     if (savedMessages) {
       this.openai.messages = JSON.parse(savedMessages);
     }
+  }
+
+  petName() {
+    this.getPetName.getValue().subscribe((value) => {
+      this.petNameValue = value;
+    })
   }
 
   eat() {
@@ -58,55 +75,58 @@ export class AnimalComponent implements OnInit {
   }
 
   sendMassageToAI() {
-    console.log(PetFactory.convertObjectToPetString(PetFactory.createPet("cow")))
     if (!this.userInput.trim()) return;
 
-    this.openai.messages.push({role: 'user', content: this.userInput});
+    this.getPetName.getValue().subscribe(petName => {
+      const currentPet = PetFactory.createPet(petName.toLowerCase());
 
-    const currentMessage = {
-      request: this.userInput,
-      response: '...'
-    };
+      this.openai.messages.push({ role: 'user', content: this.userInput });
 
-    this.messagesList.push(currentMessage);
-    const currentIndex = this.messagesList.length - 1;
+      const currentMessage = {
+        request: this.userInput,
+        response: '...'
+      };
 
-    const lastMessages = this.openai.messages.slice(-10);
-    const currentPet = PetFactory.createPet("cow");
-    const systemPrompt: ChatMessage = {
-      role: 'system',
-      content: `
-      Im Backend ist die Tokenbegrenzung auf 100 eingestellt – passe deine Antwort so an, dass sie nicht abgeschnitten wirkt, auch wenn sie gekürzt werden muss. also maximal 30 wörter antworten
-    Sie sind ein digitales Haustier-Simulationsmodell.
-    Ihre Aufgabe ist es, als folgendes Tier zu antworten:
+      this.messagesList.push(currentMessage);
+      const currentIndex = this.messagesList.length - 1;
 
-    ${PetFactory.convertObjectToPetString(currentPet)}
+      const lastMessages = this.openai.messages.slice(-10);
 
-    Verhalten und reagieren Sie sich entsprechend diesem Tiercharakter.
-  `
-    };
+      const systemPrompt: ChatMessage = {
+        role: 'system',
+        content: `
+Im Backend ist die Tokenbegrenzung auf 100 eingestellt – die Antwort darf daher maximal 30 Wörter enthalten.
 
-    const messagesToSend: ChatMessage[] = [systemPrompt, ...lastMessages];
-
-    this.openai.sendMessageWithHistory(messagesToSend).subscribe((res: ChatCompletionResponse) => {
-      const aiResponse = res.choices[0].message.content;
-      const usage = res.usage;
-
-      this.openai.messages.push({role: 'assistant', content: aiResponse});
-
-      localStorage.setItem('chatHistory', JSON.stringify(this.openai.messages));
-
-      this.messagesList[currentIndex].response = aiResponse;
+Du bist ein digitales Haustier mit folgenden Eigenschaften:
+${PetFactory.convertObjectToPetString(currentPet)}
+          Reagiere immer entsprechend dem Charakter des Tieres.
+          Wenn der Nutzer unangemessene oder beleidigende Nachrichten sendet, antworte freundlich, aber bestimmt – weise auf die Unangemessenheit hin, ohne selbst beleidigend zu werden.
+          Verhalte dich wie ein echtes Haustier: Sag nicht „Wie kann ich helfen?“ oder Ähnliches. Stelle neugierige, verspielte oder tierisch passende Fragen.
+          Wenn der Nutzer etwas über Code, IT oder ein Thema außerhalb deines tierischen Bereichs wissen will, antworte im Charakter: z.B. mit „Willst du mich ausnutzen?“ – stets passend zur Persönlichkeit des Haustiers.
+  `.trim()
+      };
 
 
-      console.log('Prompt Tokens:', usage.prompt_tokens);
-      console.log('Completion Tokens:', usage.completion_tokens);
-      console.log('Total Tokens:', usage.total_tokens);
+
+      const messagesToSend: ChatMessage[] = [systemPrompt, ...lastMessages];
+
+      this.openai.sendMessageWithHistory(messagesToSend).subscribe((res: ChatCompletionResponse) => {
+        const aiResponse = res.choices[0].message.content;
+        const usage = res.usage;
+
+        this.openai.messages.push({ role: 'assistant', content: aiResponse });
+        localStorage.setItem('chatHistory', JSON.stringify(this.openai.messages));
+
+        this.messagesList[currentIndex].response = aiResponse;
+
+        console.log('Prompt Tokens:', usage.prompt_tokens);
+        console.log('Completion Tokens:', usage.completion_tokens);
+        console.log('Total Tokens:', usage.total_tokens);
+      });
+
+      this.userInput = '';
     });
-
-    this.userInput = '';
   }
-
 
   onArrowClick() {
     this.arrowService.setValue(false);

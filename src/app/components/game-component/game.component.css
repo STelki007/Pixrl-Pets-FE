@@ -77,11 +77,21 @@
   background: #666;
 }
 .back-btn {
-  margin: 1rem 0;
-  padding: 0.5rem 1rem;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 10px;
   font-size: 1rem;
+  font-weight: 600;
+  border-radius: 5px;
   cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease-in-out;
   position: absolute;
-  top: 8%;
-  right: 1%;
+  top: 12%;
+  right: 0.5%;
+}
+.fancy-btn:hover {
+  background-color: #e60000;
+  transform: scale(1.05);
 }

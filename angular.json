@@ -28,7 +28,9 @@
               {
                 "glob": "**/*",
                 "input": "assets"
-              }
+              },
+              "src/favicon.ico",
+              "src/assets"
             ],
             "styles": [
               "src/styles.css",
@@ -96,7 +98,9 @@
               {
                 "glob": "**/*",
                 "input": "assets"
-              }
+              },
+              "src/favicon.ico",
+              "src/assets"
             ],
             "styles": [
               "src/styles.css"

@@ -8,7 +8,6 @@
 
       <div class="col-4 animal-div">
         <div class="avatar-selection">
-            <h6>{{ animal?.getName() }}</h6>
             <div
               [ngClass]="[animal?.getAnimationCss().image, animal?.getAnimationCss().current]"
               [ngStyle]="{ 'background-image': 'url(' + animal?.getImagePath() + ')' }">
@@ -36,7 +35,7 @@
               </div>
 
               <div class="chat-message ai">
-                <img *ngIf="messagesList.length > 0" class="chat-avatar" src="https://img.freepik.com/premium-vector/brown-bear-head-8-bit-pixel-art-cute-animals-game-assets-vector-illustrations_614713-1693.jpg" />
+<!--                <img *ngIf="messagesList.length > 0" class="chat-avatar" [src]="animal?.getImagePath()" />-->
                 <div class="message-content ai-style  nes-balloon from-left">
                   <p>{{ message.response || '...' }}</p>
                 </div>

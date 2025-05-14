@@ -64,14 +64,16 @@
   background-color: #2F5E83;
   border-radius: 10px;
   color: white;
+  padding: 10px;
 }
 
 .chat-box {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  height: 290px;
+  height: 200px;
   overflow: auto;
+  max-height: 240px;
 }
 
 .chat-box::-webkit-scrollbar {

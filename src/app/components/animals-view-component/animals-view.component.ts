@@ -5,6 +5,7 @@ import {ArrowService} from '@services/animal/ArrowService';
 import {SoundService} from '@services/SoundService';
 import {SelectedAnimalServiceService} from '@services/animal/selected-animal-service.service';
 import {Pet, PetType} from '@components/animal-component/service/Pet';
+import {GetPetNameService} from '@components/animal-component/service/get-pet-name.service';
 
 @Component({
   selector: 'app-animals-view-component',
@@ -28,7 +29,8 @@ export class AnimalsViewComponent implements OnInit {
     private sideBarButtonsService: SideBarButtonsService,
     private arrowService: ArrowService,
     private soundService: SoundService,
-    private selectedAnimalService: SelectedAnimalServiceService
+    private selectedAnimalService: SelectedAnimalServiceService,
+    private getPetName: GetPetNameService,
   ) {
   }
 
@@ -50,6 +52,7 @@ export class AnimalsViewComponent implements OnInit {
     this.selectedAnimalService.setSelectedAnimal(animal);
     this.sideBarButtonsService.setValue("animal");
     this.arrowService.setValue(true);
+    this.getPetName.setValue(animal.getName());
   }
 
 

@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {SideBarButtonsService} from '../../services/SideBarButtonsService';
 import {SoundService} from '@services/SoundService';
+import {UnoGameStart} from '@components/games/uno/services/uno/UnoGameStart';
 
 @Component({
   selector: 'app-coin-component',
@@ -12,15 +13,21 @@ export class CoinComponent implements OnInit, OnDestroy {
   timeLeft: string = '';
   private timerInterval: any;
   isClaimable: boolean = false;
+  private isUnoStarted = false;
 
-  constructor(private sideBarButtonsService: SideBarButtonsService,
-              private soundService: SoundService) {
+  constructor(
+    private sideBarButtonsService: SideBarButtonsService,
+    private soundService: SoundService,
+    private unoGameStart: UnoGameStart,
+
+  )
+  {
   }
 
   ngOnInit(): void {
     this.updateTimer();
     this.startTimer();
-
+    this.getGameServiceValue();
   }
 
   ngOnDestroy(): void {
@@ -29,6 +36,12 @@ export class CoinComponent implements OnInit, OnDestroy {
 
   private startTimer(): void {
     this.timerInterval = setInterval(() => this.updateTimer(), 1000);
+  }
+
+  getGameServiceValue(): void {
+    this.unoGameStart.getValue().subscribe((value) => {
+      this.isUnoStarted = value;
+    })
   }
 
   private updateTimer(): void {
@@ -67,7 +80,12 @@ export class CoinComponent implements OnInit, OnDestroy {
   }
 
   onCoinsClick() {
-    this.soundService.playSound("coinClickEffect2.mp3")
-    this.sideBarButtonsService.setValue("shop");
+    if (!this.isUnoStarted) {
+      this.soundService.playSound("coinClickEffect2.mp3")
+      this.sideBarButtonsService.setValue("shop");
+    }else {
+      alert("Spiel läuft gerade! Bitte über 'Spiel beenden' klicken.")
+    }
+
   }
 }

@@ -1,10 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {MainViewComponent} from '@components/games/uno/main-view/main-view.component';
+import {UnoDialogComponent} from '@components/games/uno/uno-dialog/uno-dialog.component';
 
 @Component({
   selector: 'app-uno',
   imports: [
-    MainViewComponent
+    MainViewComponent,
+    UnoDialogComponent
   ],
   templateUrl: './uno.component.html',
   styleUrl: './uno.component.css'

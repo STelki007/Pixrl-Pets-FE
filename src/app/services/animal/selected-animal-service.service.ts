@@ -14,15 +14,7 @@ export class SelectedAnimalServiceService {
     this.selectedAnimalSubject.next(animal);
   }
 
-  getSelectedAnimal(): Pet | null {
-    return this.selectedAnimalSubject.getValue();
-  }
-
   getSelectedAnimalObservable(): Observable<Pet|null> {
     return this.selectedAnimal$;
-  }
-
-  clear(): void {
-    this.selectedAnimalSubject.next(null);
   }
 }

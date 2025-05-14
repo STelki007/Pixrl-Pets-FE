@@ -2,7 +2,7 @@ import {Pet, PetType} from '@components/animal-component/service/Pet';
 import {PetCulture} from '@components/animal-component/service/PetCulture';
 
 export class PetFactory {
-  static createPet(type: "cow" | "chicken" | "pig" | "sheep"): Pet {
+  static createPet(type: string): Pet {
     switch (type) {
       case 'chicken':
         return new Pet(0,'0','chicken', PetType.chicken,{

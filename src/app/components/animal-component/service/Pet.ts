@@ -1,5 +1,6 @@
 import {PetStats} from '@components/animal-component/service/PetStats';
 import {PetCulture} from '@components/animal-component/service/PetCulture';
+import {PetFactory} from '@components/animal-component/service/PetFactory';
 
 export class Pet {
   private readonly imagePath: string = "";
@@ -13,14 +14,16 @@ export class Pet {
    * @param userId reference id to the backend user
    * @param name name given by the user
    * @param type animal type
+   * @param stats
    * @param hunger current hunger
    */
   constructor(private id: number,
               private userId: string,
-              private name: string,
-              private type: PetType,
-              private stats?: PetStats,
-              private hunger?: number) {
+              private readonly name: string,
+              private readonly type: PetType,
+              private readonly stats?: PetStats,
+              private hunger?: number
+  ) {
     this.id = id;
     this.userId = userId;
     this.name = name;
@@ -70,12 +73,12 @@ export class Pet {
   }
 
   public setAnimation(animation: PetAnimation){
-    if(!this.animationCss.animations[Pet.petAnimationToString(animation)])
+    if(!this.animationCss.animations[this.petAnimationToString(animation)])
       throw new Error("Pet doesnt have animation '" + animation + "'\n" + this);
-    this.getAnimationCss().current = this.animationCss.animations[Pet.petAnimationToString(animation)];
+    this.getAnimationCss().current = this.animationCss.animations[this.petAnimationToString(animation)];
   }
 
-  public static petAnimationToString( animation: PetAnimation):string{
+  public petAnimationToString( animation: PetAnimation):string{
     switch(animation){
       case PetAnimation.static:
         return "static"
