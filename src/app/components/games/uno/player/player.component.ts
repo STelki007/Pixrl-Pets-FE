@@ -134,6 +134,7 @@ export class PlayerComponent implements OnInit, OnChanges {
 
       case "2cards":
         this.gameService.drawMultipleCards(nextPlayer, this.players, 2);
+        this.manageDelayCardSpeed(1000)
         break;
 
       case "arrow":

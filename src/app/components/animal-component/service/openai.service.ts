@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, switchMap} from 'rxjs';
 import { PetFactory } from '@components/animal-component/service/PetFactory';
 import { ChatMessage } from '@components/animal-component/service/ChatMessage';
-import { GetPetNameService } from '@components/animal-component/service/get-pet-name.service';
+import { PetService } from '@components/animal-component/service/PetService';
 
 @Injectable({ providedIn: 'root' })
 export class OpenAIService {
@@ -13,7 +13,7 @@ export class OpenAIService {
 
   constructor(
     private http: HttpClient,
-    private getPetName: GetPetNameService
+    private getPetName: PetService
   ) {}
 
   sendMessageWithHistory(messages: ChatMessage[]): Observable<any> {
