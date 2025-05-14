@@ -1,12 +1,11 @@
-import { Pet } from '@components/animal-component/service/Pet';
+import {Pet, PetType} from '@components/animal-component/service/Pet';
 import {PetCulture} from '@components/animal-component/service/PetCulture';
 
 export class PetFactory {
-
   static createPet(type: "cow" | "chicken" | "pig" | "sheep"): Pet {
     switch (type) {
       case 'chicken':
-        return new Pet('chicken', {
+        return new Pet(0,'0','chicken', PetType.chicken,{
           hunger: 10,
           weight: 10,
           socialSkill: 10,
@@ -23,9 +22,8 @@ export class PetFactory {
           hateful: 0,
           history: PetCulture.chicken()
         });
-
       case 'cow':
-        return new Pet('cow', {
+        return new Pet(0,'0','cow', PetType.cow,{
           hunger: 3,
           weight: 5,
           socialSkill: 8,
@@ -42,9 +40,8 @@ export class PetFactory {
           hateful: 10,
           history: PetCulture.cow()
         });
-
       case 'sheep':
-        return new Pet('sheep', {
+        return new Pet(0,'0','sheep', PetType.sheep,{
           hunger: 2,
           weight: 1,
           socialSkill: 6,
@@ -63,10 +60,10 @@ export class PetFactory {
         });
 
       case 'pig':
-        return new Pet('pig', {
+        return new Pet(0,'0','pig', PetType.pig,{
           hunger: 8,
           weight: 4,
-          socialSkill: 0,
+          socialSkill: 1,
           strengthSpeed: 7,
           humor: 10,
           curiosity: 4,
@@ -87,6 +84,6 @@ export class PetFactory {
   }
 
   static convertObjectToPetString(pet: Pet): string {
-    return `Du bist ein ${pet.name}.\nDein Zustand:\n${JSON.stringify(pet.stats, null, 2)}\n`;
+    return ` du bist ${pet.getName()}. dein Zustand ist:\\n${JSON.stringify(pet.getStats(), null, 2)}\n`
   }
 }
