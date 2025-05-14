@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import {CoinComponent} from '../coin-component/coin-component';
+import {Component, OnInit} from '@angular/core';
 import {ArrowService} from '@services/animal/ArrowService';
 import {SideBarButtonsService} from '@services/SideBarButtonsService';
 import {OpenAIService} from '@components/animal-component/service/openai.service';
 import {FormsModule} from '@angular/forms';
-import {NgForOf, NgIf} from '@angular/common';
 import {ChatCompletionResponse} from '@components/animal-component/service/ChatCompletionResponse';
-import {FactoryTarget} from '@angular/compiler';
 import {PetFactory} from '@components/animal-component/service/PetFactory';
 import {ChatMessage} from '@components/animal-component/service/ChatMessage';
 import {SoundService} from '@services/SoundService';
+import {SelectedAnimalServiceService} from '@services/animal/selected-animal-service.service';
+import {Observable} from 'rxjs';
+import {Pet, PetAnimation} from '@components/animal-component/service/Pet';
+import {NgClass, NgForOf, NgIf, NgStyle} from '@angular/common';
 
 @Component({
   selector: 'app-animal-component',
@@ -17,33 +18,50 @@ import {SoundService} from '@services/SoundService';
   imports: [
     FormsModule,
     NgForOf,
-    NgIf
+    NgIf,
+    NgClass,
+    NgStyle
   ],
+  standalone: true,
   styleUrl: './animal-component.css'
 })
 export class AnimalComponent implements OnInit {
   private arrowServiceValue: boolean = false;
+  animal: Pet | null = null;
+  selectedAnimal$: Observable<Pet | null>;
   userInput = "";
   messagesList: { response: string; request: string }[] = [];
 
-  constructor(private  arrowService: ArrowService,
+  constructor(private arrowService: ArrowService,
               private sideBarButtonsService: SideBarButtonsService,
               private openai: OpenAIService,
               private soundService: SoundService,
-  ) {}
+              private selectedAnimalService: SelectedAnimalServiceService
+  ) {
+    this.selectedAnimal$ = this.selectedAnimalService.getSelectedAnimalObservable();
+  }
 
   ngOnInit(): void {
+    this.selectedAnimal$.subscribe((animal) => {
+      this.animal = animal;
+    })
+
     const savedMessages = localStorage.getItem('chatHistory');
     if (savedMessages) {
       this.openai.messages = JSON.parse(savedMessages);
     }
   }
 
+  eat() {
+    if (this.animal != null)
+      this.animal.setAnimation(PetAnimation.eat);
+  }
+
   sendMassageToAI() {
     console.log(PetFactory.convertObjectToPetString(PetFactory.createPet("cow")))
     if (!this.userInput.trim()) return;
 
-    this.openai.messages.push({ role: 'user', content: this.userInput });
+    this.openai.messages.push({role: 'user', content: this.userInput});
 
     const currentMessage = {
       request: this.userInput,
@@ -74,7 +92,7 @@ export class AnimalComponent implements OnInit {
       const aiResponse = res.choices[0].message.content;
       const usage = res.usage;
 
-      this.openai.messages.push({ role: 'assistant', content: aiResponse });
+      this.openai.messages.push({role: 'assistant', content: aiResponse});
 
       localStorage.setItem('chatHistory', JSON.stringify(this.openai.messages));
 
@@ -97,7 +115,7 @@ export class AnimalComponent implements OnInit {
     })
     if (this.arrowServiceValue) {
       this.sideBarButtonsService.setValue("animal");
-    }else{
+    } else {
       this.sideBarButtonsService.setValue("animals")
     }
   }
