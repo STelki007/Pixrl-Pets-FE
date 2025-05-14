@@ -1,17 +1,21 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import {CoinComponent} from '../coin-component/coin-component';
 import {ArrowService} from '@services/animal/ArrowService';
 import {SideBarButtonsService} from '@services/SideBarButtonsService';
 import {OpenAIService} from '@components/animal-component/service/openai.service';
 import {FormsModule} from '@angular/forms';
+import {NgForOf, NgIf} from '@angular/common';
 import {ChatCompletionResponse} from '@components/animal-component/service/ChatCompletionResponse';
+import {FactoryTarget} from '@angular/compiler';
 import {PetFactory} from '@components/animal-component/service/PetFactory';
 import {ChatMessage} from '@components/animal-component/service/ChatMessage';
 import {SoundService} from '@services/SoundService';
 import {SelectedAnimalServiceService} from '@services/animal/selected-animal-service.service';
 import {Observable} from 'rxjs';
 import {Pet, PetAnimation} from '@components/animal-component/service/Pet';
-import {NgClass, NgForOf, NgIf, NgStyle} from '@angular/common';
+import {NgClass, NgStyle} from '@angular/common';
 import {GetPetNameService} from '@components/animal-component/service/get-pet-name.service';
+import {KonamiCodeService} from '@services/konami-code.service';
 
 @Component({
   selector: 'app-animal-component',
@@ -33,6 +37,7 @@ export class AnimalComponent implements OnInit {
   userInput = "";
   messagesList: { response: string; request: string }[] = [];
   private petNameValue = "";
+  konamiCodeState: boolean = false;
 
   constructor(private arrowService: ArrowService,
               private sideBarButtonsService: SideBarButtonsService,
@@ -40,6 +45,7 @@ export class AnimalComponent implements OnInit {
               private soundService: SoundService,
               private selectedAnimalService: SelectedAnimalServiceService,
               private getPetName: GetPetNameService,
+              private konamiCodeService: KonamiCodeService,
   ) {
     this.selectedAnimal$ = this.selectedAnimalService.getSelectedAnimalObservable();
   }
@@ -48,6 +54,7 @@ export class AnimalComponent implements OnInit {
     this.getAnimal();
     this.saveMessages();
     this.petName();
+    this.getKonamiCodeState()
   }
 
   getAnimal() {
@@ -128,6 +135,7 @@ ${PetFactory.convertObjectToPetString(currentPet)}
     });
   }
 
+
   onArrowClick() {
     this.arrowService.setValue(false);
     this.arrowService.getValue().subscribe(value => {
@@ -135,13 +143,25 @@ ${PetFactory.convertObjectToPetString(currentPet)}
     })
     if (this.arrowServiceValue) {
       this.sideBarButtonsService.setValue("animal");
-    } else {
+    }else{
       this.sideBarButtonsService.setValue("animals")
     }
   }
 
+  getKonamiCodeState () {
+    this.konamiCodeService.getValue().subscribe(value => {
+      this.konamiCodeState = value;
+    })
+  }
+
   funnySoundEffect() {
-    this.soundService.playSound("horse-soundeffect.mp3");
-    this.soundService.soundValue(0.3)
+    if (this.konamiCodeState) {
+      this.soundService.playSound("chickenSoundEffect3.mp3");
+      this.soundService.soundValue(0.3);
+
+      setTimeout(() => {
+        this.konamiCodeState = false;
+      }, 30000);
+    }
   }
 }

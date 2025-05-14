@@ -134,7 +134,6 @@ export class PlayerComponent implements OnInit, OnChanges {
 
       case "2cards":
         this.gameService.drawMultipleCards(nextPlayer, this.players, 2);
-        this.manageDelayCardSpeed(1000)
         break;
 
       case "arrow":
@@ -173,7 +172,7 @@ export class PlayerComponent implements OnInit, OnChanges {
 
     const tryPlayOrDraw = () => {
       const hand = this.players[bot];
-      this.pressUnoButton = hand.length <= 2;
+      this.pressUnoButton = hand.length <= 1;
 
       const playableCards = hand.filter(card => this.cardService.canPlayCard(card, this.getFirstCard));
 
