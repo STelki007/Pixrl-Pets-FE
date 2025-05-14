@@ -1,4 +1,5 @@
 import {Injectable, SimpleChanges} from '@angular/core';
+import {Deck} from '@components/games/uno/services/uno/Deck';
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +38,7 @@ export class CardService {
     return false;
   }
 
-   canPlayCard(card: string, topCard: string): string | boolean {
+   canPlayCard(card: string, topCard: string): boolean | string {
     const cardColor = this.extractCardColor(card);
     const topColor = this.extractCardColor(topCard);
 
@@ -58,9 +59,28 @@ export class CardService {
     );
   }
 
-  randomColor (): string{
-    const randomIndexOfColor = Math.floor(Math.random() * this.colors.length);
-    return this.colors[randomIndexOfColor];
+  shuffleAgain(deck: Deck): void {
+    const currentDeck = deck.getDeck();
+
+    if (currentDeck.length <= 1) {
+      const discardPile = deck.getDrawnCard();
+
+      if (discardPile.length === 0) return;
+
+      const newDeck = discardPile.slice(0, -1);
+      this.shuffleArray(newDeck);
+
+      deck.setDeck(newDeck);
+
+      alert("Deck wurde neu gemischt.");
+    }
+  }
+
+  private shuffleArray(array: string[]): void {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
   }
 
 }

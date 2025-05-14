@@ -40,7 +40,7 @@ export class AnimalComponent implements OnInit {
   }
 
   sendMassageToAI() {
-    console.log(PetFactory.convertObjectToPetString(PetFactory.createPet("sheep")))
+    console.log(PetFactory.convertObjectToPetString(PetFactory.createPet("cow")))
     if (!this.userInput.trim()) return;
 
     this.openai.messages.push({ role: 'user', content: this.userInput });
@@ -54,7 +54,7 @@ export class AnimalComponent implements OnInit {
     const currentIndex = this.messagesList.length - 1;
 
     const lastMessages = this.openai.messages.slice(-10);
-    const currentPet = PetFactory.createPet("sheep");
+    const currentPet = PetFactory.createPet("cow");
     const systemPrompt: ChatMessage = {
       role: 'system',
       content: `
@@ -103,7 +103,7 @@ export class AnimalComponent implements OnInit {
   }
 
   funnySoundEffect() {
-    this.soundService.playSound("chickenSoundEffect3.mp3");
+    this.soundService.playSound("horse-soundeffect.mp3");
     this.soundService.soundValue(0.3)
   }
 }

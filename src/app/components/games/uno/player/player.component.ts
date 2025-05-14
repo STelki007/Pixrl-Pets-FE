@@ -9,7 +9,7 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { NgForOf } from '@angular/common';
+import {NgForOf, NgIf} from '@angular/common';
 import { Deck } from '../services/uno/Deck';
 import {GameService} from '@components/games/uno/services/uno/GameService';
 import {CardAnimation} from '@components/games/uno/services/uno/CardAnimation';
@@ -18,10 +18,13 @@ import {PickColorService} from '@services/pickColor/PickColorService';
 import {UnoGameStart} from '@components/games/uno/services/uno/UnoGameStart';
 import {CardService} from '@components/games/uno/services/uno/CardService';
 import {SoundService} from '@services/SoundService';
+import {FormsModule} from '@angular/forms';
+import {UnoDialogComponent} from '@components/games/uno/uno-dialog/uno-dialog.component';
+import {BotService} from '@components/games/uno/services/uno/bot.service';
 
 @Component({
   selector: 'app-player',
-  imports: [NgForOf, PickColorComponent],
+  imports: [NgForOf, PickColorComponent, FormsModule, NgIf, UnoDialogComponent],
   templateUrl: './player.component.html',
   styleUrl: './player.component.css'
 })
@@ -44,6 +47,7 @@ export class PlayerComponent implements OnInit, OnChanges {
   private player1: string = "player1";
   private player2: string = "player2";
   private isWaitingForColorPick: boolean = false;
+  private pressUnoButton: boolean = false;
 
 
   constructor(
@@ -55,6 +59,7 @@ export class PlayerComponent implements OnInit, OnChanges {
     private unoGameService: UnoGameStart,
     private cardService: CardService,
     private soundService: SoundService,
+    private botService: BotService,
   ) {}
 
   ngOnInit(): void {
@@ -64,6 +69,8 @@ export class PlayerComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     this.handleGetFirstCard(changes)
     this.handleTurnRound(changes)
+    this.pressUnoButton = this.unoLastCard;
+
   }
 
   handleGetFirstCard(changes: SimpleChanges) {
@@ -81,7 +88,7 @@ export class PlayerComponent implements OnInit, OnChanges {
   }
 
   playCardIfValid(card: string, player: string): void {
-    this.shuffelAgain()
+    this.cardService.shuffleAgain(this.deck)
     const isCurrentPlayer = (player === this.player1 && !this.isPlayer2) || (player === this.player2 && this.isPlayer2);
 
     if (!isCurrentPlayer) return;
@@ -166,12 +173,14 @@ export class PlayerComponent implements OnInit, OnChanges {
 
     const tryPlayOrDraw = () => {
       const hand = this.players[bot];
+      this.pressUnoButton = hand.length <= 2;
+
       const playableCards = hand.filter(card => this.cardService.canPlayCard(card, this.getFirstCard));
 
       if (playableCards.length > 0) {
         const bestCard = playableCards.sort((a, b) =>
-          this.getCardPriority(b, this.players[this.player2]?.length || 0) -
-          this.getCardPriority(a, this.players[this.player2]?.length || 0)
+          this.botService.getCardPriority(b, this.players[this.player2]?.length || 0, bot, this.players) -
+          this.botService.getCardPriority(a, this.players[this.player2]?.length || 0, bot, this.players)
         )[0];
 
         if (bestCard) {
@@ -203,46 +212,6 @@ export class PlayerComponent implements OnInit, OnChanges {
     tryPlayOrDraw();
   }
 
-  private getCardPriority(card: string, opponentCardCount: number): number {
-    const special = this.cardService.extractSpecialCard(card);
-    const color = this.cardService.extractCardColor(card);
-
-    if (opponentCardCount === 1) {
-      if (special === '4CardPlus') return 100;
-      if (special === '2cards') return 90;
-      if (special === 'Stop') return 80;
-    }
-
-    const preferredColor = this.getBotPreferredColor();
-    if (color === preferredColor) return 70;
-
-    if (!special) return 50;
-
-    if (special === 'ChangeColor' || special === '4CardPlus') return 30;
-
-    return 10;
-  }
-
-  private getBotPreferredColor(): string {
-    const colorCount: { [color: string]: number } = {
-      red: 0,
-      green: 0,
-      blue: 0,
-      yellow: 0
-    };
-
-    const bot = this.player1;
-    for (const card of this.players[bot]) {
-      const color = this.cardService.extractCardColor(card);
-      if (color in colorCount) {
-        colorCount[color]++;
-      }
-    }
-
-    return Object.entries(colorCount)
-      .sort((a, b) => b[1] - a[1])[0][0];
-  }
-
   getCardTransform(index: number, totalCards: number): string {
     const rotation = (index - (totalCards - 1) / 2) * 2;
     return `rotate(${rotation}deg)`;
@@ -253,12 +222,13 @@ export class PlayerComponent implements OnInit, OnChanges {
   }
 
   onCompleteRoundClick(): void {
-    this.shuffelAgain()
+    this.cardService.shuffleAgain(this.deck)
     const currentPlayer = this.isPlayer2 ? this.player2 : this.player1;
 
     const playableCards = this.players[currentPlayer].filter(card => this.cardService.canPlayCard(card, this.getFirstCard));
 
     if (playableCards.length > 0) {
+      alert("Du hast gültige Karte in der Hand")
       return;
     }
 
@@ -270,31 +240,7 @@ export class PlayerComponent implements OnInit, OnChanges {
       this.cardAnimation.animateDrawCard(isAnimation, this.backCard);
       this.cdr.detectChanges();
     } else {
-      this.shuffelAgain()
-    }
-  }
-
-  shuffelAgain(): void {
-    const currentDeck = this.deck.getDeck();
-
-    if (currentDeck.length <= 1) {
-      const discardPile = this.deck.getDrawnCard();
-
-      if (discardPile.length === 0) return;
-
-      const newDeck = discardPile.slice(0, -1);
-      this.shuffleArray(newDeck);
-
-      this.deck.setDeck(newDeck);
-
-      alert("Deck wurde neu gemischt.");
-    }
-  }
-
-  private shuffleArray(array: string[]): void {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
+      this.cardService.shuffleAgain(this.deck)
     }
   }
 
@@ -305,7 +251,8 @@ export class PlayerComponent implements OnInit, OnChanges {
   checkWinner(player: string): boolean {
     if (this.playerHasNoCards(player)) {
       if (this.checkPlayerPressedUno()) {
-        alert(`Spieler ${player} hat gewonnen!`);
+        this.players[player] ? alert('Haustier hat gewonnen!') : alert('Spieler hat gewonnen!');
+
         this.unoGameService.setValue(false)
         this.pickColorService.setValue(false)
         return true;
@@ -318,7 +265,7 @@ export class PlayerComponent implements OnInit, OnChanges {
   }
 
   checkPlayerPressedUno (): boolean {
-    return this.unoLastCard;
+    return this.pressUnoButton;
   }
 
   handleColorSelected(color: string) {

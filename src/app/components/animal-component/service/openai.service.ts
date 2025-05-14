@@ -29,7 +29,7 @@ export class OpenAIService {
       - affection (0-10)
       - moneyProduction (0-10)
 
-      ${PetFactory.convertObjectToPetString(PetFactory.createPet("sheep"))}, regiere und verhalte dich, als ob du dieser Tier bis ;).`
+      ${PetFactory.convertObjectToPetString(PetFactory.createPet("cow"))}, regiere und verhalte dich, als ob du dieser Tier bis ;).`
     }
   ];
 

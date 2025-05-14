@@ -8,6 +8,7 @@ import {SoundService} from '@services/SoundService';
     NgForOf
   ],
   templateUrl: './sell-component.component.html',
+  standalone: true,
   styleUrl: './sell-component.component.css'
 })
 export class SellComponentComponent implements OnInit {
