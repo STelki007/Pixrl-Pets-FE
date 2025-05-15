@@ -15,7 +15,7 @@ import {Observable} from 'rxjs';
 import {Pet, PetAnimation} from '@components/animal-component/service/Pet';
 import {NgClass, NgStyle} from '@angular/common';
 import {PetService} from '@components/animal-component/service/PetService';
-import {KonamiCodeService} from '@services/konami-code.service';
+import {KonamiCodeService} from '@services/konamiCode/konami-code.service';
 import {animation} from '@angular/animations';
 
 @Component({
@@ -140,7 +140,7 @@ ${PetFactory.convertObjectToPetString(currentPet)}
   onArrowClick() {
     if (this.konamiCodeState){
       this.konamiCodeService.setValue(false)
-      alert("Konami Code deaktiviert!")
+      alert("Geheimer Code deaktiviert!")
     }
     this.arrowService.setValue(false);
     this.arrowService.getValue().subscribe(value => {
