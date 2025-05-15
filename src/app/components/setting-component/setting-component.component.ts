@@ -3,11 +3,13 @@ import {AlertCenterModalComponent} from '../modal/alert-center-modal-component/a
 import {DeleteAccountService} from '@services/setting/DeleteAccountService';
 import {LogoutService} from '@services/setting/LogoutService';
 import {SoundService} from '@services/SoundService';
+import {DrawAvatarComponent} from '@/app/draw-avatar/draw-avatar.component';
 
 @Component({
   selector: 'app-setting-component',
   imports: [
-    AlertCenterModalComponent
+    AlertCenterModalComponent,
+    DrawAvatarComponent
   ],
   templateUrl: './setting-component.component.html',
   styleUrl: './setting-component.component.css'

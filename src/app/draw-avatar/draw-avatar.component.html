@@ -1,1 +1,21 @@
-<p>draw-avatar works!</p>
+<div class="center-container">
+  <div class="controls">
+    <input type="color" [(ngModel)]="selectedColor" [disabled]="isEraserActive" class="color-picker">
+
+    <button (click)="toggleEraser()" [class.active]="isEraserActive">
+      <i class="bi" [ngClass]="isEraserActive ? 'bi-pencil-fill' : 'bi-eraser-fill'"></i>
+      {{ isEraserActive ? 'Malen' : 'Radieren' }}
+    </button>
+
+    <button (click)="clearCanvas()" class="clear-btn">
+      <i class="bi bi-trash"></i> Alles löschen
+    </button>
+  </div>
+
+  <div class="board-container">
+    <canvas #canvas class="board" width="400px" height="400px"></canvas>
+  </div>
+
+  <button class="mt-3" (click)="exportThePixel()">Exportieren</button>
+</div>
+
