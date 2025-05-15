@@ -20,13 +20,21 @@ export class DrawAvatarComponent implements AfterViewInit, OnInit {
   isEraserActive = false;
   isExport = false;
   getAllPosition: { x: number, y: number, backgroundColor: string }[] = [];
+  profileImage: string = "https://www.svgrepo.com/show/452030/avatar-default.svg";
 
   ngAfterViewInit(): void {
     this.setupCanvas();
   }
 
   ngOnInit(): void {
+    this.getImageFromLocalStorage();
+  }
 
+  getImageFromLocalStorage() {
+    const storedImage = localStorage.getItem("userProfileImage");
+    if (storedImage) {
+      this.profileImage = storedImage;
+    }
   }
 
   setupCanvas() {
@@ -68,7 +76,6 @@ export class DrawAvatarComponent implements AfterViewInit, OnInit {
       this.getAllPosition.push({x: x, y: y, backgroundColor: this.selectedColor});
       this.isExport = true;
     }
-
   }
 
   removePixel(event: MouseEvent) {
@@ -101,7 +108,7 @@ export class DrawAvatarComponent implements AfterViewInit, OnInit {
     this.getAllPosition = [];
   }
 
-  exportThePixel() {
+  safeTheImage() {
     if (this.isExport) {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
@@ -115,16 +122,22 @@ export class DrawAvatarComponent implements AfterViewInit, OnInit {
       this.getAllPosition.forEach(({ x, y, backgroundColor }) => {
         ctx.fillStyle = backgroundColor;
         ctx.fillRect(x, y, pixelSize, pixelSize);
-        console.log(x, y, backgroundColor);
       });
 
       const dataURL = canvas.toDataURL('image/png');
 
-      const a = document.createElement('a');
-      a.href = dataURL;
-      a.download = 'pixel-art.png';
-      a.click();
-      console.log(a)
+      if (dataURL){
+        localStorage.setItem('userProfileImage', dataURL);
+        this.profileImage = dataURL;
+      }
+
+
+      //
+      // const a = document.createElement('a');
+      // a.href = dataURL;
+      // a.download = 'pixel-art.png';
+      // a.click();
+      // console.log(a)
     }
   }
 

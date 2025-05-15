@@ -4,12 +4,16 @@ import {DeleteAccountService} from '@services/setting/DeleteAccountService';
 import {LogoutService} from '@services/setting/LogoutService';
 import {SoundService} from '@services/SoundService';
 import {DrawAvatarComponent} from '@/app/draw-avatar/draw-avatar.component';
+import {NgIf} from '@angular/common';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-setting-component',
   imports: [
     AlertCenterModalComponent,
-    DrawAvatarComponent
+    DrawAvatarComponent,
+    NgIf,
+    FormsModule
   ],
   templateUrl: './setting-component.component.html',
   styleUrl: './setting-component.component.css'
@@ -18,6 +22,9 @@ export class SettingComponentComponent implements OnInit {
   protected alertState = false;
   protected titleDeleteAccount: string = "Möchten Sie wirklich dein Account löschen?";
   protected titleLogout: string = "Möchten Sie sich wirklich abmelden?";
+  protected isProfileImageButtonPressed: boolean = false;
+  profileImage: string = "https://www.svgrepo.com/show/452030/avatar-default.svg";
+
   constructor(
     protected deleteAccountService: DeleteAccountService,
     protected logoutService: LogoutService,
@@ -26,15 +33,28 @@ export class SettingComponentComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.deleteAccountService.getValue().subscribe((value) => {
+    this.getAlertStateValue();
+    this.getImageFromLocalStorage();
+  }
+
+  getAlertStateValue() {
+    this.logoutService.getValue().subscribe((value) => {
       this.alertState = value;
     })
-    this.logoutService.getValue().subscribe((value) => {
+    this.deleteAccountService.getValue().subscribe((value) => {
       this.alertState = value;
     })
   }
 
-  deleteAccount() {+
+  getImageFromLocalStorage() {
+    const storedImage = localStorage.getItem("userProfileImage");
+    if (storedImage) {
+      this.profileImage = storedImage;
+    }
+  }
+
+
+  deleteAccount() {
     this.soundService.playSound("select-item.mp3")
     this.deleteAccountService.setValue(true)
   }
@@ -58,5 +78,9 @@ export class SettingComponentComponent implements OnInit {
   confirmLogout() {
     this.soundService.playSound("select-item.mp3");
     this.logoutService.setValue(false)
+  }
+
+  onDrawAvatarClick() {
+    this.isProfileImageButtonPressed = true;
   }
 }

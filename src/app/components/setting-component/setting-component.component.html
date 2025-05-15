@@ -1,31 +1,32 @@
 <div class="main-div ">
-<!--  <div class="main-container nes-container with-title overflow-hidden">-->
-<!--    <div class="container w-50">-->
-<!--      <div class="avatar mb-3 d-flex justify-content-center">-->
-<!--        <div class="nes-balloon from-left ">-->
-<!--          <span class="avatar-text">ST</span>-->
-<!--        </div>-->
-<!--      </div>-->
+  <div class="main-container  with-title overflow-hidden" *ngIf="!isProfileImageButtonPressed">
+    <div class="container w-50">
+      <div class="profile-image-div mb-3 d-flex justify-content-center">
+          <img [src]="profileImage" alt="Profilbild" />
+      </div>
 
-<!--      <div class="nes-field mb-3">-->
-<!--        <input type="text" id="username" class="nes-input" value="Shawkat" disabled style="width: fit-content">-->
-<!--      </div>-->
+      <div class="nes-field mb-3">
+        <input type="text" id="username" class="nes-input" value="Shawkat" disabled style="width: fit-content">
+      </div>
 
-<!--      <div class="mb-3">-->
-<!--        <button class="nes-btn is-primary">Passwort ändern</button>-->
-<!--      </div>-->
+      <div class="mb-3">
+        <button class="nes-btn is-primary">Passwort ändern</button>
+      </div>
 
-<!--      <div class="mb-3">-->
-<!--        <button class="nes-btn is-error" (click)="deleteAccount()">Account löschen</button>-->
-<!--      </div>-->
+      <div class="mb-3">
+        <button class="nes-btn is-error" (click)="deleteAccount()">Account löschen</button>
+      </div>
 
-<!--      <div class="mt-5">-->
-<!--        <button class="nes-btn is-warning" (click)="logout()">Abmelden</button>-->
-<!--      </div>-->
+      <div class="mt-5">
+        <button class="nes-btn is-warning" (click)="onDrawAvatarClick()">Profilbild malen</button>
+      </div>
 
-<!--    </div>-->
-<!--  </div>-->
-  <app-draw-avatar></app-draw-avatar>
+    </div>
+  </div>
+
+  <div *ngIf="isProfileImageButtonPressed">
+    <app-draw-avatar></app-draw-avatar>
+  </div>
 
 </div>
 
@@ -47,12 +48,12 @@
   </form>
 </app-alert-center-modal-component>
 
-<app-alert-center-modal-component [title]="titleLogout" [service]="logoutService">
-  <form method="dialog">
-    <div class="text-center">
-      <button class="nes-btn mx-3" (click)="closeModal()">Abbrechen</button>
-      <button class="nes-btn is-primary mx-3" (click)="confirmLogout()">Abmelden</button>
-    </div>
-  </form>
-</app-alert-center-modal-component>
+<!--<app-alert-center-modal-component [title]="titleLogout" [service]="logoutService">-->
+<!--  <form method="dialog">-->
+<!--    <div class="text-center">-->
+<!--      <button class="nes-btn mx-3" (click)="closeModal()">Abbrechen</button>-->
+<!--      <button class="nes-btn is-primary mx-3" (click)="confirmLogout()">Abmelden</button>-->
+<!--    </div>-->
+<!--  </form>-->
+<!--</app-alert-center-modal-component>-->
 
