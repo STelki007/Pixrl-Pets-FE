@@ -28,8 +28,8 @@ body {
 }
 
 .profile-image-div {
-  width: 120px;
-  height: 120px;
+  width: 130px;
+  height: 130px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   border: 3px solid white;
@@ -110,4 +110,14 @@ button.active {
 
 .save-btn:hover {
   background-color: #28a745;
+}
+.picked-color-div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.picked-color{
+  width: 20px;
+  height: 20px;
+  margin: 0 3px;
 }

@@ -21,6 +21,7 @@ export class DrawAvatarComponent implements AfterViewInit, OnInit {
   isExport = false;
   getAllPosition: { x: number, y: number, backgroundColor: string }[] = [];
   profileImage: string = "https://www.svgrepo.com/show/452030/avatar-default.svg";
+  selectedColorsHistory: string[] = [];
 
   ngAfterViewInit(): void {
     this.setupCanvas();
@@ -76,6 +77,7 @@ export class DrawAvatarComponent implements AfterViewInit, OnInit {
       this.getAllPosition.push({x: x, y: y, backgroundColor: this.selectedColor});
       this.isExport = true;
     }
+
   }
 
   removePixel(event: MouseEvent) {
@@ -127,10 +129,10 @@ export class DrawAvatarComponent implements AfterViewInit, OnInit {
       const dataURL = canvas.toDataURL('image/png');
 
       if (dataURL){
+        localStorage.removeItem('userProfileImage');
         localStorage.setItem('userProfileImage', dataURL);
         this.profileImage = dataURL;
       }
-
 
       //
       // const a = document.createElement('a');
@@ -139,6 +141,10 @@ export class DrawAvatarComponent implements AfterViewInit, OnInit {
       // a.click();
       // console.log(a)
     }
+  }
+
+  setExistedColor(bgBlack: string) {
+    this.selectedColor = bgBlack;
   }
 
 }
