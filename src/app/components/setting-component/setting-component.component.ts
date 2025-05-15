@@ -23,7 +23,7 @@ export class SettingComponentComponent implements OnInit {
   protected titleDeleteAccount: string = "Möchten Sie wirklich dein Account löschen?";
   protected titleLogout: string = "Möchten Sie sich wirklich abmelden?";
   protected isProfileImageButtonPressed: boolean = false;
-  profileImage: string = "https://www.svgrepo.com/show/452030/avatar-default.svg";
+  profileImage: string = "/avatar-defulat.svg";
 
   constructor(
     protected deleteAccountService: DeleteAccountService,
@@ -82,5 +82,10 @@ export class SettingComponentComponent implements OnInit {
 
   onDrawAvatarClick() {
     this.isProfileImageButtonPressed = true;
+  }
+
+  onProfileImageRemove() {
+    localStorage.removeItem("userProfileImage");
+    this.profileImage = "/avatar-defulat.svg";
   }
 }

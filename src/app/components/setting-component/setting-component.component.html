@@ -2,7 +2,10 @@
   <div class="main-container  with-title overflow-hidden" *ngIf="!isProfileImageButtonPressed">
     <div class="container w-50">
       <div class="profile-image-div mb-3 d-flex justify-content-center">
-          <img [src]="profileImage" alt="Profilbild" />
+        <img [src]="profileImage" alt="Profilbild" />
+        <button class="delete-btn" (click)="onProfileImageRemove()" >
+          <i class="bi bi-trash3-fill"></i>
+        </button>
       </div>
 
       <div class="nes-field mb-3">
@@ -20,7 +23,6 @@
       <div class="mt-5">
         <button class="nes-btn is-warning" (click)="onDrawAvatarClick()">Profilbild malen</button>
       </div>
-
     </div>
   </div>
 
