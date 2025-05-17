@@ -5,7 +5,7 @@ import {ArrowService} from '@services/animal/ArrowService';
 import {SoundService} from '@services/SoundService';
 import {SelectedAnimalServiceService} from '@services/animal/selected-animal-service.service';
 import {Pet, PetType} from '@components/animal-component/service/Pet';
-import {GetPetNameService} from '@components/animal-component/service/get-pet-name.service';
+import {PetService} from '@components/animal-component/service/PetService';
 
 @Component({
   selector: 'app-animals-view-component',
@@ -20,7 +20,6 @@ import {GetPetNameService} from '@components/animal-component/service/get-pet-na
 })
 export class AnimalsViewComponent implements OnInit {
   items = Array(20).fill(0);
-  private chickenAudiosArr: string[] = ["chickenSoundEffect2.mp3", "chickenSoundEffect3.mp3"];
   animalList: Array<Pet> = [];
 
   chicken: Pet = Pet.getTestAnimal(PetType.chicken);
@@ -28,10 +27,10 @@ export class AnimalsViewComponent implements OnInit {
   constructor(
     private sideBarButtonsService: SideBarButtonsService,
     private arrowService: ArrowService,
-    private soundService: SoundService,
     private selectedAnimalService: SelectedAnimalServiceService,
-    private getPetName: GetPetNameService,
-  ) {
+    private petService: PetService,
+
+      ) {
   }
 
   ngOnInit(): void {
@@ -42,17 +41,14 @@ export class AnimalsViewComponent implements OnInit {
 
   }
 
-  generateRandomChickenAudio() {
-    let index = Math.floor(Math.random() * this.chickenAudiosArr.length);
-    this.soundService.playSound(this.chickenAudiosArr[index]);
-  }
 
   onAnimalCardClick(animal: Pet) {
-    this.generateRandomChickenAudio();
+    console.log(animal.getName())
+    this.petService.getAnimalSoundEffect(animal.getName());
     this.selectedAnimalService.setSelectedAnimal(animal);
     this.sideBarButtonsService.setValue("animal");
     this.arrowService.setValue(true);
-    this.getPetName.setValue(animal.getName());
+    this.petService.setValue(animal.getName());
   }
 
 

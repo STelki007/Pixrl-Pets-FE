@@ -8,17 +8,10 @@ import { map, bufferCount, filter } from 'rxjs/operators';
 export class KonamiCodeService {
   private konamiCodeState = new BehaviorSubject<boolean>(false);
 
-  private konamiCode: string[] = [
-    'ArrowUp', 'ArrowRight',
-    'ArrowDown', 'ArrowLeft',
-
-    'ArrowUp', 'ArrowRight',
-    'ArrowDown', 'ArrowLeft',
-
-  ];
+  private konamiCode: string = "schwerk"
 
   constructor() {
-    this.listenForKonamiCode();
+    this.konamiCodeProcess();
   }
 
   setValue(value: boolean) {
@@ -29,14 +22,14 @@ export class KonamiCodeService {
     return this.konamiCodeState.asObservable();
   }
 
-  listenForKonamiCode(): void {
+  konamiCodeProcess(): void {
     fromEvent<KeyboardEvent>(window, 'keyup').pipe(
       map(e => e.key),
       bufferCount(this.konamiCode.length, 1),
-      filter(keys => keys.join('') === this.konamiCode.join(''))
+      filter(keys => keys.join('') === this.konamiCode)
     ).subscribe(() => {
       this.setValue(true)
-      alert("Konami Code aktiviert: Nutzungsdauer ist: 30 Sekunden");
+      alert("Geheimer Code aktiviert: Nutzungsdauer ist: 30 Sekunden");
    });
   }
 }

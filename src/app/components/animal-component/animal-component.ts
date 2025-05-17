@@ -14,8 +14,9 @@ import {SelectedAnimalServiceService} from '@services/animal/selected-animal-ser
 import {Observable} from 'rxjs';
 import {Pet, PetAnimation} from '@components/animal-component/service/Pet';
 import {NgClass, NgStyle} from '@angular/common';
-import {GetPetNameService} from '@components/animal-component/service/get-pet-name.service';
-import {KonamiCodeService} from '@services/konami-code.service';
+import {PetService} from '@components/animal-component/service/PetService';
+import {KonamiCodeService} from '@services/konamiCode/konami-code.service';
+import {animation} from '@angular/animations';
 
 @Component({
   selector: 'app-animal-component',
@@ -44,7 +45,7 @@ export class AnimalComponent implements OnInit {
               private openai: OpenAIService,
               private soundService: SoundService,
               private selectedAnimalService: SelectedAnimalServiceService,
-              private getPetName: GetPetNameService,
+              private petService: PetService,
               private konamiCodeService: KonamiCodeService,
   ) {
     this.selectedAnimal$ = this.selectedAnimalService.getSelectedAnimalObservable();
@@ -71,7 +72,7 @@ export class AnimalComponent implements OnInit {
   }
 
   petName() {
-    this.getPetName.getValue().subscribe((value) => {
+    this.petService.getValue().subscribe((value) => {
       this.petNameValue = value;
     })
   }
@@ -84,7 +85,7 @@ export class AnimalComponent implements OnInit {
   sendMassageToAI() {
     if (!this.userInput.trim()) return;
 
-    this.getPetName.getValue().subscribe(petName => {
+    this.petService.getValue().subscribe(petName => {
       const currentPet = PetFactory.createPet(petName.toLowerCase());
 
       this.openai.messages.push({ role: 'user', content: this.userInput });
@@ -137,6 +138,10 @@ ${PetFactory.convertObjectToPetString(currentPet)}
 
 
   onArrowClick() {
+    if (this.konamiCodeState){
+      this.konamiCodeService.setValue(false)
+      alert("Geheimer Code deaktiviert!")
+    }
     this.arrowService.setValue(false);
     this.arrowService.getValue().subscribe(value => {
       this.arrowServiceValue = value;
@@ -156,8 +161,8 @@ ${PetFactory.convertObjectToPetString(currentPet)}
 
   funnySoundEffect() {
     if (this.konamiCodeState) {
-      this.soundService.playSound("chickenSoundEffect3.mp3");
-      this.soundService.soundValue(0.3);
+      this.petService.getAnimalSoundEffect(this.animal?.getName()!)
+      this.soundService.soundValue(0.75);
 
       setTimeout(() => {
         this.konamiCodeState = false;
