@@ -173,8 +173,9 @@ export class PlayerComponent implements OnInit, OnChanges {
 
     const tryPlayOrDraw = () => {
       const hand = this.players[bot];
-      this.pressUnoButton = hand.length <= 1;
-
+      if (hand.length === 2) {
+        this.pressUnoButton = Math.random() < 0.8;
+      }
       const playableCards = hand.filter(card => this.cardService.canPlayCard(card, this.getFirstCard));
 
       if (playableCards.length > 0) {
@@ -189,8 +190,7 @@ export class PlayerComponent implements OnInit, OnChanges {
         return;
       }
 
-      let drawnCard = this.deck.getDeck().shift();
-      this.deck.getDeck().push(drawnCard!);
+      const drawnCard = this.deck.getDeck().shift();
 
       if (!drawnCard) {
         this.switchToNextPlayer();
@@ -205,7 +205,7 @@ export class PlayerComponent implements OnInit, OnChanges {
       if (this.cardService.canPlayCard(drawnCard, this.getFirstCard)) {
         setTimeout(() => this.playCardIfValid(drawnCard!, bot), 1000);
       } else {
-        setTimeout(() => tryPlayOrDraw(), 800);
+        setTimeout(() => this.switchToNextPlayer(), 800);
       }
     };
 
@@ -222,27 +222,41 @@ export class PlayerComponent implements OnInit, OnChanges {
   }
 
   onCompleteRoundClick(): void {
-    this.cardService.shuffleAgain(this.deck)
+    this.cardService.shuffleAgain(this.deck);
+
     const currentPlayer = this.isPlayer2 ? this.player2 : this.player1;
 
-    const playableCards = this.players[currentPlayer].filter(card => this.cardService.canPlayCard(card, this.getFirstCard));
+    const playableCards = this.players[currentPlayer].filter(card =>
+      this.cardService.canPlayCard(card, this.getFirstCard)
+    );
 
     if (playableCards.length > 0) {
-      alert("Du hast gültige Karte in der Hand")
+      alert("Du hast gültige Karte in der Hand");
       return;
     }
 
     const drawnCard = this.deck.getDeck().shift();
-    if (drawnCard) {
-      this.soundService.playSound("card-draw.mp3");
-      const isAnimation: boolean = currentPlayer === this.player2;
-      this.players[currentPlayer].push(drawnCard);
-      this.cardAnimation.animateDrawCard(isAnimation, this.backCard);
-      this.cdr.detectChanges();
+
+    if (!drawnCard) {
+      this.cardService.shuffleAgain(this.deck);
+      return;
+    }
+
+    this.soundService.playSound("card-draw.mp3");
+
+    this.players[currentPlayer].push(drawnCard);
+
+    const isAnimation: boolean = currentPlayer === this.player2;
+    this.cardAnimation.animateDrawCard(isAnimation, this.backCard);
+    this.cdr.detectChanges();
+
+    if (this.cardService.canPlayCard(drawnCard, this.getFirstCard)) {
+      alert("Du kannst die gezogene Karte jetzt spielen!");
     } else {
-      this.cardService.shuffleAgain(this.deck)
+      this.switchToNextPlayer();
     }
   }
+
 
   playerHasNoCards(player: string): boolean {
     return this.players[player]?.length === 0;
@@ -251,7 +265,7 @@ export class PlayerComponent implements OnInit, OnChanges {
   checkWinner(player: string): boolean {
     if (this.playerHasNoCards(player)) {
       if (this.checkPlayerPressedUno()) {
-        this.players[player] ? alert('Haustier hat gewonnen!') : alert('Spieler hat gewonnen!');
+        this.players[player] ? alert('Spieler hat gewonnen!') : alert('Haustier hat gewonnen!');
 
         this.unoGameService.setValue(false)
         this.pickColorService.setValue(false)
