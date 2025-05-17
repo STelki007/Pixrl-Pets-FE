@@ -48,6 +48,7 @@ export class PlayerComponent implements OnInit, OnChanges {
   private player2: string = "player2";
   private isWaitingForColorPick: boolean = false;
   private pressUnoButton: boolean = false;
+  private showChangeColorModal: boolean = false;
 
 
   constructor(
@@ -137,18 +138,24 @@ export class PlayerComponent implements OnInit, OnChanges {
         break;
 
       case "arrow":
-        this.manageDelayCardSpeed(500)
+        this.manageDelayCardSpeed(300)
         break;
 
       case "4CardPlus":
         this.gameService.drawMultipleCards(nextPlayer, this.players, 4);
         this.isWaitingForColorPick = true;
-        this.pickColorService.setValue(true);
+
+        if (this.isPlayer2) {
+          this.pickColorService.setValue(true);
+        }
         break;
 
       case "ChangeColor":
-        this.pickColorService.setValue(true);
         this.isWaitingForColorPick = true;
+
+        if (this.isPlayer2) {
+          this.pickColorService.setValue(true);
+        }
         break;
     }
   }
@@ -167,6 +174,26 @@ export class PlayerComponent implements OnInit, OnChanges {
     }
   }
 
+  private botPickColor(): string {
+    const hand = this.players[this.player1];
+    const colorCount: { [color: string]: number } = {
+      red: 0,
+      green: 0,
+      blue: 0,
+      yellow: 0
+    };
+
+    for (const card of hand) {
+      const color = this.cardService.extractCardColor(card);
+      if (colorCount[color] !== undefined) {
+        colorCount[color]++;
+      }
+    }
+
+    return Object.entries(colorCount).sort((a, b) => b[1] - a[1])[0][0];
+  }
+
+
   private performBotTurn(): void {
     const bot = this.player1;
 
@@ -183,8 +210,20 @@ export class PlayerComponent implements OnInit, OnChanges {
         )[0];
 
         if (bestCard) {
+          const isColorChangeCard = bestCard.includes('ChangeColor') || bestCard.includes('4CardPlus');
+
           this.playCardIfValid(bestCard, bot);
+
+          if (isColorChangeCard) {
+            setTimeout(() => {
+              const bestColor = this.botPickColor();
+              this.handleColorSelected(bestColor);
+            }, 800);
+          }
+          return;
         }
+
+
         return;
       }
 
