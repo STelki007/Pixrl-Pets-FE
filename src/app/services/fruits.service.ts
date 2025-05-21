@@ -20,7 +20,6 @@ export class FruitsService {
     { id: 12, name: 'Kürbis', imageName: 'food/Pumpkin.png', description: 'Ein großer, orangefarbener Kürbis – beliebt für Suppen oder Halloween' },
     { id: 13, name: 'Wassermelone', imageName: 'food/watermelone.png', description: 'Eine große, grüne Frucht mit saftigem, rotem Fruchtfleisch' },
     { id: 14, name: 'Kiwi', imageName: 'food/kiwi.png', description: 'Eine kleine, grüne Frucht mit brauner Schale und süß-saurem Geschmack' },
-    { id: 15, name: 'Tomate', imageName: 'food/tomato.png', description: 'Eine rote, saftige Frucht – oft als Gemüse verwendet' },
     { id: 16, name: 'Avocado', imageName: 'food/avocado.png', description: 'Eine cremige, grüne Frucht mit einem großen Kern – beliebt in Salaten und Guacamole' },
 
   ];
