@@ -1,5 +1,5 @@
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {NgClass, NgForOf, NgIf} from '@angular/common';
+import {NgClass, NgForOf, NgIf, NgStyle} from '@angular/common';
 import {InputNumber} from 'primeng/inputnumber';
 import {FormsModule} from '@angular/forms';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
@@ -8,11 +8,13 @@ import {MessageService} from 'primeng/api';
 import {ProgressSpinner} from 'primeng/progressspinner';
 import {Image} from 'primeng/image';
 import {SoundService} from '@services/SoundService';
+import {FruitsService} from '@services/fruits.service';
+import {FruitInterface} from '@components/inventar-component/FruitInterface';
 
 @Component({
   selector: 'app-shop-component',
   standalone: true,
-  imports: [NgForOf, NgClass, NgIf, InputNumber, FormsModule, Toast],
+  imports: [NgForOf, NgClass, NgIf, InputNumber, FormsModule, Toast, NgStyle],
   templateUrl: './shop-component.html',
   styleUrl: './shop-component.css',
   providers: [MessageService]
@@ -20,16 +22,17 @@ import {SoundService} from '@services/SoundService';
 export class ShopComponent implements OnInit {
   protected selectedTab: string = "buy";
   protected isOffcanvasOpen: boolean = false;
-  protected items = new Array(15);
   @ViewChild('buyModal') buyModal!: TemplateRef<any>;
   private modalRef?: NgbModalRef;
   protected quantity: number = 1;
   protected quantityError: string | null = null;
+  protected fruit: FruitInterface | null = null;
 
 
   constructor(private modalService: NgbModal,
               private messageService: MessageService,
               private soundService: SoundService,
+              protected fruitsService: FruitsService,
 ) {}
 
   ngOnInit(): void {
@@ -49,7 +52,8 @@ export class ShopComponent implements OnInit {
     this.selectedTab = tab;
   }
 
-  onClickInfo() {
+  onClickInfo(id: number) {
+    this.fruit = this.fruitsService.getFruitById(id)!;
     this.isOffcanvasOpen = true;
     this.soundService.playSound("select-item.mp3");
   }

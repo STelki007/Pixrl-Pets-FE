@@ -11,9 +11,9 @@
   <div class="mt-5 d-flex justify-content-center">
     <div class="inventory-grid with-title">
       <div class="items-container">
-        <div *ngFor="let item of items; let i = index" class="inventory-items-container">
+        <div *ngFor="let fruit of fruitsService.getFruits()" class="inventory-items-container">
           <div class="item-container" (click)="onClickItem()">
-            <img src="https://img.freepik.com/premium-vector/pixel-art-illustration-spicy-sauce-pixelated-tomato-ketchup-spicy-tomato-ketchup-sauce-bottle-icon_1038602-1975.jpg" class="article-name text-center mb-3" />
+            <img class="article-name text-center mb-3" [src]="fruit.imageName" [id]="fruit.id" [title]="fruit.name">
           </div>
 
           <div class="coin-container mb-3" (click)="onClickCoin()">
@@ -23,7 +23,7 @@
 
           <div class="item-buttons">
             <div class="info-button-div mx-3">
-              <button (click)="onClickInfo()">
+              <button (click)="onClickInfo(fruit.id)">
                 <i class="bi bi-info-circle-fill"></i>
               </button>
             </div>
@@ -65,17 +65,31 @@
 
 <div
   class="offcanvas offcanvas-end custom-offcanvas"
-  [ngClass]="{'show': isOffcanvasOpen, 'hide': !isOffcanvasOpen}"
+  [ngClass]="{ 'show': isOffcanvasOpen, 'hide': !isOffcanvasOpen }"
+  [ngStyle]="{    'background-image': fruit?.gif ? 'url(' + fruit?.gif + ')' : 'none'}"
   tabindex="-1"
   id="offcanvasRight"
-  aria-labelledby="offcanvasRightLabel">
+  aria-labelledby="offcanvasRightLabel"
+>
+  <div class="custom-offcanvas-overlay"></div>
 
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="offcanvasRightLabel">Magische Katchap</h5>
-    <button type="button" class="btn-close text-reset" (click)="closeOffcanvas()" aria-label="Close"></button>
+  <div class="offcanvas-header border-bottom">
+    <h5 class="offcanvas-title mb-0" id="offcanvasRightLabel">
+      {{ fruit?.name }}
+    </h5>
+    <button
+      type="button"
+      class="btn-close text-reset"
+      (click)="closeOffcanvas()"
+      aria-label="Close"
+    ></button>
   </div>
 
   <div class="offcanvas-body">
+    <div class="mb-3">
+      <h6 class="text-muted">Beschreibung</h6>
+      <p class="mb-0">{{ fruit?.description }}</p>
+    </div>
   </div>
 </div>
 
