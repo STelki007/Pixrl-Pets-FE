@@ -182,6 +182,7 @@
   color: white;
 }
 .custom-offcanvas {
+  background-image: url("/assets/darkSouls/dark-souls-6.gif");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
