@@ -7,8 +7,9 @@ import { map, bufferCount, filter } from 'rxjs/operators';
 })
 export class KonamiCodeService {
   private konamiCodeState = new BehaviorSubject<boolean>(false);
-
+  private keySequence: string[] = [];
   private konamiCode: string = "schwerk"
+  private resetTimeSec: number = 15000;
 
   constructor() {
     this.konamiCodeProcess();
@@ -22,14 +23,26 @@ export class KonamiCodeService {
     return this.konamiCodeState.asObservable();
   }
 
+
   konamiCodeProcess(): void {
-    fromEvent<KeyboardEvent>(window, 'keyup').pipe(
-      map(e => e.key),
-      bufferCount(this.konamiCode.length, 1),
-      filter(keys => keys.join('') === this.konamiCode)
-    ).subscribe(() => {
-      this.setValue(true)
-      alert("Geheimer Code aktiviert: Nutzungsdauer ist: 30 Sekunden");
-   });
+    fromEvent<KeyboardEvent>(window, 'keyup').subscribe(event => {
+      this.keySequence.push(event.key);
+
+      if (this.keySequence.length > this.konamiCode.length) {
+        this.keySequence.shift();
+      }
+
+      if (this.keySequence.join('') === this.konamiCode) {
+        this.setValue(true);
+        alert(`Geheimer Code aktiviert: Nutzungsdauer ist: ${this.resetTimeSec} Sekunden`);
+
+        setTimeout(() => {
+          this.setValue(false);
+        }, this.resetTimeSec);
+
+        this.keySequence = [];
+      }
+    });
   }
+
 }
