@@ -1,12 +1,15 @@
 import {Component, OnInit} from '@angular/core';
-import {NgForOf} from '@angular/common';
+import {NgForOf, NgOptimizedImage} from '@angular/common';
 import {audit} from 'rxjs';
 import {SoundService} from '@services/SoundService';
+import {FruitInterface} from '@components/inventar-component/FruitInterface';
+import {FruitsService} from '@services/fruits.service';
 
 @Component({
   selector: 'app-inventar-component',
   imports: [
-    NgForOf
+    NgForOf,
+    NgOptimizedImage
   ],
   templateUrl: './inventar-component.html',
   styleUrl: './inventar-component.css'
@@ -15,22 +18,18 @@ export class InventarComponent implements OnInit {
 
   constructor(
     private soundService: SoundService,
+    protected fruitService: FruitsService,
+
   ) {
   }
-
-  items = [
-    ['🥧', '🥕', '🔥', '🥩', '🍗', '🍩', '🎃', '🍄', '💀'],
-    ['🥧', '🥕', '🔥', '🥩', '🍗', '🍩', '🎃', '🍄', '💀'],
-    ['🥧', '🥕', '🔥', '🥩', '🍗', '🍩', '🎃', '🍄', '💀'],
-    ['🥧', '🥕', '🔥', '🥩', '🍗', '🍩', '🎃', '🍄', '💀']
-  ];
 
   ngOnInit(): void {
 
   }
 
-  onClickItem() {
+  onClickItem(fruit: FruitInterface) {
     this.soundService.playSound("select-item.mp3")
+    console.log(fruit)
   }
 
 
