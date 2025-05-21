@@ -138,7 +138,7 @@ export class PlayerComponent implements OnInit, OnChanges {
         break;
 
       case "arrow":
-        this.manageDelayCardSpeed(300)
+        this.manageDelayCardSpeed(500)
         break;
 
       case "4CardPlus":
@@ -200,6 +200,7 @@ export class PlayerComponent implements OnInit, OnChanges {
     const tryPlayOrDraw = () => {
       const hand = this.players[bot];
       this.pressUnoButton = hand.length <= 1;
+
       const playableCards = hand.filter(card => this.cardService.canPlayCard(card, this.getFirstCard));
 
       if (playableCards.length > 0) {
@@ -222,6 +223,7 @@ export class PlayerComponent implements OnInit, OnChanges {
           return;
         }
 
+
         return;
       }
 
@@ -240,7 +242,7 @@ export class PlayerComponent implements OnInit, OnChanges {
       if (this.cardService.canPlayCard(drawnCard, this.getFirstCard)) {
         setTimeout(() => this.playCardIfValid(drawnCard!, bot), 1000);
       } else {
-        setTimeout(() => this.switchToNextPlayer(), 800);
+        setTimeout(() => tryPlayOrDraw(), 800);
       }
     };
 
@@ -257,13 +259,10 @@ export class PlayerComponent implements OnInit, OnChanges {
   }
 
   onCompleteRoundClick(): void {
-    this.cardService.shuffleAgain(this.deck);
-
+    this.cardService.shuffleAgain(this.deck)
     const currentPlayer = this.isPlayer2 ? this.player2 : this.player1;
 
-    const playableCards = this.players[currentPlayer].filter(card =>
-      this.cardService.canPlayCard(card, this.getFirstCard)
-    );
+    const playableCards = this.players[currentPlayer].filter(card => this.cardService.canPlayCard(card, this.getFirstCard));
 
     if (playableCards.length > 0) {
       alert("Du hast gültige Karte in der Hand");
@@ -271,22 +270,14 @@ export class PlayerComponent implements OnInit, OnChanges {
     }
 
     const drawnCard = this.deck.getDeck().shift();
-
-    if (!drawnCard) {
-      this.cardService.shuffleAgain(this.deck);
-      return;
-    }
-
-    this.soundService.playSound("card-draw.mp3");
-
-    this.players[currentPlayer].push(drawnCard);
-
-    const isAnimation: boolean = currentPlayer === this.player2;
-    this.cardAnimation.animateDrawCard(isAnimation, this.backCard);
-    this.cdr.detectChanges();
-
-    if (!this.cardService.canPlayCard(drawnCard, this.getFirstCard)) {
-      this.switchToNextPlayer();
+    if (drawnCard) {
+      this.soundService.playSound("card-draw.mp3");
+      const isAnimation: boolean = currentPlayer === this.player2;
+      this.players[currentPlayer].push(drawnCard);
+      this.cardAnimation.animateDrawCard(isAnimation, this.backCard);
+      this.cdr.detectChanges();
+    } else {
+      this.cardService.shuffleAgain(this.deck)
     }
   }
 
