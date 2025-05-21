@@ -55,7 +55,6 @@ export class AnimalComponent implements OnInit {
     this.getAnimal();
     this.saveMessages();
     this.petName();
-    this.getKonamiCodeState()
   }
 
   getAnimal() {
@@ -160,13 +159,14 @@ ${PetFactory.convertObjectToPetString(currentPet)}
   }
 
   funnySoundEffect() {
+    this.getKonamiCodeState();
     if (this.konamiCodeState) {
       this.petService.getAnimalSoundEffect(this.animal?.getName()!)
       this.soundService.soundValue(0.75);
 
       setTimeout(() => {
         this.konamiCodeState = false;
-      }, 30000);
+      }, 15000);
     }
   }
 }
