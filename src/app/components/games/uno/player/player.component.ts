@@ -48,7 +48,6 @@ export class PlayerComponent implements OnInit, OnChanges {
   private player2: string = "player2";
   private isWaitingForColorPick: boolean = false;
   private pressUnoButton: boolean = false;
-  private showChangeColorModal: boolean = false;
 
 
   constructor(
@@ -225,7 +224,6 @@ export class PlayerComponent implements OnInit, OnChanges {
           return;
         }
 
-
         return;
       }
 
@@ -289,13 +287,10 @@ export class PlayerComponent implements OnInit, OnChanges {
     this.cardAnimation.animateDrawCard(isAnimation, this.backCard);
     this.cdr.detectChanges();
 
-    if (this.cardService.canPlayCard(drawnCard, this.getFirstCard)) {
-      alert("Du kannst die gezogene Karte jetzt spielen!");
-    } else {
+    if (!this.cardService.canPlayCard(drawnCard, this.getFirstCard)) {
       this.switchToNextPlayer();
     }
   }
-
 
   playerHasNoCards(player: string): boolean {
     return this.players[player]?.length === 0;

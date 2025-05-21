@@ -20,7 +20,7 @@ export class TicTacToeComponent {
   boardSize = 3;
   board: string[] = new Array(this.boardSize * this.boardSize).fill('');
   gameOver = false;
-  gameModus = "player"
+  gameModus = "easy"
   isDraw = false;
   scoreX = 0;
   scoreO = 0;
@@ -35,7 +35,7 @@ export class TicTacToeComponent {
       this.checkAndUpdateWinner();
 
       if (!this.gameOver && !this.isDraw && this.gameModus === "easy") {
-        setTimeout(() => {
+          setTimeout(() => {
           this.vsBotEasy();
           this.checkDraw();
           this.checkAndUpdateWinner();
