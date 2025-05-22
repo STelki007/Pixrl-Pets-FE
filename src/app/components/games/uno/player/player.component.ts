@@ -199,9 +199,7 @@ export class PlayerComponent implements OnInit, OnChanges {
 
     const tryPlayOrDraw = () => {
       const hand = this.players[bot];
-      if (hand.length === 2) {
-        this.pressUnoButton = Math.random() < 0.8;
-      }
+      this.pressUnoButton = hand.length <= 1;
       const playableCards = hand.filter(card => this.cardService.canPlayCard(card, this.getFirstCard));
 
       if (playableCards.length > 0) {
@@ -299,7 +297,7 @@ export class PlayerComponent implements OnInit, OnChanges {
   checkWinner(player: string): boolean {
     if (this.playerHasNoCards(player)) {
       if (this.checkPlayerPressedUno()) {
-        this.players[player] ? alert('Spieler hat gewonnen!') : alert('Haustier hat gewonnen!');
+        this.players[player] ? alert('Haustier hat gewonnen!') : alert('Spieler hat gewonnen!');
 
         this.unoGameService.setValue(false)
         this.pickColorService.setValue(false)
