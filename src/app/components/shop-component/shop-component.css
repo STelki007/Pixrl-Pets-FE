@@ -3,8 +3,9 @@
   min-height: 100vh;
   overflow: hidden;
   margin-left: 300px;
-  background-color: #653830;
+  background-color: transparent;
   color: white;
+  position: relative;
 }
 
 .custom-btn {
@@ -182,7 +183,6 @@
   color: white;
 }
 .custom-offcanvas {
-  background-image: url("/assets/darkSouls/dark-souls-6.gif");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
@@ -192,6 +192,7 @@
   transition: transform 0.3s ease-in-out;
   color: #fff;
   overflow: hidden;
+  background-image: url("/assets/darkSouls/dark-souls-6.gif");
 }
 
 .custom-offcanvas-overlay {
@@ -249,4 +250,33 @@
   background-color: #fff;
   padding: 4px;
   border-radius: 10px;
+}
+
+
+.video-background-wrapper {
+  position: relative;
+  width: calc(100vw - 300px);
+  overflow: hidden;
+}
+
+.background-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: calc(100vw - 298px);
+  height: 100vh;
+  overflow: hidden;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  z-index: -1;
+  margin-left: 149px;
+
+}
+
+.content-overlay {
+  position: relative;
+  z-index: 1;
+  color: white;
+  text-align: center;
+  padding-top: 100px;
 }
