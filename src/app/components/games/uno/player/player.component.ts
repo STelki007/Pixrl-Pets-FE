@@ -48,6 +48,7 @@ export class PlayerComponent implements OnInit, OnChanges {
   private player2: string = "player2";
   private isWaitingForColorPick: boolean = false;
   private pressUnoButton: boolean = false;
+  private showChangeColorModal: boolean = false;
 
 
   constructor(
@@ -138,7 +139,7 @@ export class PlayerComponent implements OnInit, OnChanges {
         break;
 
       case "arrow":
-        this.manageDelayCardSpeed(500)
+        this.manageDelayCardSpeed(300)
         break;
 
       case "4CardPlus":
@@ -242,7 +243,7 @@ export class PlayerComponent implements OnInit, OnChanges {
       if (this.cardService.canPlayCard(drawnCard, this.getFirstCard)) {
         setTimeout(() => this.playCardIfValid(drawnCard!, bot), 1000);
       } else {
-        setTimeout(() => tryPlayOrDraw(), 800);
+        setTimeout(() => this.switchToNextPlayer(), 800);
       }
     };
 
@@ -270,14 +271,22 @@ export class PlayerComponent implements OnInit, OnChanges {
     }
 
     const drawnCard = this.deck.getDeck().shift();
-    if (drawnCard) {
-      this.soundService.playSound("card-draw.mp3");
-      const isAnimation: boolean = currentPlayer === this.player2;
-      this.players[currentPlayer].push(drawnCard);
-      this.cardAnimation.animateDrawCard(isAnimation, this.backCard);
-      this.cdr.detectChanges();
-    } else {
-      this.cardService.shuffleAgain(this.deck)
+
+    if (!drawnCard) {
+      this.cardService.shuffleAgain(this.deck);
+      return;
+    }
+
+    this.soundService.playSound("card-draw.mp3");
+
+    this.players[currentPlayer].push(drawnCard);
+
+    const isAnimation: boolean = currentPlayer === this.player2;
+    this.cardAnimation.animateDrawCard(isAnimation, this.backCard);
+    this.cdr.detectChanges();
+
+    if (!this.cardService.canPlayCard(drawnCard, this.getFirstCard)) {
+      this.switchToNextPlayer();
     }
   }
 
