@@ -1,59 +1,61 @@
 
-<div class="sidebar">
-  <div class="overlay"></div>
-  <div class="d-flex flex-column w-100 justify-content-between" style="height: calc(100vh - 60px)">
-    <div class="button-container">
+<!--<div class="sidebar">-->
+<!--  <div class="overlay"></div>-->
+<!--  <div class="d-flex flex-column w-100 justify-content-between" style="height: calc(100vh - 60px)">-->
+<!--    <div class="button-container">-->
 
-      <div class="button-item">
-        <i class="bi bi-house-door" (click)="selectComponent('main')"></i>
-        <button type="button" class="nes-btn is-error" (click)="selectComponent('main')">Hauptseite</button>
-      </div>
-
-      <div class="button-item">
-        <i class="bi bi-heart" (click)="onAnimalsBtnClick()"></i>
-        <button type="button" class="nes-btn is-error" (click)="onAnimalsBtnClick()">Haustier</button>
-      </div>
-
-      <div class="button-item">
-        <i class="bi bi-box-seam" (click)="selectComponent('inventory')"></i>
-        <button type="button" class="nes-btn is-error" (click)="selectComponent('inventory')">Inventar</button>
-      </div>
-
-      <div class="button-item" >
-        <i class="bi bi-cart buttonIcon" (click)="selectComponent('shop')"></i>
-        <button type="button" class="nes-btn is-error" (click)="selectComponent('shop')">shop</button>
-      </div>
-
-      <div class="button-item" >
-        <i class="bi bi-pc-display" (click)="selectComponent('game-component')"></i>
-        <button type="button" class="nes-btn is-error" (click)="selectComponent('game-component')">Spiele</button>
-      </div>
-
-      <div class="button-item">
-        <i class="bi bi-gear" (click)="selectComponent('setting')"></i>
-        <button type="button" class="nes-btn is-error" (click)="selectComponent('setting')">Einstellung</button>
-      </div>
-
-    </div>
-
-    <div>
-<!--      <div class="button-item" >-->
-<!--        <i class="bi bi-box-arrow-right buttonIcon" (click)="logoutUser()"></i>-->
-<!--        <button type="button" class="nes-btn is-error" (click)="logoutUser()">Logout</button>-->
+<!--      <div class="button-item">-->
+<!--        <i class="bi bi-house-door" (click)="selectComponent('main')"></i>-->
+<!--        <button type="button" class="nes-btn is-error" (click)="selectComponent('main')">Hauptseite</button>-->
 <!--      </div>-->
-    </div>
-  </div>
-</div>
 
-<app-main-page-component *ngIf="selectedComponent === 'main'"></app-main-page-component>
-<app-inventar-component *ngIf="selectedComponent === 'inventory'"></app-inventar-component>
-<app-sell-component *ngIf="selectedComponent === 'sell'"></app-sell-component>
-<app-shop-component *ngIf="selectedComponent === 'shop'"></app-shop-component>
-<app-setting-component *ngIf="selectedComponent === 'setting'"></app-setting-component>
-<app-animal-component *ngIf="selectedComponent == 'animal'"></app-animal-component>
-<app-animals-view-component *ngIf="selectedComponent === 'animals'"></app-animals-view-component>
-<app-game-component *ngIf="selectedComponent === 'game-component'"></app-game-component>
-<app-coin-component></app-coin-component>
+<!--      <div class="button-item">-->
+<!--        <i class="bi bi-heart" (click)="onAnimalsBtnClick()"></i>-->
+<!--        <button type="button" class="nes-btn is-error" (click)="onAnimalsBtnClick()">Haustier</button>-->
+<!--      </div>-->
+
+<!--      <div class="button-item">-->
+<!--        <i class="bi bi-box-seam" (click)="selectComponent('inventory')"></i>-->
+<!--        <button type="button" class="nes-btn is-error" (click)="selectComponent('inventory')">Inventar</button>-->
+<!--      </div>-->
+
+<!--      <div class="button-item" >-->
+<!--        <i class="bi bi-cart buttonIcon" (click)="selectComponent('shop')"></i>-->
+<!--        <button type="button" class="nes-btn is-error" (click)="selectComponent('shop')">shop</button>-->
+<!--      </div>-->
+
+<!--      <div class="button-item" >-->
+<!--        <i class="bi bi-pc-display" (click)="selectComponent('game-component')"></i>-->
+<!--        <button type="button" class="nes-btn is-error" (click)="selectComponent('game-component')">Spiele</button>-->
+<!--      </div>-->
+
+<!--      <div class="button-item">-->
+<!--        <i class="bi bi-gear" (click)="selectComponent('setting')"></i>-->
+<!--        <button type="button" class="nes-btn is-error" (click)="selectComponent('setting')">Einstellung</button>-->
+<!--      </div>-->
+
+<!--    </div>-->
+
+<!--    <div>-->
+<!--&lt;!&ndash;      <div class="button-item" >&ndash;&gt;-->
+<!--&lt;!&ndash;        <i class="bi bi-box-arrow-right buttonIcon" (click)="logoutUser()"></i>&ndash;&gt;-->
+<!--&lt;!&ndash;        <button type="button" class="nes-btn is-error" (click)="logoutUser()">Logout</button>&ndash;&gt;-->
+<!--&lt;!&ndash;      </div>&ndash;&gt;-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--<app-main-page-component *ngIf="selectedComponent === 'main'"></app-main-page-component>-->
+<!--<app-inventar-component *ngIf="selectedComponent === 'inventory'"></app-inventar-component>-->
+<!--<app-sell-component *ngIf="selectedComponent === 'sell'"></app-sell-component>-->
+<!--<app-shop-component *ngIf="selectedComponent === 'shop'"></app-shop-component>-->
+<!--<app-setting-component *ngIf="selectedComponent === 'setting'"></app-setting-component>-->
+<!--<app-animal-component *ngIf="selectedComponent == 'animal'"></app-animal-component>-->
+<!--<app-animals-view-component *ngIf="selectedComponent === 'animals'"></app-animals-view-component>-->
+<!--<app-game-component *ngIf="selectedComponent === 'game-component'"></app-game-component>-->
+<!--<app-coin-component></app-coin-component>-->
 
 
-<!--<app-ki-chat></app-ki-chat>-->
+<!--&lt;!&ndash;<app-ki-chat></app-ki-chat>&ndash;&gt;-->
+
+<app-uno-player-chat></app-uno-player-chat>

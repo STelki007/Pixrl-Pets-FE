@@ -19,12 +19,11 @@ import {UnoGameStart} from '@components/games/uno/services/uno/UnoGameStart';
 import {CardService} from '@components/games/uno/services/uno/CardService';
 import {SoundService} from '@services/SoundService';
 import {FormsModule} from '@angular/forms';
-import {UnoDialogComponent} from '@components/games/uno/uno-dialog/uno-dialog.component';
 import {BotService} from '@components/games/uno/services/uno/bot.service';
 
 @Component({
   selector: 'app-player',
-  imports: [NgForOf, PickColorComponent, FormsModule, NgIf, UnoDialogComponent],
+  imports: [NgForOf, PickColorComponent, FormsModule],
   templateUrl: './player.component.html',
   styleUrl: './player.component.css'
 })

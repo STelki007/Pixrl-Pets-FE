@@ -1,0 +1,24 @@
+<div class="chat-box bot-chat shadow">
+  <div class="chat-header bg-primary text-white p-2">Bot</div>
+  <div class="chat-body p-3">
+    <p class="mb-0" >{{ botMessage }}</p>
+  </div>
+</div>
+
+<div class="chat-box player-chat shadow">
+  <div class="chat-header bg-success text-white p-2">Du</div>
+  <div class="chat-body p-3">
+    <div class="form-group">
+      <select class="form-select" [(ngModel)]="selectedResponse" name="response" (change)="onSelectResponse($event)">
+        <option value="" disabled selected>Antwort auswählen ...</option>
+        <option *ngFor="let response of playerResponses" [value]="response">
+          {{ response }}
+        </option>
+      </select>
+    </div>
+
+    <div *ngIf="selectedResponse" class="mt-3 selected-response text-muted">
+      <strong>deine Antwort:</strong> {{ selectedResponse }}
+    </div>
+  </div>
+</div>

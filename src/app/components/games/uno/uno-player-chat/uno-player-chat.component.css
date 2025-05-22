@@ -1,0 +1,36 @@
+*{
+  font-size: 11px;
+}
+.chat-box {
+  width: 320px;
+  max-width: 90%;
+  position: absolute;
+  border-radius: 10px;
+  background-color: #fff;
+  z-index: 1000;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.bot-chat {
+  top: 20px;
+  left: 20px;
+}
+
+.player-chat {
+  bottom: 20px;
+  right: 20px;
+}
+
+.chat-header {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.chat-body {
+  background-color: #f9f9f9;
+}
+
+.selected-response {
+  font-size: 13px;
+  color: #555;
+}

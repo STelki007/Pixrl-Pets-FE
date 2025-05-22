@@ -15,6 +15,7 @@ import {ArrowService} from '@services/animal/ArrowService';
 import {GameComponent} from '@components/game-component/game.component';
 import {UnoGameStart} from '@components/games/uno/services/uno/UnoGameStart';
 import {SoundService} from '@services/SoundService';
+import {UnoPlayerChatComponent} from '@components/games/uno/uno-player-chat/uno-player-chat.component';
 @Component({
   selector: 'app-root',
   imports: [
@@ -28,7 +29,8 @@ import {SoundService} from '@services/SoundService';
     SettingComponentComponent,
     InputTextModule,
     AnimalsViewComponent,
-    GameComponent
+    GameComponent,
+    UnoPlayerChatComponent
   ],
   templateUrl: './app.component.html',
   standalone: true,

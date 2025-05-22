@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UnoDialogComponent } from './uno-dialog.component';
+import { UnoPlayerChatComponent } from './uno-player-chat.component';
 
-describe('UnoDialogComponent', () => {
-  let component: UnoDialogComponent;
-  let fixture: ComponentFixture<UnoDialogComponent>;
+describe('UnoPlayerChatComponent', () => {
+  let component: UnoPlayerChatComponent;
+  let fixture: ComponentFixture<UnoPlayerChatComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UnoDialogComponent]
+      imports: [UnoPlayerChatComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(UnoDialogComponent);
+    fixture = TestBed.createComponent(UnoPlayerChatComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
