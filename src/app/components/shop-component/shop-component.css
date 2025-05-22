@@ -191,6 +191,7 @@
   transition: transform 0.3s ease-in-out;
   color: #fff;
   overflow: hidden;
+  opacity: 0.75;
 }
 
 .custom-offcanvas-overlay {
