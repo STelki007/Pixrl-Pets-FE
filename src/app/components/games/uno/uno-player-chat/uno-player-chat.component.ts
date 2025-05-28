@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgForOf, NgIf} from '@angular/common';
-import {PlayerChatService} from '@components/games/uno/uno-player-chat/player.chat.service';
+import {UnoChatService} from '@components/games/uno/uno-player-chat/player.chat.service';
+
 
 @Component({
   selector: 'app-uno-player-chat',
@@ -18,31 +19,44 @@ export class UnoPlayerChatComponent implements OnInit {
   selectedResponse: string = '';
   playerResponses: string[] = []
 
-  constructor(private playerChatService: PlayerChatService) {
+  constructor(private unoChatService: UnoChatService) {
   }
 
   ngOnInit() {
-    this.playerResponses = this.playerChatService.getPlayerMoves();
+    this.playerResponses = this.unoChatService.getPlayerMoves();
   }
 
-  onSelectResponse(event: any) {
+  async onSelectResponse(event: any) {
     const value = event.target.value;
-  if (value) {
-    this.dotInBotMessage();
+    if (!value) return;
+
+    this.selectedResponse = value;
+    try {
+      await this.botAnswers();
+      await this.playerAnswersPossibilities();
+    } catch (e) {
+      console.error("Fehler beim Antworten:", e);
     }
   }
 
-  dotInBotMessage() {
-    let count = 0;
-    const interval = setInterval(() => {
-      count++;
 
-      if (count === 3) {
-        clearInterval(interval);
-        const cardId: string = this.playerChatService.getMoveIdByPlayerResponse(this.selectedResponse)!;
-        this.botMessage = this.playerChatService.getBotResponse(cardId, this.selectedResponse)!;
-      }
-    }, 500);
+  async botAnswers() {
+    return new Promise<void>((resolve) => {
+      setTimeout(() => {
+        const cardId: string = this.unoChatService.getBotChatByPlayerResponse(this.selectedResponse)!;
+        this.botMessage = this.unoChatService.getBotResponse(cardId, this.selectedResponse)!;
+        resolve();
+      }, 1000);
+    });
+  }
+
+
+  async playerAnswersPossibilities () {
+    const cardId: string = this.unoChatService.getPlayerByBotResponse(this.botMessage)!;
+    const playerMessagePossibilities = this.unoChatService.getPlayerResponse(cardId);
+    if (playerMessagePossibilities){
+      this.playerResponses = playerMessagePossibilities;
+    }
   }
 
 
