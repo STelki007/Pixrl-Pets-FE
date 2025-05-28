@@ -5,7 +5,7 @@ import { UnoChatInterface } from '@components/games/uno/uno-player-chat/UnoChatI
   providedIn: 'root',
 })
 export class PlayerChatService {
-  private botMoves: UnoChatInterface[] = [
+  private unoChat: UnoChatInterface[] = [
     {
       id: '+4',
       responses: [
@@ -122,17 +122,17 @@ export class PlayerChatService {
   ];
 
   getBotMoves(): UnoChatInterface[] {
-    return this.botMoves;
+    return this.unoChat;
   }
 
   getPlayerMoves(): string[] {
-    return this.botMoves
+    return this.unoChat
       .flatMap(move => move.responses)
       .map(response => response.player);
   }
 
   getMoveIdByPlayerResponse(playerMessage: string): string | undefined {
-    const match = this.botMoves.find(move =>
+    const match = this.unoChat.find(move =>
       move.responses.some(response => response.player === playerMessage)
     );
 
@@ -140,7 +140,7 @@ export class PlayerChatService {
   }
 
   getBotResponse(responseId: string, playerMessage: string): string | null {
-    const cardResponses = this.botMoves.find(move => move.id === responseId);
+    const cardResponses = this.unoChat.find(move => move.id === responseId);
     if (!cardResponses) return null;
 
     const matchedResponse = cardResponses.responses.find(

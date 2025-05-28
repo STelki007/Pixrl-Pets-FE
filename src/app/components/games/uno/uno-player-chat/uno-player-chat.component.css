@@ -12,12 +12,12 @@
 }
 
 .bot-chat {
-  top: 20px;
-  left: 20px;
+  top: 130px;
+  left: 320px;
 }
 
 .player-chat {
-  bottom: 20px;
+  bottom: 130px;
   right: 20px;
 }
 

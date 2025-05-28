@@ -20,10 +20,11 @@ import {CardService} from '@components/games/uno/services/uno/CardService';
 import {SoundService} from '@services/SoundService';
 import {FormsModule} from '@angular/forms';
 import {BotService} from '@components/games/uno/services/uno/bot.service';
+import {UnoPlayerChatComponent} from '@components/games/uno/uno-player-chat/uno-player-chat.component';
 
 @Component({
   selector: 'app-player',
-  imports: [NgForOf, PickColorComponent, FormsModule],
+  imports: [NgForOf, PickColorComponent, FormsModule, UnoPlayerChatComponent],
   templateUrl: './player.component.html',
   styleUrl: './player.component.css'
 })
@@ -101,12 +102,14 @@ export class PlayerComponent implements OnInit, OnChanges {
     this.colorOfCardOutPut = this.cardService.extractCardColor(card);
 
     this.handleSpecialCard(card);
-    if (this.checkWinner(player)) {
-      return;
+
+    if (this.checkWinner(player)) return;
+
+    if (!this.isWaitingForColorPick) {
+      this.switchToNextPlayer();
     }
-    this.switchToNextPlayer();
+
     this.unoLastCardReset.emit();
-    console.log(this.deck.getDrawnCard())
   }
 
   private removeCardFromPlayer(player: string, card: string): void {
