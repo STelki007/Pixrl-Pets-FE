@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
-import { AppComponent } from './app.component';
-import { MainPageComponent } from './components/main-page-component/main-page-component';
+import { MainPageComponent } from '@components/main-page-component/main-page-component';
+import {canActivateAuthRole} from '@guards/auth.guard';
 
 export const routes: Routes = [
-  // { path: '', component: MainPageComponent, canActivate: [canActivateAuthRole] },
+  { path: '', component: MainPageComponent, canActivate: [canActivateAuthRole] },
   { path: '', component: MainPageComponent },
 ];
