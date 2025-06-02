@@ -138,7 +138,7 @@ export class PlayerComponent implements OnInit, OnChanges {
         break;
 
       case "arrow":
-        this.manageDelayCardSpeed(300)
+        this.manageDelayCardSpeed(500)
         break;
 
       case "4CardPlus":
@@ -297,7 +297,7 @@ export class PlayerComponent implements OnInit, OnChanges {
   checkWinner(player: string): boolean {
     if (this.playerHasNoCards(player)) {
       if (this.checkPlayerPressedUno()) {
-        this.players[player] ? alert('Haustier hat gewonnen!') : alert('Spieler hat gewonnen!');
+        this.players[player] ? alert('Spieler hat gewonnen!') : alert('Haustier hat gewonnen!');
 
         this.unoGameService.setValue(false)
         this.pickColorService.setValue(false)
