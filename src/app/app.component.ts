@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit} from '@angular/core';
 import { NgIf } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { SideBarButtonsService } from '@services/SideBarButtonsService';
@@ -16,6 +16,8 @@ import {GameComponent} from '@components/game-component/game.component';
 import {UnoGameStart} from '@components/games/uno/services/uno/UnoGameStart';
 import {SoundService} from '@services/SoundService';
 import {UnoPlayerChatComponent} from '@components/games/uno/uno-player-chat/uno-player-chat.component';
+import Keycloak from 'keycloak-js';
+
 @Component({
   selector: 'app-root',
   imports: [
@@ -37,7 +39,7 @@ import {UnoPlayerChatComponent} from '@components/games/uno/uno-player-chat/uno-
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit, OnDestroy {
-  // private keycloak = inject(Keycloak);
+  private keycloak = inject(Keycloak);
   selectedComponent: string = "";
   private subscription!: Subscription;
   protected arrowServiceValue: boolean = false;
@@ -87,13 +89,13 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
-  // logoutUser() {
-  //   if(this.keycloak.authenticated) {
-  //     this.keycloak.logout();
-  //   } else {
-  //     this.keycloak.login();
-  //   }
-  // }
+  logoutUser() {
+    if(this.keycloak.authenticated) {
+      this.keycloak.logout();
+    } else {
+      this.keycloak.login();
+    }
+  }
 
   onAnimalsBtnClick() {
     if (!this.isUnoStarted) {
