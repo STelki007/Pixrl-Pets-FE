@@ -48,6 +48,7 @@ export class PlayerComponent implements OnInit, OnChanges {
   private player2: string = "player2";
   private isWaitingForColorPick: boolean = false;
   private pressUnoButton: boolean = false;
+  private showChangeColorModal: boolean = false;
 
 
   constructor(
@@ -202,6 +203,7 @@ export class PlayerComponent implements OnInit, OnChanges {
     const tryPlayOrDraw = () => {
       const hand = this.players[bot];
       this.pressUnoButton = hand.length <= 1;
+
       const playableCards = hand.filter(card => this.cardService.canPlayCard(card, this.getFirstCard));
 
       if (playableCards.length > 0) {
@@ -223,6 +225,7 @@ export class PlayerComponent implements OnInit, OnChanges {
           }
           return;
         }
+
 
         return;
       }
@@ -259,13 +262,10 @@ export class PlayerComponent implements OnInit, OnChanges {
   }
 
   onCompleteRoundClick(): void {
-    this.cardService.shuffleAgain(this.deck);
-
+    this.cardService.shuffleAgain(this.deck)
     const currentPlayer = this.isPlayer2 ? this.player2 : this.player1;
 
-    const playableCards = this.players[currentPlayer].filter(card =>
-      this.cardService.canPlayCard(card, this.getFirstCard)
-    );
+    const playableCards = this.players[currentPlayer].filter(card => this.cardService.canPlayCard(card, this.getFirstCard));
 
     if (playableCards.length > 0) {
       alert("Du hast gültige Karte in der Hand");

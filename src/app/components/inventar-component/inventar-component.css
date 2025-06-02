@@ -1,58 +1,95 @@
-.adopt-main-div{
-  width: calc(100vw - 300px);
-  height: 100vh;
-  overflow: hidden;
-  margin-left: 300px;
-  background-color: #653830;
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Press Start 2P', cursive;
+  background-color: #2d1a14;
   color: white;
 }
-.text-div{
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 
+.adopt-main-div {
+  margin-left: 300px;
+  width: calc(100vw - 300px);
+  height: 100vh;
+  overflow-y: auto;
+  background: repeating-linear-gradient(
+    45deg,
+    #5a2e24,
+    #5a2e24 10px,
+    #653830 10px,
+    #653830 20px
+  );
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 100px;
 }
-.text-div h1{
-  position: relative;
+
+.text-div {
   margin-top: 50px;
+  text-align: center;
 }
-.text-div h1::before{
+
+.text-div h1 {
+  font-size: 2rem;
+  color: #ffe8a3;
+  text-shadow: 2px 2px #000;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 10px;
+}
+
+.text-div h1::after {
   content: "";
   position: absolute;
-  bottom: -20px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 150%;
-  height: 2px;
-  background-color: white;
+  width: 80%;
+  height: 4px;
+  background: #ffe8a3;
+  left: 10%;
+  bottom: 0;
 }
 
 .container {
-  padding: 20px;
-  border-radius: 10px;
+  width: 60%;
+  max-width: 900px;
+  margin-top: 40px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: 3px solid #ffe8a3;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 6px 6px 0 #000;
 }
 
 .inventory-grid {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 16px;
 }
 
 .inventory-item {
   width: 80px;
   height: 80px;
-  background-color: rgba(139, 69, 19, 0.27);
-  color: white;
-  font-size: 50px;
+  background-color: transparent;
+  border: 2px solid #fff;
+  border-radius: 12px;
+  box-shadow: 4px 4px 0 #000;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 6px;
-  border-radius: 5px;
-  box-shadow: 2px 2px 0 black;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  position: relative;
 }
+
 .inventory-item:hover {
   transform: scale(1.1);
-  box-shadow: 6px 6px 0 black;
+  box-shadow: 6px 6px 0 #000;
   background-color: #a0522d;
+}
+
+.inventory-item img {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+  image-rendering: pixelated;
 }
