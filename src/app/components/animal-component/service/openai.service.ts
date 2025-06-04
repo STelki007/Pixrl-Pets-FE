@@ -7,7 +7,7 @@ import { PetService } from '@components/animal-component/service/PetService';
 
 @Injectable({ providedIn: 'root' })
 export class OpenAIService {
-  private backendUrl = 'http://localhost:8080/api/chat';
+  private backendUrl = 'http://localhost:8081/api/chat';
 
   messages: ChatMessage[] = [];
 
