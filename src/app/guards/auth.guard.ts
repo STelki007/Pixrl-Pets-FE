@@ -1,21 +1,3 @@
-
-// import { CanActivateFn } from '@angular/router';
-// import { inject } from '@angular/core';
-// import Keycloak from "keycloak-js";
-
-// export const authGuard: CanActivateFn = async (route, state) => {
-//   const keycloakService = inject(Keycloak);
-
-//   const isLoggedIn = keycloakService.authenticated;
-
-//   if (isLoggedIn) {
-//     return true;
-//   } else {
-//     keycloakService.login();
-//     return false;
-//   }
-// };
-
 import { AuthGuardData, createAuthGuard } from 'keycloak-angular';
 import {
   ActivatedRouteSnapshot,
@@ -27,18 +9,17 @@ import { inject } from '@angular/core';
 import Keycloak from 'keycloak-js';
 
 /**
- * The logic below is a simple example, please make it more robust when implementing in your application.
- *
- * Reason: isAccessGranted is not validating the resource, since it is merging all roles. Two resources might
- * have the same role name and it makes sense to validate it more granular.
+ * Empfohlene AuthGuard-Logik mit keycloak-angular.
+ * Du kannst hier rollenbasierte Logik einbauen (siehe auskommentierten Block unten).
  */
 const isAccessAllowed = async (
   route: ActivatedRouteSnapshot,
-  __: RouterStateSnapshot,
+  _: RouterStateSnapshot,
   authData: AuthGuardData
 ): Promise<boolean | UrlTree> => {
   const { authenticated, grantedRoles } = authData;
 
+  // --- Rollenbasierte Prüfung (optional) ---
   // const requiredRole = route.data['role'];
   // if (!requiredRole) {
   //   return false;
@@ -51,13 +32,16 @@ const isAccessAllowed = async (
   //   return true;
   // }
 
+  // --- Einfache Login-Prüfung ---
   const keycloak = inject(Keycloak);
-  if (!keycloak.authenticated) {
+  if (!authenticated) {
     keycloak.login();
+    return false;
   }
 
   return true;
 };
 
+// Exportierter Guard, den du im Router verwendest:
 export const canActivateAuthRole =
   createAuthGuard<CanActivateFn>(isAccessAllowed);
