@@ -17,6 +17,7 @@ import {UnoGameStart} from '@components/games/uno/services/uno/UnoGameStart';
 import {SoundService} from '@services/SoundService';
 import {UnoPlayerChatComponent} from '@components/games/uno/uno-player-chat/uno-player-chat.component';
 import Keycloak from 'keycloak-js';
+import {BackendService} from '@services/backend.service';
 
 @Component({
   selector: 'app-root',
@@ -50,6 +51,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private arrowService: ArrowService,
     private unoGameStart: UnoGameStart,
     private soundService: SoundService,
+    private backendService: BackendService,
 
   ) {}
 
@@ -84,6 +86,9 @@ export class AppComponent implements OnInit, OnDestroy {
     if (!this.isUnoStarted){
       this.soundService.playSound("select-sound.mp3");
       this.sideBarButtonsService.setValue(value);
+      this.backendService.getKeyCloakPlayerId().subscribe(value => {
+        console.log(value)
+      })
     }else {
       alert("Spiel läuft gerade! Bitte über 'Spiel beenden' klicken.")
     }
