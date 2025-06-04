@@ -15,14 +15,15 @@ export class BackendService {
     return this.keycloak.token;
   }
 
-  private get headers(): HttpHeaders {
-    return new HttpHeaders().set('Authorization', `Bearer ${this.bearer}`);
+  private headers(token: any): HttpHeaders {
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
-  getKeyCloakPlayerId() {
+  getKeyCloakPlayerId(token: any) {
+    console.log(token)
     return this.http.get(
       `${BackendUrlService.getBackendUrl()}/player/UwU`,
-      { headers: this.headers }
+      { headers: this.headers(token) }
     );
   }
 }

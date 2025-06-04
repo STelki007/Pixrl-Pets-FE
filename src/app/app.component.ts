@@ -59,6 +59,8 @@ export class AppComponent implements OnInit, OnDestroy {
     this.startAudio();
     this.getSidebarValue();
     this.getGameServiceValue();
+
+
   }
 
   startAudio(){
@@ -83,14 +85,12 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   selectComponent(value: string) {
-    if (!this.isUnoStarted){
+    if (!this.isUnoStarted) {
       this.soundService.playSound("select-sound.mp3");
       this.sideBarButtonsService.setValue(value);
-      this.backendService.getKeyCloakPlayerId().subscribe(value => {
+      this.backendService.getKeyCloakPlayerId(this.keycloak.token).subscribe(value => {
         console.log(value)
       })
-    }else {
-      alert("Spiel läuft gerade! Bitte über 'Spiel beenden' klicken.")
     }
   }
 
