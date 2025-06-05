@@ -4,7 +4,7 @@ import { Observable, switchMap} from 'rxjs';
 import { PetFactory } from '@components/animal-component/service/PetFactory';
 import { ChatMessage } from '@components/animal-component/service/ChatMessage';
 import { PetService } from '@components/animal-component/service/PetService';
-import {BackendUrlService} from '@services/backend.url.service';
+import {BackendUrlService} from '@/app/backend/services/backend.url.service';
 
 @Injectable({ providedIn: 'root' })
 export class OpenAIService {

@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs';
 import { SideBarButtonsService } from '@services/SideBarButtonsService';
 import { MainPageComponent } from '@components/main-page-component/main-page-component';
 import { AnimalComponent } from '@components/animal-component/animal-component';
-import { InventarComponent } from '@components/inventar-component/inventar-component';
 import { SellComponentComponent } from '@components/sell-component/sell-component.component';
 import { ShopComponent } from '@components/shop-component/shop-component';
 import { CoinComponent } from '@components/coin-component/coin-component';
@@ -17,7 +16,10 @@ import {UnoGameStart} from '@components/games/uno/services/uno/UnoGameStart';
 import {SoundService} from '@services/SoundService';
 import {UnoPlayerChatComponent} from '@components/games/uno/uno-player-chat/uno-player-chat.component';
 import Keycloak from 'keycloak-js';
-import {BackendService} from '@services/backend.service';
+import {PlayerBackendService} from '@/app/backend/interfaces/player/player.backend.service';
+import {InventarComponent} from '@components/inventar-component/inventar-component';
+import {AuthContextService} from '@/app/backend/services/auth.context.service';
+import {PlayerInterface} from '@/app/backend/interfaces/player/playerInterface';
 
 @Component({
   selector: 'app-root',
@@ -25,7 +27,6 @@ import {BackendService} from '@services/backend.service';
     MainPageComponent,
     AnimalComponent,
     NgIf,
-    InventarComponent,
     SellComponentComponent,
     ShopComponent,
     CoinComponent,
@@ -33,7 +34,8 @@ import {BackendService} from '@services/backend.service';
     InputTextModule,
     AnimalsViewComponent,
     GameComponent,
-    UnoPlayerChatComponent
+    UnoPlayerChatComponent,
+    InventarComponent
   ],
   templateUrl: './app.component.html',
   standalone: true,
@@ -45,13 +47,16 @@ export class AppComponent implements OnInit, OnDestroy {
   private subscription!: Subscription;
   protected arrowServiceValue: boolean = false;
   private isUnoStarted = false;
+  private userId: any | null = null;
+  private players: any;
 
   constructor(
     private sideBarButtonsService: SideBarButtonsService,
     private arrowService: ArrowService,
     private unoGameStart: UnoGameStart,
     private soundService: SoundService,
-    private backendService: BackendService,
+    private playerBackendService: PlayerBackendService,
+    private authContextService: AuthContextService,
 
   ) {}
 
@@ -60,7 +65,43 @@ export class AppComponent implements OnInit, OnDestroy {
     this.getSidebarValue();
     this.getGameServiceValue();
 
+    this.createNewPlayer()
+  }
 
+  createNewPlayer () {
+    console.log(this.keycloak.token);
+    this.keycloak.loadUserInfo().then((userInfo: any) => {
+      const keycloakUserId = userInfo.sub;
+      const username = userInfo.preferred_username;
+
+      this.playerBackendService.getAllPlayers().subscribe(players => {
+        this.players = players;
+        const exists = this.players.some((player: any) => player.keycloakUserId === keycloakUserId);
+
+        if (!exists) {
+          const newPlayer: PlayerInterface = {
+            keycloakUserId: keycloakUserId,
+            username: username,
+            coins: 2000
+          };
+
+          this.playerBackendService.createPlayer(newPlayer).subscribe(() => {
+          this.getUserId(keycloakUserId);
+          });
+        } else {
+          console.log("Spieler existiert bereits.");
+        }
+
+      });
+    });
+  }
+
+  getUserId (keycloakUserId: any) {
+    const current = this.players.find((p: any) => p.keycloakUserId === keycloakUserId);
+    if (current) {
+      this.authContextService.setUserId(current.id);
+      console.log(current.id)
+    }
   }
 
   startAudio(){
@@ -88,9 +129,8 @@ export class AppComponent implements OnInit, OnDestroy {
     if (!this.isUnoStarted) {
       this.soundService.playSound("select-sound.mp3");
       this.sideBarButtonsService.setValue(value);
-      this.backendService.getKeyCloakPlayerId(this.keycloak.token).subscribe(value => {
-        console.log(value)
-      })
+      console.log(this.keycloak.userInfo)
+
     }
   }
 

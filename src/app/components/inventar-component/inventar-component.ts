@@ -23,6 +23,7 @@ export class InventarComponent implements OnInit {
   ) {
   }
 
+
   ngOnInit(): void {
 
   }
