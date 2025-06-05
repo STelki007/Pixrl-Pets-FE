@@ -13,10 +13,9 @@ const backendApiRequestCondition =
     urlPattern: /^(http:\/\/localhost:8081)(\/.*)?$/i,
   });
 
-  // KEYCLOAK CONFIG
-  const KEYCLOAK_URL = 'http://localhost:9090';
-  const KEYCLOAK_REALM = 'LF12';
-  const KEYCLOAK_CLIENT_ID = "lf12";
+const KEYCLOAK_URL = 'http://localhost:9090';
+const KEYCLOAK_REALM = 'LF12';
+const KEYCLOAK_CLIENT_ID = "lf12";
 
 export const provideKeycloakAngular = () =>
   provideKeycloak({
@@ -31,9 +30,7 @@ export const provideKeycloakAngular = () =>
       silentCheckSsoRedirectUri:
         window.location.origin + '/silent-check-sso.html',
       redirectUri: window.location.origin + '/',
-
     },
-
     features: [
       withAutoRefreshToken({
         onInactivityTimeout: 'logout',

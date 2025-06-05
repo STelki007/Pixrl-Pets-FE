@@ -10,6 +10,9 @@ import {Image} from 'primeng/image';
 import {SoundService} from '@services/SoundService';
 import {FruitsService} from '@services/fruits.service';
 import {FruitInterface} from '@components/inventar-component/FruitInterface';
+import {ShopBackendService} from '@/app/backend/interfaces/shop/shop.backend.service';
+import {ShopInterface} from '@/app/backend/interfaces/shop/shopInterface';
+import {AuthContextService} from '@/app/backend/services/auth.context.service';
 
 @Component({
   selector: 'app-shop-component',
@@ -33,9 +36,17 @@ export class ShopComponent implements OnInit {
               private messageService: MessageService,
               private soundService: SoundService,
               protected fruitsService: FruitsService,
+              private shopBackendService: ShopBackendService,
+              private authContextService: AuthContextService,
 ) {}
 
   ngOnInit(): void {
+  }
+
+  private body: ShopInterface = {
+    amount: 0,
+    playerId: null,
+    itemId: 0,
   }
 
   onClickItem() {
@@ -70,7 +81,7 @@ export class ShopComponent implements OnInit {
     }
   }
 
-  confirmBuy() {
+  confirmBuy(fruit: FruitInterface | null) {
     if (this.quantity > 50) {
       this.quantityError = "Maximale Bestellmenge ist 50!";
       return;
@@ -84,7 +95,24 @@ export class ShopComponent implements OnInit {
     this.quantityError = null;
     this.modalRef?.close();
     this.messageService.add({ severity: 'success', summary: 'Gekauft!', detail: 'Das Item wurde erfolgreich gekauft.' });
+   this.sendBoughtItemsToBackend(fruit);
+   console.log(this.body)
+    console.log(fruit)
   }
+
+  sendBoughtItemsToBackend(fruit: FruitInterface | null) {
+    if (fruit !== null) {
+      this.body.amount = this.quantity;
+      this.body.itemId = fruit.id;
+      this.body.playerId = this.authContextService.getUserId()
+    }
+
+    if (this.body.playerId !== null) {
+      this.shopBackendService.sendBoughtItemsToPlayerInventory(this.body)
+      console.log("es wurde gekauft: " + this.body);
+    }
+  }
+
   openBuyModal() {
     this.soundService.playSound("select-item.mp3");
     this.modalRef = this.modalService.open(this.buyModal, {

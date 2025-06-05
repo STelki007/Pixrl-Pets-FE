@@ -32,35 +32,37 @@
                 <button class="buy-button mx-3 nes-btn is-primary" (click)="openBuyModal()">Kaufen</button>
             </div>
           </div>
+
+          <ng-template #buyModal let-modal>
+            <section class="nes-dialog is-dark is-rounded alert-center">
+              <div class="mt-4 mb-4 text-center">
+                <label for="quantity" class="nes-text is-primary">Menge auswählen:</label>
+                <p-inputNumber
+                  id="quantity"
+                  [(ngModel)]="quantity"
+                  [step]="1"
+                  showButtons
+                  class="custom-spinner"
+                  (ngModelChange)="validateQuantity()"
+                ></p-inputNumber>
+                <div *ngIf="quantityError" class="nes-text is-error mt-2">
+                  {{ quantityError }}
+                </div>
+              </div>
+
+              <div class="text-center mt-4">
+                <button class="nes-btn is-error mx-3" (click)="modal.close()">Abbrechen</button>
+                <button class="nes-btn is-success mx-3" (click)="confirmBuy(fruit)" [disabled]="quantityError">Kaufen</button>
+              </div>
+            </section>
+          </ng-template>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<ng-template #buyModal let-modal>
-  <section class="nes-dialog is-dark is-rounded alert-center">
-    <div class="mt-4 mb-4 text-center">
-      <label for="quantity" class="nes-text is-primary">Menge auswählen:</label>
-      <p-inputNumber
-        id="quantity"
-        [(ngModel)]="quantity"
-        [step]="1"
-        showButtons
-        class="custom-spinner"
-        (ngModelChange)="validateQuantity()"
-      ></p-inputNumber>
-      <div *ngIf="quantityError" class="nes-text is-error mt-2">
-        {{ quantityError }}
-      </div>
-    </div>
 
-    <div class="text-center mt-4">
-      <button class="nes-btn is-error mx-3" (click)="modal.close()">Abbrechen</button>
-      <button class="nes-btn is-success mx-3" (click)="confirmBuy()" [disabled]="quantityError">Kaufen</button>
-    </div>
-  </section>
-</ng-template>
 
 
 <div

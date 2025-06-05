@@ -4,10 +4,10 @@ import { Observable, switchMap} from 'rxjs';
 import { PetFactory } from '@components/animal-component/service/PetFactory';
 import { ChatMessage } from '@components/animal-component/service/ChatMessage';
 import { PetService } from '@components/animal-component/service/PetService';
+import {BackendUrlService} from '@/app/backend/services/backend.url.service';
 
 @Injectable({ providedIn: 'root' })
 export class OpenAIService {
-  private backendUrl = 'http://localhost:8080/api/chat';
 
   messages: ChatMessage[] = [];
 
@@ -26,10 +26,9 @@ export class OpenAIService {
         const systemMessage: ChatMessage = {
           role: 'system',
           content: `
-Im Backend ist die Tokenbegrenzung auf 100 eingestellt – maximal 30 Wörter antworten.
-Sie sind ein digitales Haustier-Simulationsmodell mit folgenden Eigenschaften:
-${petString}
-Reagiere und verhalte dich, als ob du dieses Tier bist. ;)
+                      Im Backend ist die Tokenbegrenzung auf 100 eingestellt – maximal 30 Wörter antworten.
+                      Sie sind ein digitales Haustier-Simulationsmodell mit folgenden Eigenschaften:
+                      ${petString} Reagiere und verhalte dich, als ob du dieses Tier bist. ;)
           `.trim()
         };
 
@@ -40,7 +39,7 @@ Reagiere und verhalte dich, als ob du dieses Tier bist. ;)
           messages: fullMessageHistory
         };
 
-        return this.http.post(this.backendUrl, body);
+        return this.http.post(`${BackendUrlService.getBackendUrl()}/api/chat`, body);
       })
     );
   }
