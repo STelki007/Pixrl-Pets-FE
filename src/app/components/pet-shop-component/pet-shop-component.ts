@@ -29,6 +29,7 @@ export class PetShopComponent implements OnInit {
   protected isOffcanvasOpen: boolean = false;
   @ViewChild('buyModal') buyModal!: TemplateRef<any>;
   private modalRef?: NgbModalRef;
+  selectedAnimal: any = null;
   protected quantity: number = 1;
   protected quantityError: string | null = null;
   protected fruit: FruitInterface | null = null;
@@ -58,6 +59,11 @@ export class PetShopComponent implements OnInit {
         pets.push(petType);
       })
       this.pets = pets;
+      console.log("buyable pets:" + pets);
+      console.log(pets);
+      pets.forEach(pet => {
+        console.log(pet);
+      })
     }));
     this.petTypeServiceService.loadData();
 
@@ -106,6 +112,7 @@ export class PetShopComponent implements OnInit {
   }
 
   confirmBuy(pet: PetTypeDto | null) {
+    console.log("ac" + pet?.petId);
     if(pet == null)return;
     this.soundService.playSound("select-item.mp3");
     this.quantity = 1;
@@ -130,7 +137,8 @@ export class PetShopComponent implements OnInit {
     }
   }
 
-  openBuyModal() {
+  openBuyModal(pet: PetTypeDto) {
+    this.selectedAnimal = pet;
     this.soundService.playSound("select-item.mp3");
     this.modalRef = this.modalService.open(this.buyModal, {
       centered: true,

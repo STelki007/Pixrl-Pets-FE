@@ -32,14 +32,14 @@
             </div>
 
             <div class="buy-button-div">
-                <button class="buy-button mx-3 nes-btn is-primary" (click)="openBuyModal()">Kaufen</button>
+                <button class="buy-button mx-3 nes-btn is-primary" (click)="openBuyModal(animal)">Kaufen</button>
             </div>
           </div>
 
           <ng-template #buyModal let-modal>
             <section class="nes-dialog is-dark is-rounded alert-center">
               <div class="mt-4 mb-4 text-center">
-                <h3>{{ animal.type }} kaufen</h3>
+                <h3>{{ selectedAnimal.type }} kaufen</h3>
                 <div *ngIf="quantityError" class="nes-text is-error mt-2">
                   {{ quantityError }}
                 </div>
@@ -47,7 +47,7 @@
 
               <div class="text-center mt-4">
                 <button class="nes-btn is-error mx-3" (click)="modal.close()">Abbrechen</button>
-                <button class="nes-btn is-success mx-3" (click)="confirmBuy(animal)">Kaufen</button>
+                <button class="nes-btn is-success mx-3" (click)="confirmBuy(selectedAnimal)">Kaufen</button>
               </div>
             </section>
           </ng-template>
@@ -98,3 +98,4 @@
 <p-toast position="bottom-right" />
 
 <!--<p-image src="https://primefaces.org/cdn/primeng/images/galleria/galleria10.jpg" alt="Image" width="250" [preview]="true" />-->
+</div>
