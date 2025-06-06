@@ -1,6 +1,5 @@
 import {PetStats} from '@components/animal-component/service/PetStats';
 import {PetCulture} from '@components/animal-component/service/PetCulture';
-import {PetFactory} from '@components/animal-component/service/PetFactory';
 
 export class Pet {
   private readonly imagePath: string = "";
@@ -52,6 +51,10 @@ export class Pet {
     return this.stats;
   }
 
+  public getId(): number {
+    return this.id;
+  }
+
   /**
    * This method saves all the animal image paths for easy use and change
    * @param animal AnimalType
@@ -72,14 +75,14 @@ export class Pet {
     }
   }
 
-  public setAnimation(animation: PetAnimation){
-    if(!this.animationCss.animations[this.petAnimationToString(animation)])
+  public setAnimation(animation: PetAnimation) {
+    if (!this.animationCss.animations[this.petAnimationToString(animation)])
       throw new Error("Pet doesnt have animation '" + animation + "'\n" + this);
     this.getAnimationCss().current = this.animationCss.animations[this.petAnimationToString(animation)];
   }
 
-  public petAnimationToString( animation: PetAnimation):string{
-    switch(animation){
+  public petAnimationToString(animation: PetAnimation): string {
+    switch (animation) {
       case PetAnimation.static:
         return "static"
       case PetAnimation.idle:
@@ -90,8 +93,6 @@ export class Pet {
         return "walk";
     }
   }
-
-
 
 
   /**
@@ -217,7 +218,9 @@ export class Pet {
         throw new Error(animal + " animal not defined in the getTestAnimal() method");
     }
   }
+
 }
+
 
 /**
  * enum of all animal types
@@ -229,6 +232,6 @@ export enum PetType {
 /**
  * enum of all animations
  */
-export enum PetAnimation{
-  idle,walk,eat, static
+export enum PetAnimation {
+  idle, walk, eat, static
 }

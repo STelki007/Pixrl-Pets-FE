@@ -1,28 +1,30 @@
-import {Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
 import {NgClass, NgForOf, NgIf, NgStyle} from '@angular/common';
 import {InputNumber} from 'primeng/inputnumber';
 import {FormsModule} from '@angular/forms';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {Toast} from 'primeng/toast';
 import {MessageService} from 'primeng/api';
-import {ProgressSpinner} from 'primeng/progressspinner';
-import {Image} from 'primeng/image';
 import {SoundService} from '@services/SoundService';
 import {FruitsService} from '@services/fruits.service';
 import {FruitInterface} from '@components/inventar-component/FruitInterface';
 import {ShopBackendService} from '@/app/backend/interfaces/shop/shop.backend.service';
 import {ShopInterface} from '@/app/backend/interfaces/shop/shopInterface';
 import {AuthContextService} from '@/app/backend/services/auth.context.service';
+import {PetTypeServiceService} from '@services/animal/pet-type-service.service';
+import {Observable} from 'rxjs';
+import {Pet} from '@components/animal-component/service/Pet';
+import {PetTypeDto} from '@services/animal/PetTypeDto';
 
 @Component({
-  selector: 'app-shop-component',
+  selector: 'app-pet-shop-component',
   standalone: true,
   imports: [NgForOf, NgClass, NgIf, InputNumber, FormsModule, Toast, NgStyle],
-  templateUrl: './shop-component.html',
-  styleUrl: './shop-component.css',
+  templateUrl: './pet-shop-component.html',
+  styleUrl: './pet-shop-component.css',
   providers: [MessageService]
 })
-export class ShopComponent implements OnInit {
+export class PetShopComponent implements OnInit {
   protected selectedTab: string = "buy";
   protected isOffcanvasOpen: boolean = false;
   @ViewChild('buyModal') buyModal!: TemplateRef<any>;
@@ -30,7 +32,8 @@ export class ShopComponent implements OnInit {
   protected quantity: number = 1;
   protected quantityError: string | null = null;
   protected fruit: FruitInterface | null = null;
-
+  private petTypes$: Observable<PetTypeDto[]> = new Observable<PetTypeDto[]>;
+  protected pets: PetTypeDto[] = [];
 
   constructor(private modalService: NgbModal,
               private messageService: MessageService,
@@ -38,7 +41,27 @@ export class ShopComponent implements OnInit {
               protected fruitsService: FruitsService,
               private shopBackendService: ShopBackendService,
               private authContextService: AuthContextService,
-) {}
+              private petTypeServiceService: PetTypeServiceService,
+              private shopService: ShopBackendService) {
+  }
+
+  ngOnInit(): void {
+    this.petTypes$ = this.petTypeServiceService.getPetTypes();
+    this.petTypes$.subscribe((petTypes => {
+      let pets: PetTypeDto[] = [];
+
+      petTypes.forEach(petType => {
+        petType = new PetTypeDto(petType.type, petType.petId, petType.price);
+        let pet: Pet | null = petType.getPet();
+        if (pet == null)
+          return;
+        pets.push(petType);
+      })
+      this.pets = pets;
+    }));
+    this.petTypeServiceService.loadData();
+
+  }
 
   @Output() componentSelected  = new EventEmitter<string>();
 
@@ -46,8 +69,6 @@ export class ShopComponent implements OnInit {
     this.componentSelected .emit(comp);
   }
 
-  ngOnInit(): void {
-  }
 
   private body: ShopInterface = {
     amount: 0,
@@ -69,7 +90,12 @@ export class ShopComponent implements OnInit {
     this.selectedTab = tab;
   }
 
-  onClickInfo(id: number) {
+  onAnimalCardClick(animal: Pet | null) {
+
+  }
+
+  onClickInfo(id: number | null) {
+    if (id == null) return;
     this.fruit = this.fruitsService.getFruitById(id)!;
     this.isOffcanvasOpen = true;
     this.soundService.playSound("select-item.mp3");
@@ -79,31 +105,16 @@ export class ShopComponent implements OnInit {
     this.soundService.playSound("coinClickEffect2.mp3");
   }
 
-  validateQuantity() {
-    if (this.quantity > 50) {
-      this.quantityError = "Maximale Bestellmenge ist 50!";
-    } else {
-      this.quantityError = null;
-    }
-  }
-
-  confirmBuy(fruit: FruitInterface | null) {
-    if (this.quantity > 50) {
-      this.quantityError = "Maximale Bestellmenge ist 50!";
-      return;
-    }
-    if (this.quantity <= 0) {
-      this.quantityError = "Minimale Bestellmenge ist 1!";
-      return;
-    }
+  confirmBuy(pet: PetTypeDto | null) {
+    if(pet == null)return;
     this.soundService.playSound("select-item.mp3");
     this.quantity = 1;
     this.quantityError = null;
     this.modalRef?.close();
-    this.messageService.add({ severity: 'success', summary: 'Gekauft!', detail: 'Das Item wurde erfolgreich gekauft.' });
-   this.sendBoughtItemsToBackend(fruit);
-   console.log(this.body)
-    console.log(fruit)
+    this.messageService.add({severity: 'success', summary: 'Gekauft!', detail: 'Das Item wurde erfolgreich gekauft.'});
+    this.shopService.buyPet(pet.petId);
+    console.log(this.body)
+    console.log(pet)
   }
 
   sendBoughtItemsToBackend(fruit: FruitInterface | null) {

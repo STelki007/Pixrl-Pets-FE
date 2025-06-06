@@ -1,29 +1,32 @@
+
 <div class="adopt-main-div">
   <div class="nav-buttons d-flex justify-content-center">
-    <button class="nes-btn custom-btn" [ngClass]="{'is-active': selectedTab === 'buy'}" (click)="selectTab('buy')">
+    <button class="nes-btn custom-btn" [ngClass]="{'is-active': selectedTab === 'shop'}" (click)="emitSelectComponent('shop')">
       Items
     </button>
-    <button class="nes-btn custom-btn ml-2" [ngClass]="{'is-active': selectedTab === 'buyPet'}" (click)="emitSelectComponent('buyPet')">
+    <button class="nes-btn custom-btn ml-2" [ngClass]="{'is-active': selectedTab === 'sell'}" >
       Tiere
     </button>
   </div>
 
   <div class="mt-5 d-flex justify-content-center">
     <div class="inventory-grid with-title">
-      <div class="items-container">
-        <div *ngFor="let fruit of fruitsService.getFruits()" class="inventory-items-container">
-          <div class="item-container" (click)="onClickItem()">
-            <img class="article-name text-center mb-3" [src]="fruit.imageName" [id]="fruit.id" [title]="fruit.name">
-          </div>
 
-          <div class="coin-container mb-3" (click)="onClickCoin()">
+          <div class="scrollable-grid">
+            <div *ngFor="let animal of pets" class="grid-item" (click)="onAnimalCardClick(animal.getPet())">
+              <div
+                [ngClass]="[animal.getPet()?.getAnimationCss().image, animal.getPet()?.getAnimationCss().current]"
+                [ngStyle]="{ 'background-image': 'url(' + animal.getPet()?.getImagePath() + ')' }">
+
+
+          <div class="coin-container mb-3" (click)="onClickCoin()" style="color:black">
             <i class="nes-icon coin mx-3"></i>
             999999
           </div>
 
           <div class="item-buttons">
             <div class="info-button-div mx-3">
-              <button (click)="onClickInfo(fruit.id)">
+              <button (click)="onClickInfo(animal.petInstance ? animal.petInstance.getId() : null)">
                 <i class="bi bi-info-circle-fill"></i>
               </button>
             </div>
@@ -36,15 +39,7 @@
           <ng-template #buyModal let-modal>
             <section class="nes-dialog is-dark is-rounded alert-center">
               <div class="mt-4 mb-4 text-center">
-                <label for="quantity" class="nes-text is-primary">Menge auswählen:</label>
-                <p-inputNumber
-                  id="quantity"
-                  [(ngModel)]="quantity"
-                  [step]="1"
-                  showButtons
-                  class="custom-spinner"
-                  (ngModelChange)="validateQuantity()"
-                ></p-inputNumber>
+                <h3>{{ animal.type }} kaufen</h3>
                 <div *ngIf="quantityError" class="nes-text is-error mt-2">
                   {{ quantityError }}
                 </div>
@@ -52,7 +47,7 @@
 
               <div class="text-center mt-4">
                 <button class="nes-btn is-error mx-3" (click)="modal.close()">Abbrechen</button>
-                <button class="nes-btn is-success mx-3" (click)="confirmBuy(fruit)" [disabled]="quantityError">Kaufen</button>
+                <button class="nes-btn is-success mx-3" (click)="confirmBuy(animal)">Kaufen</button>
               </div>
             </section>
           </ng-template>

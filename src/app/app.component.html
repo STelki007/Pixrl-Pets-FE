@@ -48,7 +48,9 @@
 <app-main-page-component *ngIf="selectedComponent === 'main'"></app-main-page-component>
 <app-inventar-component *ngIf="selectedComponent === 'inventory'"></app-inventar-component>
 <app-sell-component *ngIf="selectedComponent === 'sell'"></app-sell-component>
-<app-shop-component *ngIf="selectedComponent === 'shop'"></app-shop-component>
+<app-shop-component *ngIf="selectedComponent === 'shop'"  (componentSelected)="selectComponent($event)"></app-shop-component>
+
+<app-pet-shop-component *ngIf="selectedComponent === 'buyPet'" (componentSelected)="selectComponent($event)"></app-pet-shop-component>
 <app-setting-component *ngIf="selectedComponent === 'setting'"></app-setting-component>
 <app-animal-component *ngIf="selectedComponent == 'animal'"></app-animal-component>
 <app-animals-view-component *ngIf="selectedComponent === 'animals'"></app-animals-view-component>

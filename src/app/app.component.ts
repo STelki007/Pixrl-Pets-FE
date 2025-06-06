@@ -20,6 +20,7 @@ import {PlayerBackendService} from '@/app/backend/interfaces/player/player.backe
 import {InventarComponent} from '@components/inventar-component/inventar-component';
 import {AuthContextService} from '@/app/backend/services/auth.context.service';
 import {PlayerInterface} from '@/app/backend/interfaces/player/playerInterface';
+import {PetShopComponent} from '@components/pet-shop-component/pet-shop-component';
 
 @Component({
   selector: 'app-root',
@@ -35,7 +36,8 @@ import {PlayerInterface} from '@/app/backend/interfaces/player/playerInterface';
     AnimalsViewComponent,
     GameComponent,
     UnoPlayerChatComponent,
-    InventarComponent
+    InventarComponent,
+    PetShopComponent
   ],
   templateUrl: './app.component.html',
   standalone: true,
@@ -126,6 +128,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   selectComponent(value: string) {
+    console.log(value);
     if (!this.isUnoStarted) {
       this.soundService.playSound("select-sound.mp3");
       this.sideBarButtonsService.setValue(value);

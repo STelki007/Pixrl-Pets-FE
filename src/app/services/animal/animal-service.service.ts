@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {TokenService} from '@services/token.service';
 import {Pet} from '@components/animal-component/service/Pet';
+import {TokenService} from '@services/token.service';
 
 @Injectable({
   providedIn: 'root',
