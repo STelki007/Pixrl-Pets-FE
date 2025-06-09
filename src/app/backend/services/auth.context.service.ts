@@ -1,6 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import Keycloak from 'keycloak-js';
 import {HttpHeaders} from '@angular/common/http';
+import {KeycloakInterface} from '@/app/backend/services/KeycloakInterface';
 
 @Injectable(
   {
@@ -29,9 +30,11 @@ export class AuthContextService {
     return this.keycloak.sessionId;
   }
 
-  getKeycloakUserName() {
-    return this.keycloak.userInfo
+  getKeycloakUserName(): string {
+    const userInfo = this.keycloak.userInfo as KeycloakInterface;
+    return userInfo.name ?? userInfo.preferred_username ?? 'Unbekannt';
   }
+
 
   setUserId(userId: number) {
     this.userId = userId;
