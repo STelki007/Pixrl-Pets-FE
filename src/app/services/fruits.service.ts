@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
-import {FruitInterface} from '@components/inventar-component/FruitInterface';
+import {FruitInterface} from '@components/shop-component/FruitInterface';
+import {ItemsBackendService} from '@/app/backend/items/items.backend.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,9 +25,12 @@ export class FruitsService {
 
   ];
 
+  constructor(private itemsBackendService: ItemsBackendService) {
+  }
 
-  getFruits() {
-    return this.fruits;
+
+  getAllItems() {
+    return this.itemsBackendService.getAllItems();
   }
 
   getFruitById(id: number) {

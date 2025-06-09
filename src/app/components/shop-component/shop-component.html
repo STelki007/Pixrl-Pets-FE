@@ -11,7 +11,8 @@
   <div class="mt-5 d-flex justify-content-center">
     <div class="inventory-grid with-title">
       <div class="items-container">
-        <div *ngFor="let fruit of fruitsService.getFruits()" class="inventory-items-container">
+        <!--
+        <div *ngFor="let fruit of fruitsService.getAllItems()" class="inventory-items-container">
           <div class="item-container" (click)="onClickItem()">
             <img class="article-name text-center mb-3" [src]="fruit.imageName" [id]="fruit.id" [title]="fruit.name">
           </div>
@@ -29,7 +30,7 @@
             </div>
 
             <div class="buy-button-div">
-                <button class="buy-button mx-3 nes-btn is-primary" (click)="openBuyModal()">Kaufen</button>
+              <button class="buy-button mx-3 nes-btn is-primary" (click)="openBuyModal()">Kaufen</button>
             </div>
           </div>
 
@@ -57,6 +58,7 @@
             </section>
           </ng-template>
         </div>
+        -->
       </div>
     </div>
   </div>

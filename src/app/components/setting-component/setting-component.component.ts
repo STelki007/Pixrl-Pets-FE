@@ -6,6 +6,7 @@ import {SoundService} from '@services/SoundService';
 import {DrawAvatarComponent} from '@/app/draw-avatar/draw-avatar.component';
 import {NgIf} from '@angular/common';
 import {FormsModule} from '@angular/forms';
+import {AuthContextService} from '@/app/backend/services/auth.context.service';
 
 @Component({
   selector: 'app-setting-component',
@@ -24,17 +25,24 @@ export class SettingComponentComponent implements OnInit {
   protected titleLogout: string = "Möchten Sie sich wirklich abmelden?";
   protected isProfileImageButtonPressed: boolean = false;
   profileImage: string = "/avatar-defulat.svg";
+  keyCloakUserName: string = "Unbekannt";
 
   constructor(
     protected deleteAccountService: DeleteAccountService,
     protected logoutService: LogoutService,
     private soundService: SoundService,
+    private authContextService: AuthContextService,
   ) {
   }
 
   ngOnInit() {
     this.getAlertStateValue();
     this.getImageFromLocalStorage();
+    this.getKeyCloakUserName()
+  }
+
+  getKeyCloakUserName () {
+    this.keyCloakUserName = this.authContextService.getKeycloakUserName();
   }
 
   getAlertStateValue() {

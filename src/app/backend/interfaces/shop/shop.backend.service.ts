@@ -15,10 +15,12 @@ export class ShopBackendService {
     private tokenService: AuthContextService,
   ) {}
 
-  sendBoughtItemsToPlayerInventory(body: any) {
-    return this.http.post(`http://localhost:8081/inventory`, body, {
-      headers: this.tokenService.headerGetToken()
-    })
+  sendBoughtItemsToPlayerInventory(id: number, amount: number) {
+    return this.http.post(
+      `http://localhost:8081/shop/buyItem/${id}/${amount}`,
+      {},
+      { headers: this.tokenService.headerGetToken() }
+    );
   }
 
   buyPet(petId:number) {

@@ -9,25 +9,25 @@ export class PlayerBackendService {
 
   constructor(
     private http: HttpClient,
-    private tokenService: AuthContextService,
+    private authContextService: AuthContextService,
   ) {}
 
 
     getAllPlayers() {
     return this.http.get('http://localhost:8081/player', {
-      headers: this.tokenService.headerGetToken()
+      headers: this.authContextService.headerGetToken()
     })
   }
 
   getPlayerByKeycloakSessionId() {
     return this.http.get(`http://localhost:8081/player/keycloakUserId/52cc0208-a3bd-4367-94c5-0404b016a003`, {
-      headers: this.tokenService.headerGetToken()
+      headers: this.authContextService.headerGetToken()
     })
   }
 
   createPlayer(body: any) {
     return this.http.post(`http://localhost:8081/player`, body, {
-      headers: this.tokenService.headerGetToken()
+      headers: this.authContextService.headerGetToken()
     })
   }
 
