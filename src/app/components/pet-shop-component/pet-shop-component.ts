@@ -7,7 +7,6 @@ import {Toast} from 'primeng/toast';
 import {MessageService} from 'primeng/api';
 import {SoundService} from '@services/SoundService';
 import {FruitsService} from '@services/fruits.service';
-import {FruitInterface} from '@components/inventar-component/FruitInterface';
 import {ShopBackendService} from '@/app/backend/interfaces/shop/shop.backend.service';
 import {ShopInterface} from '@/app/backend/interfaces/shop/shopInterface';
 import {AuthContextService} from '@/app/backend/services/auth.context.service';
@@ -15,6 +14,7 @@ import {PetTypeServiceService} from '@services/animal/pet-type-service.service';
 import {Observable} from 'rxjs';
 import {Pet} from '@components/animal-component/service/Pet';
 import {PetTypeDto} from '@services/animal/PetTypeDto';
+import {FruitInterface} from '@components/shop-component/FruitInterface';
 
 @Component({
   selector: 'app-pet-shop-component',
@@ -132,7 +132,6 @@ export class PetShopComponent implements OnInit {
     }
 
     if (this.body.playerId !== null) {
-      this.shopBackendService.sendBoughtItemsToPlayerInventory(this.body)
       console.log("es wurde gekauft: " + this.body);
     }
   }
