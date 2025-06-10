@@ -10,8 +10,8 @@ import {AuthContextService} from '@/app/backend/services/auth.context.service';
 export class InventoryBackendService {
   constructor(private http: HttpClient, private authContextService: AuthContextService) {}
 
-  getInventoryByPlayerSessionId(playerSessionId: any) {
-    return this.http.get('http://localhost:8081/inventory/' + playerSessionId, {
+  getInventoryByPlayerSessionId() {
+    return this.http.get('http://localhost:8081/inventory/owned', {
       headers: this.authContextService.headerGetToken()
     })
   }

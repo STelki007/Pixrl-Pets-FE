@@ -19,8 +19,8 @@ export class PlayerBackendService {
     })
   }
 
-  getPlayerByKeycloakSessionId() {
-    return this.http.get(`http://localhost:8081/player/keycloakUserId/52cc0208-a3bd-4367-94c5-0404b016a003`, {
+  getPlayerByKeycloakSessionId(sessionId: any) {
+    return this.http.get(`http://localhost:8081/player/keycloakUserId/` + sessionId, {
       headers: this.authContextService.headerGetToken()
     })
   }

@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import {SideBarButtonsService} from '../../services/SideBarButtonsService';
 import {SoundService} from '@services/SoundService';
 import {UnoGameStart} from '@components/games/uno/services/uno/UnoGameStart';
+import {PlayerCoin} from '@/app/backend/player/PlayerCoins';
 
 @Component({
   selector: 'app-coin-component',
@@ -88,4 +89,6 @@ export class CoinComponent implements OnInit, OnDestroy {
     }
 
   }
+
+  protected readonly PlayerCoin = PlayerCoin;
 }

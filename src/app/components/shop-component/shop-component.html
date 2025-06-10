@@ -11,26 +11,28 @@
   <div class="mt-5 d-flex justify-content-center">
     <div class="inventory-grid with-title">
       <div class="items-container">
-        <!--
-        <div *ngFor="let fruit of fruitsService.getAllItems()" class="inventory-items-container">
-          <div class="item-container" (click)="onClickItem()">
-            <img class="article-name text-center mb-3" [src]="fruit.imageName" [id]="fruit.id" [title]="fruit.name">
-          </div>
 
-          <div class="coin-container mb-3" (click)="onClickCoin()">
-            <i class="nes-icon coin mx-3"></i>
-            999999
-          </div>
-
-          <div class="item-buttons">
-            <div class="info-button-div mx-3">
-              <button (click)="onClickInfo(fruit.id)">
-                <i class="bi bi-info-circle-fill"></i>
-              </button>
+        <div *ngFor="let item of itemsArr">
+          <div class="inventory-items-container">
+            <div class="item-container" (click)="onClickItem()">
+              <img class="article-name text-center mb-3" [src]="item.image" [id]="item.id" [title]="item.name">
             </div>
 
-            <div class="buy-button-div">
-              <button class="buy-button mx-3 nes-btn is-primary" (click)="openBuyModal()">Kaufen</button>
+            <div class="coin-container mb-3" (click)="onClickCoin()">
+              <i class="nes-icon coin mx-3"></i>
+              {{ item.price }}
+            </div>
+
+            <div class="item-buttons">
+              <div class="info-button-div mx-3">
+                <button (click)="onClickInfo(item.id)">
+                  <i class="bi bi-info-circle-fill"></i>
+                </button>
+              </div>
+
+              <div class="buy-button-div">
+                <button class="buy-button mx-3 nes-btn is-primary" (click)="openBuyModal(item)">Kaufen</button>
+              </div>
             </div>
           </div>
 
@@ -53,12 +55,12 @@
 
               <div class="text-center mt-4">
                 <button class="nes-btn is-error mx-3" (click)="modal.close()">Abbrechen</button>
-                <button class="nes-btn is-success mx-3" (click)="confirmBuy(fruit)" [disabled]="quantityError">Kaufen</button>
+                <button class="nes-btn is-success mx-3" (click)="confirmBuy()" [disabled]="quantityError">Kaufen</button>
               </div>
             </section>
           </ng-template>
         </div>
-        -->
+
       </div>
     </div>
   </div>
@@ -78,7 +80,7 @@
 
   <div class="offcanvas-header border-bottom">
     <h5 class="offcanvas-title mb-0" id="offcanvasRightLabel">
-      {{ fruit?.name }}
+      <!--{{ fruit?.name }} -->
     </h5>
     <button
       type="button"
@@ -91,7 +93,7 @@
   <div class="offcanvas-body">
     <div class="mb-3">
       <h6 class="text-muted">Beschreibung</h6>
-      <p class="mb-0">{{ fruit?.description }}</p>
+      <!--<p class="mb-0">{{ fruit?.description }}</p>-->
     </div>
   </div>
 </div>

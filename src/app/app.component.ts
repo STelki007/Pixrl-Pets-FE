@@ -16,11 +16,12 @@ import {UnoGameStart} from '@components/games/uno/services/uno/UnoGameStart';
 import {SoundService} from '@services/SoundService';
 import {UnoPlayerChatComponent} from '@components/games/uno/uno-player-chat/uno-player-chat.component';
 import Keycloak from 'keycloak-js';
-import {PlayerBackendService} from '@/app/backend/interfaces/player/player.backend.service';
+import {PlayerBackendService} from '@/app/backend/player/player.backend.service';
 import {InventarComponent} from '@components/inventar-component/inventar-component';
 import {AuthContextService} from '@/app/backend/services/auth.context.service';
-import {PlayerInterface} from '@/app/backend/interfaces/player/playerInterface';
+import {PlayerInterface} from '@/app/backend/player/playerInterface';
 import {PetShopComponent} from '@components/pet-shop-component/pet-shop-component';
+import {PlayerCoin} from '@/app/backend/player/PlayerCoins';
 
 @Component({
   selector: 'app-root',
@@ -51,6 +52,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private isUnoStarted = false;
   private userId: any | null = null;
   private players: any;
+  private player: any;
 
   constructor(
     private sideBarButtonsService: SideBarButtonsService,
@@ -66,7 +68,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.startAudio();
     this.getSidebarValue();
     this.getGameServiceValue();
-
     this.createNewPlayer()
   }
 
@@ -96,13 +97,21 @@ export class AppComponent implements OnInit, OnDestroy {
 
       });
     });
+    this.getPlayerCoins()
+
+  }
+
+  getPlayerCoins () {
+    this.playerBackendService.getPlayerByKeycloakSessionId(this.authContextService.getSessionId()).subscribe(player => {
+      this.player = player;
+      PlayerCoin.setCoins(this.player.coins);
+    })
   }
 
   getUserId (keycloakUserId: any) {
     const current = this.players.find((p: any) => p.keycloakUserId === keycloakUserId);
     if (current) {
       this.authContextService.setUserId(current.id);
-      console.log(current.id)
     }
   }
 
@@ -132,7 +141,6 @@ export class AppComponent implements OnInit, OnDestroy {
     if (!this.isUnoStarted) {
       this.soundService.playSound("select-sound.mp3");
       this.sideBarButtonsService.setValue(value);
-      console.log(this.keycloak.userInfo)
 
     }
   }

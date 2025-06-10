@@ -19,7 +19,6 @@ body {
   box-sizing: border-box;
 }
 
-/* Klassisch stilisierter Titel */
 .text-div {
   margin-top: 30px;
   text-align: center;
@@ -35,7 +34,6 @@ body {
   padding-bottom: 6px;
 }
 
-/* Container neutral, leicht eingerahmt */
 .container {
   width: 90%;
   max-width: 900px;
@@ -46,7 +44,6 @@ body {
   box-shadow: inset 0 0 2px #000;
 }
 
-/* Inventory Grid im klassischen Stil */
 .inventory-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
@@ -55,7 +52,6 @@ body {
   padding: 10px 0;
 }
 
-/* Pixel-Art Stil für Items */
 .inventory-item {
   width: 72px;
   height: 72px;
@@ -69,13 +65,12 @@ body {
   transition: transform 0.15s ease;
 }
 
-.inventory-item:hover {
+.inventory-item:hover{
   transform: scale(1.05);
   background-color: #4a4a4a;
   border-color: #777;
 }
 
-/* Bilder im Retro-Style */
 .inventory-item img {
   width: 80%;
   height: 80%;
@@ -83,4 +78,20 @@ body {
   object-fit: contain;
   user-select: none;
   pointer-events: none;
+}
+.amount {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  z-index: 999999999;
+  color: white;
+  font-size: .8rem;
+  transition: all 0.2s ease;
+}
+
+.inventory-item:hover .amount {
+  transform: scale(1.2);
+  transition: all 0.2s ease;
 }

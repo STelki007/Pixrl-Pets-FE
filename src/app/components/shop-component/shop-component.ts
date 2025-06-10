@@ -5,19 +5,16 @@ import {FormsModule} from '@angular/forms';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {Toast} from 'primeng/toast';
 import {MessageService} from 'primeng/api';
-import {ProgressSpinner} from 'primeng/progressspinner';
-import {Image} from 'primeng/image';
 import {SoundService} from '@services/SoundService';
-import {FruitsService} from '@services/fruits.service';
 import {FruitInterface} from '@components/shop-component/FruitInterface';
-import {ShopBackendService} from '@/app/backend/interfaces/shop/shop.backend.service';
-import {ShopInterface} from '@/app/backend/interfaces/shop/shopInterface';
+import {ShopBackendService} from '@/app/backend/shop/shop.backend.service';
 import {AuthContextService} from '@/app/backend/services/auth.context.service';
+import {ItemsBackendService} from '@/app/backend/items/items.backend.service';
 
 @Component({
   selector: 'app-shop-component',
   standalone: true,
-  imports: [NgForOf, NgClass, NgIf, InputNumber, FormsModule, Toast, NgStyle],
+  imports: [NgForOf, NgClass, NgIf, InputNumber, FormsModule, Toast],
   templateUrl: './shop-component.html',
   styleUrl: './shop-component.css',
   providers: [MessageService]
@@ -29,15 +26,15 @@ export class ShopComponent implements OnInit {
   private modalRef?: NgbModalRef;
   protected quantity: number = 1;
   protected quantityError: string | null = null;
-  protected fruit: FruitInterface | null = null;
+  protected itemsArr: any;
+  protected getItem: object = {}
 
 
   constructor(private modalService: NgbModal,
               private messageService: MessageService,
               private soundService: SoundService,
-              protected fruitsService: FruitsService,
               private shopBackendService: ShopBackendService,
-              private authContextService: AuthContextService,
+              private itemBackendService: ItemsBackendService,
 ) {}
 
   @Output() componentSelected  = new EventEmitter<string>();
@@ -47,8 +44,15 @@ export class ShopComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getAllItems();
   }
 
+  getAllItems() {
+    return this.itemBackendService.getAllItems().subscribe(items => {
+      this.itemsArr = items;
+      this.itemsArr = this.itemsArr.filter((item: any) => item.image !== null);
+    })
+  }
 
   onClickItem() {
     this.soundService.playSound("select-item.mp3");
@@ -65,7 +69,6 @@ export class ShopComponent implements OnInit {
   }
 
   onClickInfo(id: number) {
-    this.fruit = this.fruitsService.getFruitById(id)!;
     this.isOffcanvasOpen = true;
     this.soundService.playSound("select-item.mp3");
   }
@@ -82,7 +85,7 @@ export class ShopComponent implements OnInit {
     }
   }
 
-  confirmBuy(fruit: FruitInterface | null) {
+  confirmBuy() {
     if (this.quantity > 50) {
       this.quantityError = "Maximale Bestellmenge ist 50!";
       return;
@@ -95,18 +98,20 @@ export class ShopComponent implements OnInit {
     this.quantityError = null;
     this.modalRef?.close();
     this.messageService.add({ severity: 'success', summary: 'Gekauft!', detail: 'Das Item wurde erfolgreich gekauft.' });
-    this.sendBoughtItemsToBackend(fruit);
+
+    if (this.getItem ) {
+      this.sendBoughtItemsToBackend(this.getItem);
+    }
 
   }
 
-  sendBoughtItemsToBackend(fruit: FruitInterface | null) {
-    if (fruit !== null) {
-      this.shopBackendService.sendBoughtItemsToPlayerInventory(fruit.id, this.quantity).subscribe()
-      console.log("erfolgreich hinzugefügt wurde: " + fruit.id + " " +  this.quantity)
+  sendBoughtItemsToBackend(item: any) {
+    if (item !== null) {
+      this.shopBackendService.sendBoughtItemsToPlayerInventory(item.id, this.quantity).subscribe();
     }
   }
 
-  openBuyModal() {
+  openBuyModal(item: any) {
     this.soundService.playSound("select-item.mp3");
     this.modalRef = this.modalService.open(this.buyModal, {
       centered: true,
@@ -115,6 +120,7 @@ export class ShopComponent implements OnInit {
     });
     this.quantity = 1;
     this.quantityError = null;
+    this.getItem = item;
   }
 
 }

@@ -29,6 +29,7 @@
 }
 
 .inventory-items-container {
+  position: relative;
   padding: 20px;
   background-color: #B75758;
   display: flex;

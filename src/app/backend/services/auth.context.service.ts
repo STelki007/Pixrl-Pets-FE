@@ -27,7 +27,7 @@ export class AuthContextService {
   }
 
   getSessionId(){
-    return this.keycloak.sessionId;
+    return this.keycloak.idTokenParsed?.sub;
   }
 
   getKeycloakUserName(): string {
