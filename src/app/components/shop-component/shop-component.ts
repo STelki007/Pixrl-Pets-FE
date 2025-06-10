@@ -27,7 +27,7 @@ export class ShopComponent implements OnInit {
   protected quantity: number = 1;
   protected quantityError: string | null = null;
   protected itemsArr: any;
-  protected getItem: object = {}
+  protected getItem: any = {}
 
 
   constructor(private modalService: NgbModal,
@@ -68,9 +68,11 @@ export class ShopComponent implements OnInit {
     this.selectedTab = tab;
   }
 
-  onClickInfo(id: number) {
+  onClickInfo(item: any) {
+    this.getItem = item;
     this.isOffcanvasOpen = true;
     this.soundService.playSound("select-item.mp3");
+    console.log(item)
   }
 
   onClickCoin() {
