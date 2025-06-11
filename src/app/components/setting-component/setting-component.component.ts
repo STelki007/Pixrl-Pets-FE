@@ -7,6 +7,7 @@ import {DrawAvatarComponent} from '@/app/draw-avatar/draw-avatar.component';
 import {NgIf} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {AuthContextService} from '@/app/backend/services/auth.context.service';
+import {ShowDrawAvatarComponentService} from '@services/setting/show.draw.avatar.component.service';
 
 @Component({
   selector: 'app-setting-component',
@@ -32,6 +33,7 @@ export class SettingComponentComponent implements OnInit {
     protected logoutService: LogoutService,
     private soundService: SoundService,
     private authContextService: AuthContextService,
+    private showDrawAvatarComponentService: ShowDrawAvatarComponentService,
   ) {
   }
 
@@ -39,6 +41,13 @@ export class SettingComponentComponent implements OnInit {
     this.getAlertStateValue();
     this.getImageFromLocalStorage();
     this.getKeyCloakUserName()
+    this.handleShowDrawAvatarComponent();
+  }
+
+  handleShowDrawAvatarComponent () {
+    this.showDrawAvatarComponentService.getValue().subscribe(value => {
+      this.isProfileImageButtonPressed = value;
+    })
   }
 
   getKeyCloakUserName () {
