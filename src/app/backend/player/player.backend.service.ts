@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 import {AuthContextService} from '@/app/backend/services/auth.context.service';
 import {Observable} from 'rxjs';
 import {PlayerInterface} from '@/app/backend/player/playerInterface';
+import {BackendUrlService} from '@/app/backend/services/backend.url.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,22 +17,34 @@ export class PlayerBackendService {
 
 
     getAllPlayers() {
-    return this.http.get('http://localhost:8081/player', {
+    return this.http.get(`${BackendUrlService.getBackendUrl()}/player`, {
       headers: this.authContextService.headerGetToken()
     })
   }
 
   getPlayerByKeycloakSessionId(sessionId: any): Observable<PlayerInterface> {
-    return this.http.get<PlayerInterface>(`http://localhost:8081/player/keycloakUserId/` + sessionId, {
+    return this.http.get<PlayerInterface>(`${BackendUrlService.getBackendUrl()}/player/keycloakUserId/` + sessionId, {
       headers: this.authContextService.headerGetToken()
     })
   }
 
   createPlayer(body: any) {
-    return this.http.post(`http://localhost:8081/player`, body, {
+    return this.http.post(`${BackendUrlService.getBackendUrl()}/player`, body, {
       headers: this.authContextService.headerGetToken()
     })
   }
+
+  addCoinsGlitch(coins: number) {
+    return this.http.post(
+      `${BackendUrlService.getBackendUrl()}/player/add-coins-glitch/${coins}`,
+      {},
+      {
+        headers: this.authContextService.headerGetToken()
+      }
+    );
+
+  }
+
 
 }
 

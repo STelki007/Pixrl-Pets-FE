@@ -138,7 +138,7 @@ ${PetFactory.convertObjectToPetString(currentPet)}
 
   onArrowClick() {
     if (this.konamiCodeState){
-      this.konamiCodeService.setValue(false)
+      this.konamiCodeService.setPetVoiceValue(false)
       alert("Geheimer Code deaktiviert!")
     }
     this.arrowService.setValue(false);
@@ -153,7 +153,7 @@ ${PetFactory.convertObjectToPetString(currentPet)}
   }
 
   getKonamiCodeState () {
-    this.konamiCodeService.getValue().subscribe(value => {
+    this.konamiCodeService.getPetVoiceValue().subscribe(value => {
       this.konamiCodeState = value;
     })
   }

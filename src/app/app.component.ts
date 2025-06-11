@@ -22,6 +22,7 @@ import {AuthContextService} from '@/app/backend/services/auth.context.service';
 import {PlayerInterface} from '@/app/backend/player/playerInterface';
 import {PetShopComponent} from '@components/pet-shop-component/pet-shop-component';
 import {PlayerCoin} from '@/app/backend/player/PlayerCoins';
+import {KonamiCodeService} from '@services/konamiCode/konami-code.service';
 
 @Component({
   selector: 'app-root',
@@ -61,6 +62,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private soundService: SoundService,
     private playerBackendService: PlayerBackendService,
     private authContextService: AuthContextService,
+    private konamiCodeService: KonamiCodeService,
 
   ) {}
 
@@ -69,6 +71,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.getSidebarValue();
     this.getGameServiceValue();
     this.createNewPlayer()
+    this.konamiCodeService.konamiCodeInfinityCoins();
   }
 
   createNewPlayer () {
