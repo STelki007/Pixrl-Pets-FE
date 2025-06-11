@@ -6,6 +6,9 @@
     <button class="nes-btn custom-btn ml-2" [ngClass]="{'is-active': selectedTab === 'buyPet'}" (click)="emitSelectComponent('buyPet')">
       Tiere
     </button>
+    <button class="nes-btn custom-btn ml-2" [ngClass]="{'is-active': selectedTab === 'buyCoins'}" (click)="onBuyCoinsClick('buyCoins')">
+
+    </button>
   </div>
 
   <div class="mt-5 d-flex justify-content-center">

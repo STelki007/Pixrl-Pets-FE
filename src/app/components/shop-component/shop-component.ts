@@ -1,14 +1,12 @@
 import {Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
-import {NgClass, NgForOf, NgIf, NgStyle} from '@angular/common';
+import {NgClass, NgForOf, NgIf} from '@angular/common';
 import {InputNumber} from 'primeng/inputnumber';
 import {FormsModule} from '@angular/forms';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {Toast} from 'primeng/toast';
 import {MessageService} from 'primeng/api';
 import {SoundService} from '@services/SoundService';
-import {FruitInterface} from '@components/shop-component/FruitInterface';
 import {ShopBackendService} from '@/app/backend/shop/shop.backend.service';
-import {AuthContextService} from '@/app/backend/services/auth.context.service';
 import {ItemsBackendService} from '@/app/backend/items/items.backend.service';
 import {PlayerCoinService} from '@/app/backend/player/player.coin.service';
 
@@ -42,7 +40,8 @@ export class ShopComponent implements OnInit {
   @Output() componentSelected  = new EventEmitter<string>();
 
   emitSelectComponent(comp: string) {
-    this.componentSelected .emit(comp);
+    this.componentSelected.emit(comp);
+    this.selectedTab = comp;
   }
 
   ngOnInit(): void {
@@ -127,4 +126,7 @@ export class ShopComponent implements OnInit {
     this.getItem = item;
   }
 
+  onBuyCoinsClick(buyCoins: string) {
+    this.selectedTab = buyCoins;
+  }
 }

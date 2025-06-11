@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {NgClass} from '@angular/common';
 import {FormsModule} from '@angular/forms';
+import {ShowDrawAvatarComponentService} from '@services/setting/show.draw.avatar.component.service';
 
 @Component({
   selector: 'app-draw-avatar',
@@ -21,7 +22,11 @@ export class DrawAvatarComponent implements AfterViewInit, OnInit {
   isExport = false;
   getAllPosition: { x: number, y: number, backgroundColor: string }[] = [];
   profileImage: string = "https://www.svgrepo.com/show/452030/avatar-default.svg";
-  selectedColorsHistory: string[] = [];
+
+  constructor(
+    private showDrawAvatarComponentService: ShowDrawAvatarComponentService,
+  ) {
+  }
 
   ngAfterViewInit(): void {
     this.setupCanvas();
@@ -151,4 +156,7 @@ export class DrawAvatarComponent implements AfterViewInit, OnInit {
     this.selectedColor = bgBlack;
   }
 
+  onBackClick() {
+    this.showDrawAvatarComponentService.setValue(false)
+  }
 }

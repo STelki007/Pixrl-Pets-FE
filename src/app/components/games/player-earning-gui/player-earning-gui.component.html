@@ -1,0 +1,21 @@
+<div
+  class="coins-earning-div d-flex justify-content-center bg-gradient"
+  *ngIf="showCoinsDiv"
+>
+  <div
+    class="card text-center shadow-lg p-4 border-0 position-relative"
+    style="max-width: 500px; border-radius: 1rem;"
+  >
+    <button
+      type="button"
+      class="btn-close position-absolute top-0 end-0 m-2"
+      aria-label="Close"
+      (click)="closeCoinsDiv()"
+    ></button>
+
+    <div class="card-body">
+      <h1 class="card-title text-success display-5">Woohoo!</h1>
+      <p class="card-text fs-4">Du hast 25000 Coins gewonnen!</p>
+    </div>
+  </div>
+</div>
