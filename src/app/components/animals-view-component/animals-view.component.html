@@ -1,12 +1,18 @@
 <div class="anima-view">
   <div class="container">
     <div class="scrollable-grid">
+
+      <div *ngIf="!animalList || animalList.length === 0" class="d-flex justify-content-center align-items-center">
+        Noch kein Haustier gekauft
+      </div>
+
       <div *ngFor="let animal of animalList" class="grid-item" (click)="onAnimalCardClick(animal)">
         <div
           [ngClass]="[animal.getAnimationCss().image, animal.getAnimationCss().current]"
           [ngStyle]="{ 'background-image': 'url(' + animal.getImagePath() + ')' }">
         </div>
       </div>
+
     </div>
   </div>
 </div>

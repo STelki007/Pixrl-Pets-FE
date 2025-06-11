@@ -1,22 +1,12 @@
 
-<div class="adopt-main-div">
-  <div class="nav-buttons d-flex justify-content-center">
-    <button class="nes-btn custom-btn" [ngClass]="{'is-active': selectedTab === 'shop'}" (click)="emitSelectComponent('shop')">
-      Items
-    </button>
-    <button class="nes-btn custom-btn ml-2" [ngClass]="{'is-active': selectedTab === 'sell'}" >
-      Tiere
-    </button>
-  </div>
+<div class="mt-5 d-flex justify-content-center">
+  <div class="inventory-grid with-title">
 
-  <div class="mt-5 d-flex justify-content-center">
-    <div class="inventory-grid with-title">
-
-          <div class="scrollable-grid">
-            <div *ngFor="let animal of pets" class="grid-item" (click)="onAnimalCardClick(animal.getPet())">
-              <div
-                [ngClass]="[animal.getPet()?.getAnimationCss().image, animal.getPet()?.getAnimationCss().current]"
-                [ngStyle]="{ 'background-image': 'url(' + animal.getPet()?.getImagePath() + ')' }">
+    <div class="scrollable-grid">
+      <div *ngFor="let animal of pets" class="grid-item" (click)="onAnimalCardClick(animal.getPet())">
+        <div
+          [ngClass]="[animal.getPet()?.getAnimationCss().image, animal.getPet()?.getAnimationCss().current]"
+          [ngStyle]="{ 'background-image': 'url(' + animal.getPet()?.getImagePath() + ')' }">
 
 
           <div class="coin-container mb-3" (click)="onClickCoin()" style="color:black">
@@ -32,7 +22,7 @@
             </div>
 
             <div class="buy-button-div">
-                <button class="buy-button mx-3 nes-btn is-primary" (click)="openBuyModal(animal)">Kaufen</button>
+              <button class="buy-button mx-3 nes-btn is-primary" (click)="openBuyModal(animal)">Kaufen</button>
             </div>
           </div>
 
@@ -97,5 +87,3 @@
 
 <p-toast position="bottom-right" />
 
-<!--<p-image src="https://primefaces.org/cdn/primeng/images/galleria/galleria10.jpg" alt="Image" width="250" [preview]="true" />-->
-</div>

@@ -47,13 +47,13 @@ import {KonamiCodeService} from '@services/konamiCode/konami-code.service';
 })
 export class AppComponent implements OnInit, OnDestroy {
   private keycloak = inject(Keycloak);
-  selectedComponent: string = "";
   private subscription!: Subscription;
-  protected arrowServiceValue: boolean = false;
   private isUnoStarted = false;
-  private userId: any | null = null;
   private players: any;
-  private player: any;
+
+  protected arrowServiceValue: boolean = false;
+  protected selectedComponent: string = "";
+
 
   constructor(
     private sideBarButtonsService: SideBarButtonsService,
@@ -136,6 +136,8 @@ export class AppComponent implements OnInit, OnDestroy {
       this.soundService.playSound("select-sound.mp3");
       this.sideBarButtonsService.setValue(value);
 
+    }else {
+      alert("Spiel läuft gerade! Bitte über 'Spiel beenden' klicken.")
     }
   }
 
