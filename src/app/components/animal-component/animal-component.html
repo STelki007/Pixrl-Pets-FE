@@ -56,7 +56,12 @@
     </div>
     <div class="position-absolute" style="right: 10px; top: 100px;">
       <div class="d-flex flex-column  nes-dialog " style="border-radius: 10px; align-items: flex-end; ">
-        <button class="nes-btn is-primary mb-2" (click)="eat()">Füttern</button>
+        <button class="nes-btn is-primary mb-2" (click)="togglePopup()">Füttern</button>
+        <app-rollover-popup
+          *ngIf="popupVisible"
+          [items]="playerInventory"
+          (itemClicked)="handleItemClick($event)"
+        />
         <button class="nes-btn is-success mb-2">Spielen</button>
         <button class="nes-btn is-error mb-2">Schlafen</button>
       </div>
