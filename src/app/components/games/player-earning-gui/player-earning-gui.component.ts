@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {animate, style, transition, trigger} from '@angular/animations';
 
@@ -21,15 +21,19 @@ import {animate, style, transition, trigger} from '@angular/animations';
     ]),
   ],
 })
-export class PlayerEarningGUIComponent {
+export class PlayerEarningGUIComponent implements OnInit {
   showCoinsDiv = false;
+
+  ngOnInit() {
+    this.showOnce()
+  }
 
   showOnce(): void {
     this.showCoinsDiv = true;
 
     setTimeout(() => {
       this.showCoinsDiv = false;
-    }, 5000);
+    }, 8000);
   }
 
   closeCoinsDiv(): void {
