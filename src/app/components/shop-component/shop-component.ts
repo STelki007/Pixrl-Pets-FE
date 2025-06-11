@@ -10,6 +10,7 @@ import {FruitInterface} from '@components/shop-component/FruitInterface';
 import {ShopBackendService} from '@/app/backend/shop/shop.backend.service';
 import {AuthContextService} from '@/app/backend/services/auth.context.service';
 import {ItemsBackendService} from '@/app/backend/items/items.backend.service';
+import {PlayerCoinService} from '@/app/backend/player/player.coin.service';
 
 @Component({
   selector: 'app-shop-component',
@@ -35,6 +36,7 @@ export class ShopComponent implements OnInit {
               private soundService: SoundService,
               private shopBackendService: ShopBackendService,
               private itemBackendService: ItemsBackendService,
+              private playerCoinsService: PlayerCoinService,
 ) {}
 
   @Output() componentSelected  = new EventEmitter<string>();
@@ -103,8 +105,8 @@ export class ShopComponent implements OnInit {
 
     if (this.getItem ) {
       this.sendBoughtItemsToBackend(this.getItem);
+      this.playerCoinsService.loadPlayerCoins()
     }
-
   }
 
   sendBoughtItemsToBackend(item: any) {

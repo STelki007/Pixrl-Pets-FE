@@ -23,7 +23,7 @@ export class InventarComponent implements OnInit {
   private itemsId: number[] = [];
 
   protected amount: number = 0;
-  protected playerInventory: any[] = [];
+  playerInventory: any[] = [];
 
   constructor(
     private soundService: SoundService,

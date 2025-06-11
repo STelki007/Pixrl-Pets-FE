@@ -97,15 +97,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
       });
     });
-    this.getPlayerCoins()
-
-  }
-
-  getPlayerCoins () {
-    this.playerBackendService.getPlayerByKeycloakSessionId(this.authContextService.getSessionId()).subscribe(player => {
-      this.player = player;
-      PlayerCoin.setCoins(this.player.coins);
-    })
   }
 
   getUserId (keycloakUserId: any) {

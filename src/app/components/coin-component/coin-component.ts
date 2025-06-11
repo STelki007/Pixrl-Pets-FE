@@ -3,11 +3,17 @@ import {SideBarButtonsService} from '../../services/SideBarButtonsService';
 import {SoundService} from '@services/SoundService';
 import {UnoGameStart} from '@components/games/uno/services/uno/UnoGameStart';
 import {PlayerCoin} from '@/app/backend/player/PlayerCoins';
+import {PlayerCoinService} from '@/app/backend/player/player.coin.service';
+import {Observable} from 'rxjs';
+import {AsyncPipe} from '@angular/common';
 
 @Component({
   selector: 'app-coin-component',
   templateUrl: './coin-component.html',
   standalone: true,
+  imports: [
+    AsyncPipe
+  ],
   styleUrls: ['./coin-component.css']
 })
 export class CoinComponent implements OnInit, OnDestroy {
@@ -16,11 +22,13 @@ export class CoinComponent implements OnInit, OnDestroy {
   isClaimable: boolean = false;
   private isUnoStarted = false;
 
+  playerCoins$: Observable<number> = new Observable();
+
   constructor(
     private sideBarButtonsService: SideBarButtonsService,
     private soundService: SoundService,
     private unoGameStart: UnoGameStart,
-
+    protected playerCoinsService: PlayerCoinService
   )
   {
   }
@@ -29,6 +37,12 @@ export class CoinComponent implements OnInit, OnDestroy {
     this.updateTimer();
     this.startTimer();
     this.getGameServiceValue();
+    this.handlePlayerCoins();
+  }
+
+  handlePlayerCoins () {
+    this.playerCoinsService.loadPlayerCoins();
+    this.playerCoins$ = this.playerCoinsService.playerCoins$;
   }
 
   ngOnDestroy(): void {
@@ -90,5 +104,4 @@ export class CoinComponent implements OnInit, OnDestroy {
 
   }
 
-  protected readonly PlayerCoin = PlayerCoin;
 }
