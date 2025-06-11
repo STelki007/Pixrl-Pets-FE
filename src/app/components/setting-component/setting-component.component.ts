@@ -23,7 +23,6 @@ import {ShowDrawAvatarComponentService} from '@services/setting/show.draw.avatar
 export class SettingComponentComponent implements OnInit {
   protected alertState = false;
   protected titleDeleteAccount: string = "Möchten Sie wirklich dein Account löschen?";
-  protected titleLogout: string = "Möchten Sie sich wirklich abmelden?";
   protected isProfileImageButtonPressed: boolean = false;
   profileImage: string = "/avatar-defulat.svg";
   keyCloakUserName: string = "Unbekannt";
