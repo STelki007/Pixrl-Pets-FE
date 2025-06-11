@@ -118,7 +118,7 @@ export class PetShopComponent implements OnInit {
     this.quantity = 1;
     this.quantityError = null;
     this.modalRef?.close();
-    this.messageService.add({severity: 'success', summary: 'Gekauft!', detail: 'Das Item wurde erfolgreich gekauft.'});
+    this.messageService.add({severity: 'success', summary: 'Gekauft!', detail: 'Haustier wurde erfolgreich gekauft.'});
     this.shopService.buyPet(pet.petId);
     console.log(this.body)
     console.log(pet)
