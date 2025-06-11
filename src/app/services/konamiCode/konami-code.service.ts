@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {BehaviorSubject, fromEvent} from 'rxjs';
 import { map, bufferCount, filter } from 'rxjs/operators';
 import {PlayerBackendService} from '@/app/backend/player/player.backend.service';
+import {PlayerCoinService} from '@/app/backend/player/player.coin.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class KonamiCodeService {
   private infinityCoinsSecretKey: string = "barbour"
   private resetTimeSec: number = 15000;
 
-  constructor(private playerBackendService: PlayerBackendService,) {
+  constructor(private playerBackendService: PlayerBackendService, private playerCoinService: PlayerCoinService) {
     this.konamiCodePet();
   }
 
@@ -55,6 +56,7 @@ export class KonamiCodeService {
       if (this.keySequenceInfinityCoins.join('').toLowerCase() === this.infinityCoinsSecretKey.toLowerCase()) {
         alert(`Geheimer Code aktiviert! Du bekommst 25.000 Coins`);
         this.playerBackendService.addCoinsGlitch(25000);
+        this.playerCoinService.loadPlayerCoins();
         this.keySequenceInfinityCoins = [];
       }
     });

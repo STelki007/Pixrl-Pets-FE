@@ -14,7 +14,7 @@ import {FormsModule} from '@angular/forms';
 export class DrawAvatarComponent implements AfterViewInit, OnInit {
   @ViewChild('canvas', { static: false }) canvas!: ElementRef<HTMLCanvasElement>;
   private ctx!: CanvasRenderingContext2D;
-  private pixelSize = 20;
+  private pixelSize = 15;
   private isDrawing = false;
   selectedColor: string = '#000000';
   isEraserActive = false;
@@ -73,12 +73,16 @@ export class DrawAvatarComponent implements AfterViewInit, OnInit {
     this.ctx.fillStyle = this.selectedColor;
     this.ctx.fillRect(x, y, this.pixelSize, this.pixelSize);
 
-    if (!this.getAllPosition.find(pos => pos.x === x && pos.y === y)) {
+    const existingPixel = this.getAllPosition.find(pos => pos.x === x && pos.y === y);
+    if (existingPixel) {
+      existingPixel.backgroundColor = this.selectedColor;
+    } else {
       this.getAllPosition.push({x: x, y: y, backgroundColor: this.selectedColor});
-      this.isExport = true;
     }
 
+    this.isExport = true;
   }
+
 
   removePixel(event: MouseEvent) {
     const { x, y } = this.getMousePosition(event);
