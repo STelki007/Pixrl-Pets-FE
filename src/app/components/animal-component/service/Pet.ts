@@ -55,6 +55,10 @@ export class Pet {
     return this.id;
   }
 
+  public getType(): PetType{
+    return this.type;
+  }
+
   /**
    * This method saves all the animal image paths for easy use and change
    * @param animal AnimalType
