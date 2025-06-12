@@ -22,6 +22,7 @@ import {FormsModule} from '@angular/forms';
 import {BotService} from '@components/games/uno/services/uno/bot.service';
 import {UnoPlayerChatComponent} from '@components/games/uno/uno-player-chat/uno-player-chat.component';
 import {PlayerWinsUnoService} from '@components/games/uno/services/uno/player-wins-uno.service';
+import {PlayerWinsTicTacToService} from '@components/games/tic-tac-toe/services/player.wins.tic.tac.to.service';
 
 @Component({
   selector: 'app-player',
@@ -62,7 +63,7 @@ export class PlayerComponent implements OnInit, OnChanges {
     private cardService: CardService,
     private soundService: SoundService,
     private botService: BotService,
-    private playerWinsService: PlayerWinsUnoService,
+    private playerWinsService: PlayerWinsTicTacToService,
   ) {}
 
   ngOnInit(): void {
@@ -175,7 +176,7 @@ export class PlayerComponent implements OnInit, OnChanges {
     this.isPlayer2 = !this.isPlayer2;
 
     if (!this.isPlayer2) {
-      setTimeout(() => this.performBotTurn(), 1500);
+      setTimeout(() => this.performBotTurn(), 1000);
     }
   }
 
