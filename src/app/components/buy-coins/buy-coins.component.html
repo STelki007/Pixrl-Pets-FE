@@ -1,26 +1,43 @@
-<div class="container mt-5">
-  <div class="row row-cols-1 row-cols-md-5 g-4 text-center">
+<div class="container my-5">
+  <div class="row row-cols-1 row-cols-md-5 g-4 text-center d-flex justify-content-center">
     <div class="col" *ngFor="let pack of coinPacks">
-      <div class="card h-100 shadow-sm position-relative">
-
-        <div *ngIf="pack.label"
-             class="position-absolute top-0 start-50 translate-middle-x badge"
-             [ngClass]="{
-               'bg-success': pack.label === 'Popular',
-               'bg-danger': pack.label === 'Best deal!'
-             }">
+      <div
+        class="card coin-pack-card h-100 shadow-lg position-relative overflow-hidden border-0"
+      >
+        <div
+          *ngIf="pack.label"
+          class="ribbon"
+          [ngClass]="{
+            'ribbon-success': pack.label === 'Popular',
+            'ribbon-danger': pack.label === 'Best deal!'
+          }"
+        >
           {{ pack.label }}
         </div>
 
-        <img [src]="pack.image" class="card-img-top p-4" [alt]="pack.label || 'Coin pack'" />
+        <img
+          [src]="pack.image"
+          class="card-img-top p-4 coin-img"
+          [alt]="pack.label || 'Coin pack'"
+        />
 
-        <div class="card-body">
-          <h5 class="card-title">{{ pack.amount }} Coins</h5>
-          <p class="card-text">
-            <span class="btn btn-success">${{ pack.price }}</span>
-          </p>
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h5 class="card-title fw-bold text-warning mb-2">
+            {{ pack.amount }} Coins
+          </h5>
+          <button (click)="onBuyCoinsClick()" class="card-text btn" style="border: none; outline: none; background-color: transparent">
+            <span class="btn btn-gradient px-4 py-2">${{ pack.price }}</span>
+          </button>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+  <app-alert-center-modal-component [title]="title" [service]="infoCantBuyCoinsService">
+    <form method="dialog">
+      <div class="text-end">
+        <button class="nes-btn mx-3" (click)="closeModal()">Zurück</button>
+      </div>
+    </form>
+  </app-alert-center-modal-component>

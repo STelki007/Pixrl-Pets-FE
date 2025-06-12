@@ -1,11 +1,16 @@
 import { Component } from '@angular/core';
-import {CheckWinner} from '@components/games/tic-tac-toe/CheckWinner';
-import {NgForOf} from '@angular/common';
+import {CheckWinner} from '@components/games/tic-tac-toe/services/CheckWinner';
+import {AsyncPipe, NgForOf, NgIf} from '@angular/common';
+import {PlayerEarningComponent} from '@components/games/player-earning/player-earning.component';
+import {PlayerWinsTicTacToService} from '@components/games/tic-tac-toe/services/player.wins.tic.tac.to.service';
 
 @Component({
   selector: 'app-tic-tac-toe',
   imports: [
-    NgForOf
+    NgForOf,
+    AsyncPipe,
+    NgIf,
+    PlayerEarningComponent
   ],
   templateUrl: './tic-tac-toe.component.html',
   standalone: true,
@@ -26,7 +31,10 @@ export class TicTacToeComponent {
   scoreO = 0;
   timeToResetTheGame = 3
 
-  constructor(private checkWinnerService: CheckWinner) {}
+  constructor(
+    private checkWinnerService: CheckWinner,
+    protected playerWinsTicTacToeService: PlayerWinsTicTacToService,
+    ) {}
 
   onCellClick(index: number) {
     if (!this.board[index] && !this.gameOver && !this.isDraw) {
@@ -82,6 +90,7 @@ export class TicTacToeComponent {
   }
 
   onResetTheGameClick() {
+    this.playerWinsTicTacToeService.setValue(false)
     this.resetTheGame()
   }
 
@@ -100,6 +109,7 @@ export class TicTacToeComponent {
     if (winner) {
       if (winner == "X"){
         this.scoreX++;
+        this.playerWinsTicTacToeService.setValue(true)
       }else{
         this.scoreO++;
       }

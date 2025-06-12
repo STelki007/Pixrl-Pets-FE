@@ -1,17 +1,29 @@
 import { Component } from '@angular/core';
 import {NgClass, NgForOf, NgIf} from '@angular/common';
+import {AlertCenterModalComponent} from '@components/modal/alert-center-modal-component/alert-center-modal-component';
+import {InfoCantBuyCoinsService} from '@components/buy-coins/services/info.cant.buy.coins.service';
 
 @Component({
   selector: 'app-buy-coins',
   imports: [
     NgClass,
     NgIf,
-    NgForOf
+    NgForOf,
+    AlertCenterModalComponent
   ],
   templateUrl: './buy-coins.component.html',
-  styleUrl: './buy-coins.component.css'
+  styleUrl: './buy-coins.component.css',
+  standalone: true
 })
 export class BuyCoinsComponent {
+
+  protected title: string = "Diese Funktion ist derzeit nicht verfügbar.";
+
+  constructor(
+    protected infoCantBuyCoinsService: InfoCantBuyCoinsService,
+  ) {
+  }
+
   coinPacks = [
     {
       amount: 500,
@@ -39,4 +51,12 @@ export class BuyCoinsComponent {
     }
   ];
 
+  onBuyCoinsClick() {
+    this.infoCantBuyCoinsService.setValue(true)
+
+  }
+
+  closeModal() {
+    this.infoCantBuyCoinsService.setValue(false)
+  }
 }

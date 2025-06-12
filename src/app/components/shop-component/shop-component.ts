@@ -105,13 +105,14 @@ export class ShopComponent implements OnInit {
 
     if (this.getItem ) {
       this.sendBoughtItemsToBackend(this.getItem);
-      this.playerCoinsService.loadPlayerCoins()
     }
   }
 
   sendBoughtItemsToBackend(item: any) {
     if (item !== null) {
-      this.shopBackendService.sendBoughtItemsToPlayerInventory(item.id, this.quantity).subscribe();
+      this.shopBackendService.sendBoughtItemsToPlayerInventory(item.id, this.quantity).subscribe(value => {
+        this.playerCoinsService.loadPlayerCoins()
+      });
     }
   }
 

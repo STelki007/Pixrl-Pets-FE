@@ -21,6 +21,7 @@ import {SoundService} from '@services/SoundService';
 import {FormsModule} from '@angular/forms';
 import {BotService} from '@components/games/uno/services/uno/bot.service';
 import {UnoPlayerChatComponent} from '@components/games/uno/uno-player-chat/uno-player-chat.component';
+import {PlayerWinsUnoService} from '@components/games/uno/services/uno/player-wins-uno.service';
 
 @Component({
   selector: 'app-player',
@@ -61,6 +62,7 @@ export class PlayerComponent implements OnInit, OnChanges {
     private cardService: CardService,
     private soundService: SoundService,
     private botService: BotService,
+    private playerWinsService: PlayerWinsUnoService,
   ) {}
 
   ngOnInit(): void {
@@ -299,7 +301,13 @@ export class PlayerComponent implements OnInit, OnChanges {
   checkWinner(player: string): boolean {
     if (this.playerHasNoCards(player)) {
       if (this.checkPlayerPressedUno()) {
-        this.players[player] ? alert('Spieler hat gewonnen!') : alert('Haustier hat gewonnen!');
+
+        if (player === this.player2) {
+          this.playerWinsService.setValue(true)
+          alert('Spieler hat gewonnen!');
+        } else if (player === this.player1) {
+          alert('Bot hat gewonnen!');
+        }
 
         this.unoGameService.setValue(false)
         this.pickColorService.setValue(false)

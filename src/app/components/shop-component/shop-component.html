@@ -1,5 +1,10 @@
-<div class="adopt-main-div">
-  <div class="nav-buttons d-flex justify-content-center">
+<div class="adopt-main-div"
+     [ngClass]="{
+       'buy-background': selectedTab === 'buy',
+       'pet-background': selectedTab === 'buyPet',
+       'coins-background': selectedTab === 'buyCoins'
+     }">
+<div class="nav-buttons d-flex justify-content-center">
     <button class="nes-btn custom-btn" [ngClass]="{'is-active': selectedTab === 'buy'}" (click)="selectTab('buy')">
       Items
     </button>
