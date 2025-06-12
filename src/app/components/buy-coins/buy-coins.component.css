@@ -16,7 +16,7 @@
 }
 
 .coin-pack-card:hover .coin-img {
-  transform: scale(1.1) rotate(-5deg);
+  transform: scale(1.05);
 }
 
 .btn-gradient {
@@ -30,7 +30,6 @@
 }
 
 .btn-gradient:hover {
-  background: linear-gradient(45deg, #ffb300, #ff6f00);
   box-shadow: 0 0 15px rgba(255, 152, 0, 0.7);
   transform: scale(1.05);
 }

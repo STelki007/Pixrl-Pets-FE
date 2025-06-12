@@ -53,7 +53,10 @@ export class PlayerBackendService {
         headers: this.authContextService.headerGetToken()
       }
     );
+  }
 
+  removeCoins(coins: number): Observable<PlayerInterface> {
+    return this.http.post<PlayerInterface>(`${BackendUrlService.getBackendUrl()}/player/remove-coins/${coins}`, {}, {headers: this.authContextService.headerGetToken() });
   }
 
 

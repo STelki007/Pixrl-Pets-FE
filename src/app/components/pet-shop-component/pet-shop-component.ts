@@ -16,6 +16,7 @@ import {Pet} from '@components/animal-component/service/Pet';
 import {PetTypeDto} from '@services/animal/PetTypeDto';
 import {FruitInterface} from '@components/shop-component/FruitInterface';
 import {PlayerCoinService} from "@/app/backend/player/player.coin.service";
+import {PlayerBackendService} from '@/app/backend/player/player.backend.service';
 
 @Component({
   selector: 'app-pet-shop-component',
@@ -33,8 +34,11 @@ export class PetShopComponent implements OnInit {
   protected quantityError: string | null = null;
   private petTypes$: Observable<PetTypeDto[]> = new Observable<PetTypeDto[]>;
   protected pets: PetTypeDto[] = [];
-  protected petCost: number = 5000;
+  protected petCost: number = 8000;
   protected canPlayerBuyPet: boolean = false;
+
+  @Output() componentSelected  = new EventEmitter<string>();
+
 
   selectedAnimal: any = null;
 
@@ -43,7 +47,8 @@ export class PetShopComponent implements OnInit {
               private soundService: SoundService,
               private petTypeServiceService: PetTypeServiceService,
               private shopService: ShopBackendService,
-              protected playerCoinsService: PlayerCoinService
+              protected playerCoinsService: PlayerCoinService,
+              private playerBackendService: PlayerBackendService,
               ) {
   }
 
@@ -78,19 +83,25 @@ export class PetShopComponent implements OnInit {
 
   }
 
-  checkPlayerHasEnoughCoins () {
+  emitSelectComponent(comp: string) {
+    this.componentSelected.emit(comp);
+  }
+
+  checkPlayerHasEnoughCoins() {
     this.playerCoinsService.playerCoins$.subscribe(playerCoins => {
       if (playerCoins >= this.petCost) {
+        this.canPlayerBuyPet = true;
         this.alertText = 'Haustier wurde erfolgreich gekauft.';
         this.severity = "success";
-        this.canPlayerBuyPet = true;
       } else {
-        this.alertText = 'Du kannst diesen Haustier nicht kaufen, weil du kein genug Coin hast!';
-        this.severity = "error";
         this.canPlayerBuyPet = false;
+        this.alertText = 'Du hast nicht genug Coins!';
+        this.severity = "error";
       }
-    })
+    });
+    this.playerCoinsService.loadPlayerCoins()
   }
+
 
   onClickCoin() {
     this.soundService.playSound("coinClickEffect2.mp3");
@@ -106,6 +117,7 @@ export class PetShopComponent implements OnInit {
     if (this.canPlayerBuyPet){
       this.shopService.buyPet(pet.petId);
       this.pets = this.pets.filter(p => p.petId !== pet.petId);
+      this.checkPlayerHasEnoughCoins();
     }
   }
 

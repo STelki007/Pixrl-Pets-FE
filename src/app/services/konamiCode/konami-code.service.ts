@@ -11,7 +11,7 @@ export class KonamiCodeService {
   private konamiCodeState = new BehaviorSubject<boolean>(false);
   private keySequencePetVoice: string[] = [];
   private keySequenceInfinityCoins: string[] = [];
-  private petVoiceSecretKey: string = "schwerk"
+  private petVoiceSecretKey: string = "anter"
   private infinityCoinsSecretKey: string = "barbour"
   private resetTimeSec: number = 15000;
 
