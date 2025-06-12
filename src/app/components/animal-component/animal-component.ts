@@ -19,6 +19,7 @@ import {KonamiCodeService} from '@services/konamiCode/konami-code.service';
 import {InventoryBackendService} from '@/app/backend/inventory/inventory.backend.service';
 import {ItemsBackendService} from '@/app/backend/items/items.backend.service';
 import {PlayerPetBackendService} from '@/app/backend/pet/PlayerPet.backend.service';
+import {ItemPopupComponent} from '@components/item-popup/item-popup.component';
 
 @Component({
   selector: 'app-animal-component',
@@ -28,7 +29,8 @@ import {PlayerPetBackendService} from '@/app/backend/pet/PlayerPet.backend.servi
     NgForOf,
     NgIf,
     NgClass,
-    NgStyle
+    NgStyle,
+    ItemPopupComponent
   ],
   standalone: true,
   styleUrl: './animal-component.css'

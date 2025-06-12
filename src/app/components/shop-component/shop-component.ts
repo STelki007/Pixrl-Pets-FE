@@ -21,7 +21,7 @@ import {BuyCoinsComponent} from '@components/buy-coins/buy-coins.component';
   providers: [MessageService]
 })
 export class ShopComponent implements OnInit {
-  protected selectedTab: string = "buy";
+  protected selectedTab: string = "buyCoins";
   protected isOffcanvasOpen: boolean = false;
   @ViewChild('buyModal') buyModal!: TemplateRef<any>;
   private modalRef?: NgbModalRef;
