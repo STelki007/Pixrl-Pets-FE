@@ -7,3 +7,9 @@
 .width100{
   width: 100%;
 }
+
+.modal-content {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, Output, ViewEncapsulation} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {Deck} from '../services/uno/Deck';
 import {UnoGameStart} from '@components/games/uno/services/uno/UnoGameStart';
@@ -13,7 +13,9 @@ import {PlayerEarningComponent} from '@components/games/player-earning/player-ea
   standalone: true,
   imports: [FormsModule, AsyncPipe, NgIf, PlayerEarningComponent],
   templateUrl: './game-start.component.html',
-  styleUrl: './game-start.component.css'
+  styleUrl: './game-start.component.css',
+  encapsulation: ViewEncapsulation.None
+
 })
 export class GameStartComponent {
   @Output() playersUpdated = new EventEmitter<{ [key: string]: string[] }>();

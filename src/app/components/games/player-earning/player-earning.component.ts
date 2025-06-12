@@ -41,7 +41,6 @@ export class PlayerEarningComponent implements OnInit, OnDestroy, AfterViewInit 
 
   ngOnInit() {
     this.playerWinsCoins();
-    this.openModal(this.AlertCenterModal);
   }
 
   ngAfterViewInit(): void {
@@ -71,7 +70,7 @@ export class PlayerEarningComponent implements OnInit, OnDestroy, AfterViewInit 
 
   ngOnDestroy(): void {
     this.subscription?.unsubscribe();
-    this.closeModal(); // fallback cleanup
+    this.closeModal();
   }
 
   playerWinsCoins() {
@@ -85,6 +84,6 @@ export class PlayerEarningComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   closeCoinsDiv(): void {
-    this.playerWinsTicTacToService.setValue(false); // <-- Das triggert .closeModal über die Subscription
+    this.playerWinsTicTacToService.setValue(false);
   }
 }
