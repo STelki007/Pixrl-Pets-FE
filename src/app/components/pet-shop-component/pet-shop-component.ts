@@ -112,28 +112,15 @@ export class PetShopComponent implements OnInit {
   }
 
   confirmBuy(pet: PetTypeDto | null) {
-    console.log("ac" + pet?.petId);
     if(pet == null)return;
     this.soundService.playSound("select-item.mp3");
     this.quantity = 1;
     this.quantityError = null;
     this.modalRef?.close();
     this.messageService.add({severity: 'success', summary: 'Gekauft!', detail: 'Haustier wurde erfolgreich gekauft.'});
-    this.shopService.buyPet(pet.petId);
-    console.log(this.body)
-    console.log(pet)
-  }
-
-  sendBoughtItemsToBackend(fruit: FruitInterface | null) {
-    if (fruit !== null) {
-      this.body.amount = this.quantity;
-      this.body.itemId = fruit.id;
-      this.body.playerId = this.authContextService.getUserId()
-    }
-
-    if (this.body.playerId !== null) {
-      console.log("es wurde gekauft: " + this.body);
-    }
+    this.shopService.buyPet(pet.petId, () => {
+      this.petTypeServiceService.loadData();
+    }, () => {});
   }
 
   openBuyModal(pet: PetTypeDto) {
