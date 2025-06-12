@@ -80,7 +80,7 @@ export class AnimalsViewComponent implements OnInit {
     this.selectedAnimalService.setSelectedAnimal(animal);
     this.sideBarButtonsService.setValue("animal");
     this.arrowService.setValue(true);
-    this.petService.setValue(animal.getName());
+    this.petService.setValue(animal.getImagePath().split("/")[0].toLowerCase());
   }
 
 

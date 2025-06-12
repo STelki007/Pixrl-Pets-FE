@@ -5,6 +5,7 @@ import { PetFactory } from '@components/animal-component/service/PetFactory';
 import { ChatMessage } from '@components/animal-component/service/ChatMessage';
 import { PetService } from '@components/animal-component/service/PetService';
 import {BackendUrlService} from '@/app/backend/services/backend.url.service';
+import {AuthContextService} from '@/app/backend/services/auth.context.service';
 
 @Injectable({ providedIn: 'root' })
 export class OpenAIService {
@@ -13,7 +14,8 @@ export class OpenAIService {
 
   constructor(
     private http: HttpClient,
-    private getPetName: PetService
+    private getPetName: PetService,
+    private authContexService: AuthContextService
   ) {}
 
   sendMessageWithHistory(messages: ChatMessage[]): Observable<any> {
@@ -39,7 +41,7 @@ export class OpenAIService {
           messages: fullMessageHistory
         };
 
-        return this.http.post(`${BackendUrlService.getBackendUrl()}/api/chat`, body);
+        return this.http.post(`${BackendUrlService.getBackendUrl()}/api/chat`, body,{headers: this.authContexService.headerGetToken()});
       })
     );
   }
