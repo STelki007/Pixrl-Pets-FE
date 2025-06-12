@@ -24,15 +24,20 @@ export class ShopBackendService {
   }
 
 
-  buyPet(petId:number) {
-    return this.http.post(`http://localhost:8081/shop/buyPet/` + petId, {},{
+  buyPet(
+    petId: number,
+    onSuccess: (response: any) => void,
+    onError: (error: any) => void
+  ) {
+    return this.http.post(`http://localhost:8081/shop/buyPet/` + petId, {}, {
       headers: this.tokenService.headerGetToken()
     }).subscribe({
       next: (response) => {
-        console.log('Success:', response);
+        onSuccess(response);
       },
       error: (error) => {
         console.error('Error:', error);
+        onError(error);
       }
     });
   }

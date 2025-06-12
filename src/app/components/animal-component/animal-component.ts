@@ -106,8 +106,7 @@ export class AnimalComponent implements OnInit {
 
   handleItemClick(item: any) {
     console.log(this.animal);
-    console.log(item);
-
+    console.log(item)
     if(this.animal)
     this.playerPetBackendService.postUseItemForPet(this.animal.getId(), item.id);
   }

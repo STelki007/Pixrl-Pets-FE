@@ -19,7 +19,7 @@ export class PetTypeServiceService {
   loadData(onSuccess?: (petTypes: PetTypeDto[]) => void, onError?: (error: any) => void): void {
     const headers = this.tokenService.headerGetToken()
 
-    this.http.get<PetTypeDto[]>('http://localhost:8081/pet', {headers}).subscribe(
+    this.http.get<PetTypeDto[]>('http://localhost:8081/pet/notOwned', {headers}).subscribe(
       (pets) => {
         this.petSubject.next(pets);
         if (onSuccess) onSuccess(pets);
