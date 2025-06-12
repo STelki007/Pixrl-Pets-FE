@@ -30,7 +30,6 @@ export class PetTypeServiceService {
     );
   }
 
-
   // Get the observable that components can subscribe to
   getPetTypes(): Observable<PetTypeDto[]> {
     return this.petSubject.asObservable();

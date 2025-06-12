@@ -101,7 +101,7 @@ export class ShopComponent implements OnInit {
     this.soundService.playSound("select-item.mp3");
     this.quantityError = null;
     this.modalRef?.close();
-    this.messageService.add({ severity: 'success', summary: 'Gekauft!', detail: 'Das Item wurde erfolgreich gekauft.' });
+    this.messageService.add({ severity: 'success', summary: 'Gekauft!', detail: 'Das Item wurde erfolgreich gekauft' });
 
     if (this.getItem ) {
       this.sendBoughtItemsToBackend(this.getItem);

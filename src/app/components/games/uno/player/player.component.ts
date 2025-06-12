@@ -175,7 +175,7 @@ export class PlayerComponent implements OnInit, OnChanges {
     this.isPlayer2 = !this.isPlayer2;
 
     if (!this.isPlayer2) {
-      setTimeout(() => this.performBotTurn(), 1000);
+      setTimeout(() => this.performBotTurn(), 1500);
     }
   }
 
