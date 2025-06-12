@@ -15,38 +15,49 @@ import {Observable} from 'rxjs';
 import {Pet} from '@components/animal-component/service/Pet';
 import {PetTypeDto} from '@services/animal/PetTypeDto';
 import {FruitInterface} from '@components/shop-component/FruitInterface';
+import {PlayerCoinService} from "@/app/backend/player/player.coin.service";
+import {PlayerBackendService} from '@/app/backend/player/player.backend.service';
 
 @Component({
   selector: 'app-pet-shop-component',
   standalone: true,
-  imports: [NgForOf, NgClass, NgIf, InputNumber, FormsModule, Toast, NgStyle],
+  imports: [NgForOf, NgClass, NgIf, FormsModule, Toast, NgStyle],
   templateUrl: './pet-shop-component.html',
   styleUrl: './pet-shop-component.css',
   providers: [MessageService]
 })
 export class PetShopComponent implements OnInit {
-  protected selectedTab: string = "buy";
-  protected isOffcanvasOpen: boolean = false;
   @ViewChild('buyModal') buyModal!: TemplateRef<any>;
   private modalRef?: NgbModalRef;
-  selectedAnimal: any = null;
-  protected quantity: number = 1;
+  private alertText = ""
+  private severity = "";
   protected quantityError: string | null = null;
-  protected fruit: FruitInterface | null = null;
   private petTypes$: Observable<PetTypeDto[]> = new Observable<PetTypeDto[]>;
   protected pets: PetTypeDto[] = [];
+  protected petCost: number = 8000;
+  protected canPlayerBuyPet: boolean = false;
+
+  @Output() componentSelected  = new EventEmitter<string>();
+
+
+  selectedAnimal: any = null;
 
   constructor(private modalService: NgbModal,
               private messageService: MessageService,
               private soundService: SoundService,
-              protected fruitsService: FruitsService,
-              private shopBackendService: ShopBackendService,
-              private authContextService: AuthContextService,
               private petTypeServiceService: PetTypeServiceService,
-              private shopService: ShopBackendService) {
+              private shopService: ShopBackendService,
+              protected playerCoinsService: PlayerCoinService,
+              private playerBackendService: PlayerBackendService,
+              ) {
   }
 
   ngOnInit(): void {
+    this.getPets();
+    this.checkPlayerHasEnoughCoins();
+  }
+
+  getPets () {
     this.petTypes$ = this.petTypeServiceService.getPetTypes();
     this.petTypes$.subscribe((petTypes => {
       let pets: PetTypeDto[] = [];
@@ -66,59 +77,43 @@ export class PetShopComponent implements OnInit {
       })
     }));
     this.petTypeServiceService.loadData();
-
   }
 
-  @Output() componentSelected  = new EventEmitter<string>();
+
 
   emitSelectComponent(comp: string) {
-    this.componentSelected .emit(comp);
+    this.componentSelected.emit(comp);
   }
 
-
-  private body: ShopInterface = {
-    amount: 0,
-    playerId: null,
-    itemId: 0,
+  checkPlayerHasEnoughCoins() {
+    this.playerCoinsService.playerCoins$.subscribe(playerCoins => {
+      if (playerCoins >= this.petCost) {
+        this.canPlayerBuyPet = true;
+        this.alertText = 'Haustier wurde erfolgreich gekauft.';
+        this.severity = "success";
+      } else {
+        this.canPlayerBuyPet = false;
+        this.alertText = 'Du hast nicht genug Coins!';
+        this.severity = "error";
+      }
+    });
+    this.playerCoinsService.loadPlayerCoins()
   }
 
-  onClickItem() {
-    this.soundService.playSound("select-item.mp3");
-  }
-
-  closeOffcanvas() {
-    this.soundService.playSound("select-item.mp3");
-    this.isOffcanvasOpen = false;
-  }
-
-  selectTab(tab: string) {
-    this.soundService.playSound("cabinet-door.mp3");
-    this.selectedTab = tab;
-  }
-
-  onAnimalCardClick(animal: Pet | null) {
-
-  }
-
-  onClickInfo(id: number | null) {
-    if (id == null) return;
-    this.fruit = this.fruitsService.getFruitById(id)!;
-    this.isOffcanvasOpen = true;
-    this.soundService.playSound("select-item.mp3");
-  }
 
   onClickCoin() {
     this.soundService.playSound("coinClickEffect2.mp3");
   }
 
   confirmBuy(pet: PetTypeDto | null) {
+
     if(pet == null)return;
     this.soundService.playSound("select-item.mp3");
-    this.quantity = 1;
     this.quantityError = null;
     this.modalRef?.close();
     this.messageService.add({severity: 'success', summary: 'Gekauft!', detail: 'Haustier wurde erfolgreich gekauft.'});
     this.shopService.buyPet(pet.petId, () => {
+      this.pets = this.pets.filter(p => p.petId !== pet.petId);
       this.petTypeServiceService.loadData();
     }, () => {});
   }
@@ -131,7 +126,6 @@ export class PetShopComponent implements OnInit {
       backdrop: "static",
       keyboard: false
     });
-    this.quantity = 1;
     this.quantityError = null;
   }
 

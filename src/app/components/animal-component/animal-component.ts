@@ -1,4 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import {CoinComponent} from '../coin-component/coin-component';
 import {ArrowService} from '@services/animal/ArrowService';
 import {SideBarButtonsService} from '@services/SideBarButtonsService';
 import {OpenAIService} from '@components/animal-component/service/openai.service';
@@ -82,7 +83,7 @@ export class AnimalComponent implements OnInit {
       this.itemsId.push(this.playerObject.itemId);
 
       this.playerObject.map((i: any) => {
-        if (i) {
+        if (i){
           this.getPlayerInventory(i.itemId, i.amount);
         }
       });
@@ -149,7 +150,7 @@ export class AnimalComponent implements OnInit {
     })
   }
 
-  saveMessages() {
+  saveMessages () {
     const savedMessages = localStorage.getItem('chatHistory');
     if (savedMessages) {
       this.openai.messages = JSON.parse(savedMessages);
@@ -174,7 +175,7 @@ export class AnimalComponent implements OnInit {
     this.petService.getValue().subscribe(petName => {
       const currentPet = PetFactory.createPet(petName.toLowerCase());
 
-      this.openai.messages.push({role: 'user', content: this.userInput});
+      this.openai.messages.push({ role: 'user', content: this.userInput });
 
       const currentMessage = {
         request: this.userInput,
@@ -201,13 +202,14 @@ ${PetFactory.convertObjectToPetString(currentPet)}
       };
 
 
+
       const messagesToSend: ChatMessage[] = [systemPrompt, ...lastMessages];
 
       this.openai.sendMessageWithHistory(messagesToSend).subscribe((res: ChatCompletionResponse) => {
         const aiResponse = res.choices[0].message.content;
         const usage = res.usage;
 
-        this.openai.messages.push({role: 'assistant', content: aiResponse});
+        this.openai.messages.push({ role: 'assistant', content: aiResponse });
         localStorage.setItem('chatHistory', JSON.stringify(this.openai.messages));
 
         this.messagesList[currentIndex].response = aiResponse;
@@ -223,7 +225,7 @@ ${PetFactory.convertObjectToPetString(currentPet)}
 
 
   onArrowClick() {
-    if (this.konamiCodeState) {
+    if (this.konamiCodeState){
       this.konamiCodeService.setPetVoiceValue(false)
       alert("Geheimer Code deaktiviert!")
     }
@@ -233,7 +235,7 @@ ${PetFactory.convertObjectToPetString(currentPet)}
     })
     if (this.arrowServiceValue) {
       this.sideBarButtonsService.setValue("animal");
-    } else {
+    }else{
       this.sideBarButtonsService.setValue("animals")
     }
   }

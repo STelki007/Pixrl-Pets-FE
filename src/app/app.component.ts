@@ -67,8 +67,9 @@ export class AppComponent implements OnInit, OnDestroy {
     this.startAudio();
     this.getSidebarValue();
     this.getGameServiceValue();
-    this.createNewPlayer()
+    this.createNewPlayer();
     this.konamiCodeService.konamiCodeInfinityCoins();
+
   }
 
   createNewPlayer () {

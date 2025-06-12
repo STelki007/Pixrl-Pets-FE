@@ -10,6 +10,10 @@ To start a local development server, run:
 ng serve
 ```
 
+## Konamicode
+gib den Geheimcode: "barbour" und Sie erhalten 25000 Coins
+gib den Geheimcode: "anter" und Sie aktivieren im Chatbot mit deinem Haustier.
+
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
 ## Code scaffolding
