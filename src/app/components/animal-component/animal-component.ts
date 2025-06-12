@@ -173,6 +173,7 @@ export class AnimalComponent implements OnInit {
     if (!this.userInput.trim()) return;
 
     this.petService.getValue().subscribe(petName => {
+      console.log(this.petNameValue + " wsdf");
       const currentPet = PetFactory.createPet(petName.toLowerCase());
 
       this.openai.messages.push({ role: 'user', content: this.userInput });

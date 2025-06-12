@@ -97,7 +97,6 @@ export class PetShopComponent implements OnInit {
         this.severity = "error";
       }
     });
-    this.playerCoinsService.loadPlayerCoins()
   }
 
 
@@ -106,7 +105,6 @@ export class PetShopComponent implements OnInit {
   }
 
   confirmBuy(pet: PetTypeDto | null) {
-
     if(pet == null)return;
     this.soundService.playSound("select-item.mp3");
     this.quantityError = null;
@@ -115,6 +113,8 @@ export class PetShopComponent implements OnInit {
     this.shopService.buyPet(pet.petId, () => {
       this.pets = this.pets.filter(p => p.petId !== pet.petId);
       this.petTypeServiceService.loadData();
+      this.playerCoinsService.loadPlayerCoins()
+      
     }, () => {});
   }
 
@@ -129,4 +129,7 @@ export class PetShopComponent implements OnInit {
     this.quantityError = null;
   }
 
+  onAnimalCardClick(pet: Pet | null) {
+
+  }
 }

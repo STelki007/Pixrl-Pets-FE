@@ -21,6 +21,7 @@ import {AuthContextService} from '@/app/backend/services/auth.context.service';
 import {PlayerInterface} from '@/app/backend/player/playerInterface';
 import {PetShopComponent} from '@components/pet-shop-component/pet-shop-component';
 import {KonamiCodeService} from '@services/konamiCode/konami-code.service';
+import {PlayerCoinService} from '@/app/backend/player/player.coin.service';
 
 @Component({
   selector: 'app-root',
@@ -60,6 +61,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private playerBackendService: PlayerBackendService,
     private authContextService: AuthContextService,
     private konamiCodeService: KonamiCodeService,
+    private playerCoinService: PlayerCoinService,
 
   ) {}
 
@@ -90,6 +92,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
           this.playerBackendService.createPlayer(newPlayer).subscribe(() => {
           this.getUserId(keycloakUserId);
+          this.playerCoinService.loadPlayerCoins()
           });
         } else {
           console.log("Spieler existiert bereits.");
