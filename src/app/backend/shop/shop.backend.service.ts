@@ -13,13 +13,14 @@ export class ShopBackendService {
   constructor(
     private http: HttpClient,
     private tokenService: AuthContextService,
-  ) {}
+  ) {
+  }
 
   sendBoughtItemsToPlayerInventory(id: number, amount: number) {
     return this.http.post(
       `http://localhost:8081/shop/buyItem/${id}/${amount}`,
       {},
-      { headers: this.tokenService.headerGetToken() }
+      {headers: this.tokenService.headerGetToken()}
     );
   }
 

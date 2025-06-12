@@ -59,6 +59,10 @@ export class Pet {
     return this.type;
   }
 
+  public getHunger(): number{
+    return this.hunger ? this.hunger/10 : 0;
+  }
+
   /**
    * This method saves all the animal image paths for easy use and change
    * @param animal AnimalType
