@@ -16,12 +16,7 @@ import {Pet, PetAnimation, PetType} from '@components/animal-component/service/P
 import {NgClass, NgStyle} from '@angular/common';
 import {PetService} from '@components/animal-component/service/PetService';
 import {KonamiCodeService} from '@services/konamiCode/konami-code.service';
-import {animation} from '@angular/animations';
-import {ItemPopupComponent} from '@components/item-popup/item-popup.component';
 import {InventoryBackendService} from '@/app/backend/inventory/inventory.backend.service';
-import {List} from 'postcss/lib/list';
-import {PlayerPetDto} from '@services/animal/PlayerPetDto';
-import {PetCulture} from '@components/animal-component/service/PetCulture';
 import {ItemsBackendService} from '@/app/backend/items/items.backend.service';
 import {PlayerPetBackendService} from '@/app/backend/pet/PlayerPet.backend.service';
 
@@ -33,8 +28,7 @@ import {PlayerPetBackendService} from '@/app/backend/pet/PlayerPet.backend.servi
     NgForOf,
     NgIf,
     NgClass,
-    NgStyle,
-    ItemPopupComponent
+    NgStyle
   ],
   standalone: true,
   styleUrl: './animal-component.css'
@@ -74,18 +68,18 @@ export class AnimalComponent implements OnInit {
     this.saveMessages();
     this.petName();
 
-      this.inventoryBackendService.getInventoryByPlayerSessionId().subscribe(object => {
-        this.playerObject = object;
+    this.inventoryBackendService.getInventoryByPlayerSessionId().subscribe(object => {
+      this.playerObject = object;
 
-        this.itemsId.push(this.playerObject.itemId);
+      this.itemsId.push(this.playerObject.itemId);
 
-        this.playerObject.map((i: any) => {
-          if (i){
-            this.getPlayerInventory(i.itemId, i.amount);
-          }
-        });
-
+      this.playerObject.map((i: any) => {
+        if (i){
+          this.getPlayerInventory(i.itemId, i.amount);
+        }
       });
+
+    });
   }
 
 
@@ -109,7 +103,7 @@ export class AnimalComponent implements OnInit {
     console.log(item);
 
     if(this.animal)
-    this.playerPetBackendService.postUseItemForPet(this.animal.getId(), item.id);
+      this.playerPetBackendService.postUseItemForPet(this.animal.getId(), item.id);
   }
 
   getAnimal() {

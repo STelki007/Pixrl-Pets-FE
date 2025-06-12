@@ -1,5 +1,10 @@
-<div class="adopt-main-div">
-  <div class="nav-buttons d-flex justify-content-center">
+<div class="adopt-main-div"
+     [ngClass]="{
+       'buy-background': selectedTab === 'buy',
+       'pet-background': selectedTab === 'buyPet',
+       'coins-background': selectedTab === 'buyCoins'
+     }">
+<div class="nav-buttons d-flex justify-content-center">
     <button class="nes-btn custom-btn" [ngClass]="{'is-active': selectedTab === 'buy'}" (click)="selectTab('buy')">
       Items
     </button>
@@ -7,106 +12,115 @@
       Tiere
     </button>
     <button class="nes-btn custom-btn ml-2" [ngClass]="{'is-active': selectedTab === 'buyCoins'}" (click)="onBuyCoinsClick('buyCoins')">
-
+      Coins kaufen
     </button>
   </div>
 
-  <div class="mt-5 d-flex justify-content-center">
-    <div class="inventory-grid with-title">
-      <div class="items-container">
 
-        <div *ngFor="let item of itemsArr">
-          <div class="inventory-items-container">
-            <div class="item-container" (click)="onClickItem()">
-              <img class="article-name text-center mb-3" [src]="item.image" [id]="item.id" [title]="item.name">
-            </div>
+  <app-pet-shop-component *ngIf="selectedTab === 'buyPet'"></app-pet-shop-component>
 
-            <div class="coin-container mb-3" (click)="onClickCoin()">
-              <i class="nes-icon coin mx-3"></i>
-              {{ item.price }}
-            </div>
+  <app-buy-coins *ngIf="selectedTab === 'buyCoins'"></app-buy-coins>
 
-            <div class="item-buttons">
-              <div class="info-button-div mx-3">
-                <button (click)="onClickInfo(item)">
-                  <i class="bi bi-info-circle-fill"></i>
-                </button>
+  <div *ngIf="selectedTab === 'buy'" >
+    <div class="mt-5 d-flex justify-content-center">
+      <div class="inventory-grid with-title">
+        <div class="items-container">
+
+          <div *ngFor="let item of itemsArr">
+            <div class="inventory-items-container">
+              <div class="item-container" (click)="onClickItem()">
+                <img class="article-name text-center mb-3" [src]="item.image" [id]="item.id" [title]="item.name">
               </div>
 
-              <div class="buy-button-div">
-                <button class="buy-button mx-3 nes-btn is-primary" (click)="openBuyModal(item)">Kaufen</button>
+              <div class="coin-container mb-3" (click)="onClickCoin()">
+                <i class="nes-icon coin mx-3"></i>
+                {{ item.price }}
               </div>
-            </div>
-          </div>
 
-          <ng-template #buyModal let-modal>
-            <section class="nes-dialog is-dark is-rounded alert-center">
-              <div class="mt-4 mb-4 text-center">
-                <label for="quantity" class="nes-text is-primary">Menge auswählen:</label>
-                <p-inputNumber
-                  id="quantity"
-                  [(ngModel)]="quantity"
-                  [step]="1"
-                  showButtons
-                  class="custom-spinner"
-                  (ngModelChange)="validateQuantity()"
-                ></p-inputNumber>
-                <div *ngIf="quantityError" class="nes-text is-error mt-2">
-                  {{ quantityError }}
+              <div class="item-buttons">
+                <div class="info-button-div mx-3">
+                  <button (click)="onClickInfo(item)">
+                    <i class="bi bi-info-circle-fill"></i>
+                  </button>
+                </div>
+
+                <div class="buy-button-div">
+                  <button class="buy-button mx-3 nes-btn is-primary" (click)="openBuyModal(item)">Kaufen</button>
                 </div>
               </div>
+            </div>
 
-              <div class="text-center mt-4">
-                <button class="nes-btn is-error mx-3" (click)="modal.close()">Abbrechen</button>
-                <button class="nes-btn is-success mx-3" (click)="confirmBuy()" [disabled]="quantityError">Kaufen</button>
-              </div>
-            </section>
-          </ng-template>
+            <ng-template #buyModal let-modal>
+              <section class="nes-dialog is-dark is-rounded alert-center">
+                <div class="mt-4 mb-4 text-center">
+                  <label for="quantity" class="nes-text is-primary">Menge auswählen:</label>
+                  <p-inputNumber
+                    id="quantity"
+                    [(ngModel)]="quantity"
+                    [step]="1"
+                    showButtons
+                    class="custom-spinner"
+                    (ngModelChange)="validateQuantity()"
+                  ></p-inputNumber>
+                  <div *ngIf="quantityError" class="nes-text is-error mt-2">
+                    {{ quantityError }}
+                  </div>
+                </div>
+
+                <div class="text-center mt-4">
+                  <button class="nes-btn is-error mx-3" (click)="modal.close()">Abbrechen</button>
+                  <button class="nes-btn is-success mx-3" (click)="confirmBuy()" [disabled]="quantityError">Kaufen</button>
+                </div>
+              </section>
+            </ng-template>
+          </div>
+
         </div>
-
       </div>
     </div>
-  </div>
-</div>
 
+    <div
+      class="offcanvas offcanvas-end custom-offcanvas"
+      [ngClass]="{ 'show': isOffcanvasOpen, 'hide': !isOffcanvasOpen }"
+      tabindex="-1"
+      id="offcanvasRight"
+      aria-labelledby="offcanvasRightLabel"
+    >
+      <div class="custom-offcanvas-overlay"></div>
 
+      <div class="offcanvas-header border-bottom">
+        <h5 class="offcanvas-title mb-0" id="offcanvasRightLabel">
+          {{ getItem.name }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close text-reset"
+          (click)="closeOffcanvas()"
+          aria-label="Close"
+        ></button>
+      </div>
 
-
-<div
-  class="offcanvas offcanvas-end custom-offcanvas"
-  [ngClass]="{ 'show': isOffcanvasOpen, 'hide': !isOffcanvasOpen }"
-  tabindex="-1"
-  id="offcanvasRight"
-  aria-labelledby="offcanvasRightLabel"
->
-  <div class="custom-offcanvas-overlay"></div>
-
-  <div class="offcanvas-header border-bottom">
-    <h5 class="offcanvas-title mb-0" id="offcanvasRightLabel">
-      {{ getItem.name }}
-    </h5>
-    <button
-      type="button"
-      class="btn-close text-reset"
-      (click)="closeOffcanvas()"
-      aria-label="Close"
-    ></button>
-  </div>
-
-  <div class="offcanvas-body">
-    <div class="mb-3">
-      <h6 class="text-muted">Beschreibung</h6>
-      <p class="mb-0">{{ getItem.description }}</p>
+      <div class="offcanvas-body">
+        <div class="mb-3">
+          <h6 class="text-muted">Beschreibung</h6>
+          <p class="mb-0">{{ getItem.description }}</p>
+        </div>
+      </div>
     </div>
+
+    <div
+      class="offcanvas-overlay"
+      *ngIf="isOffcanvasOpen"
+      (click)="closeOffcanvas()">
+    </div>
+
+    <p-toast position="bottom-right" />
   </div>
+
+
 </div>
 
-<div
-  class="offcanvas-overlay"
-  *ngIf="isOffcanvasOpen"
-  (click)="closeOffcanvas()">
-</div>
 
-<p-toast position="bottom-right" />
+
 
 <!--<p-image src="https://primefaces.org/cdn/primeng/images/galleria/galleria10.jpg" alt="Image" width="250" [preview]="true" />-->

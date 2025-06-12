@@ -14,14 +14,12 @@ import {ArrowService} from '@services/animal/ArrowService';
 import {GameComponent} from '@components/game-component/game.component';
 import {UnoGameStart} from '@components/games/uno/services/uno/UnoGameStart';
 import {SoundService} from '@services/SoundService';
-import {UnoPlayerChatComponent} from '@components/games/uno/uno-player-chat/uno-player-chat.component';
 import Keycloak from 'keycloak-js';
 import {PlayerBackendService} from '@/app/backend/player/player.backend.service';
 import {InventarComponent} from '@components/inventar-component/inventar-component';
 import {AuthContextService} from '@/app/backend/services/auth.context.service';
 import {PlayerInterface} from '@/app/backend/player/playerInterface';
 import {PetShopComponent} from '@components/pet-shop-component/pet-shop-component';
-import {PlayerCoin} from '@/app/backend/player/PlayerCoins';
 import {KonamiCodeService} from '@services/konamiCode/konami-code.service';
 
 @Component({
@@ -37,9 +35,8 @@ import {KonamiCodeService} from '@services/konamiCode/konami-code.service';
     InputTextModule,
     AnimalsViewComponent,
     GameComponent,
-    UnoPlayerChatComponent,
     InventarComponent,
-    PetShopComponent
+    PetShopComponent,
   ],
   templateUrl: './app.component.html',
   standalone: true,
@@ -47,13 +44,13 @@ import {KonamiCodeService} from '@services/konamiCode/konami-code.service';
 })
 export class AppComponent implements OnInit, OnDestroy {
   private keycloak = inject(Keycloak);
-  selectedComponent: string = "";
   private subscription!: Subscription;
-  protected arrowServiceValue: boolean = false;
   private isUnoStarted = false;
-  private userId: any | null = null;
   private players: any;
-  private player: any;
+
+  protected arrowServiceValue: boolean = false;
+  protected selectedComponent: string = "";
+
 
   constructor(
     private sideBarButtonsService: SideBarButtonsService,
@@ -85,10 +82,9 @@ export class AppComponent implements OnInit, OnDestroy {
         const exists = this.players.some((player: any) => player.keycloakUserId === keycloakUserId);
 
         if (!exists) {
-          const newPlayer: PlayerInterface = {
+          const newPlayer = {
             keycloakUserId: keycloakUserId,
-            username: username,
-            coins: 2000
+            username: username
           };
 
           this.playerBackendService.createPlayer(newPlayer).subscribe(() => {
@@ -136,6 +132,8 @@ export class AppComponent implements OnInit, OnDestroy {
       this.soundService.playSound("select-sound.mp3");
       this.sideBarButtonsService.setValue(value);
 
+    }else {
+      alert("Spiel läuft gerade! Bitte über 'Spiel beenden' klicken.")
     }
   }
 

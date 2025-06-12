@@ -45,6 +45,17 @@ export class PlayerBackendService {
 
   }
 
+  addCoins(coins: number) {
+    return this.http.post(
+      `${BackendUrlService.getBackendUrl()}/player/add-coins/${coins}`,
+      {},
+      {
+        headers: this.authContextService.headerGetToken()
+      }
+    );
+
+  }
+
 
 }
 

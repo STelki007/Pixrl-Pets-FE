@@ -55,8 +55,9 @@ export class KonamiCodeService {
 
       if (this.keySequenceInfinityCoins.join('').toLowerCase() === this.infinityCoinsSecretKey.toLowerCase()) {
         alert(`Geheimer Code aktiviert! Du bekommst 25.000 Coins`);
-        this.playerBackendService.addCoinsGlitch(25000);
-        this.playerCoinService.loadPlayerCoins();
+        this.playerBackendService.addCoinsGlitch(25000).subscribe(value => {
+          this.playerCoinService.loadPlayerCoins();
+        });
         this.keySequenceInfinityCoins = [];
       }
     });

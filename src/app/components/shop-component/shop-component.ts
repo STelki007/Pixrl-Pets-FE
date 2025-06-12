@@ -9,11 +9,13 @@ import {SoundService} from '@services/SoundService';
 import {ShopBackendService} from '@/app/backend/shop/shop.backend.service';
 import {ItemsBackendService} from '@/app/backend/items/items.backend.service';
 import {PlayerCoinService} from '@/app/backend/player/player.coin.service';
+import {PetShopComponent} from '@components/pet-shop-component/pet-shop-component';
+import {BuyCoinsComponent} from '@components/buy-coins/buy-coins.component';
 
 @Component({
   selector: 'app-shop-component',
   standalone: true,
-  imports: [NgForOf, NgClass, NgIf, InputNumber, FormsModule, Toast],
+  imports: [NgForOf, NgClass, NgIf, InputNumber, FormsModule, Toast, PetShopComponent, BuyCoinsComponent],
   templateUrl: './shop-component.html',
   styleUrl: './shop-component.css',
   providers: [MessageService]
@@ -40,7 +42,6 @@ export class ShopComponent implements OnInit {
   @Output() componentSelected  = new EventEmitter<string>();
 
   emitSelectComponent(comp: string) {
-    this.componentSelected.emit(comp);
     this.selectedTab = comp;
   }
 
@@ -104,13 +105,14 @@ export class ShopComponent implements OnInit {
 
     if (this.getItem ) {
       this.sendBoughtItemsToBackend(this.getItem);
-      this.playerCoinsService.loadPlayerCoins()
     }
   }
 
   sendBoughtItemsToBackend(item: any) {
     if (item !== null) {
-      this.shopBackendService.sendBoughtItemsToPlayerInventory(item.id, this.quantity).subscribe();
+      this.shopBackendService.sendBoughtItemsToPlayerInventory(item.id, this.quantity).subscribe(value => {
+        this.playerCoinsService.loadPlayerCoins()
+      });
     }
   }
 

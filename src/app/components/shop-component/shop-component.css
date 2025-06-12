@@ -3,7 +3,34 @@
   min-height: 100vh;
   overflow: hidden;
   margin-left: 300px;
+  color: white;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.buy-background {
   background-color: #653830;
+}
+
+.pet-background {
+  background-color: #3f6368;
+}
+
+.coins-background {
+  background-color: #1e3a5f;
+}
+
+.btn-buy {
+  background-color: #a0522d;
+  color: white;
+}
+
+.btn-pet {
+  background-color: #3f6368;
+  color: white;
+}
+
+.btn-coins {
+  background-color: #2a5d89;
   color: white;
 }
 

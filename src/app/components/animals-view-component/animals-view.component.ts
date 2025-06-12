@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {NgClass, NgForOf, NgStyle} from '@angular/common';
+import {NgClass, NgForOf, NgIf, NgStyle} from '@angular/common';
 import {SideBarButtonsService} from '@services/SideBarButtonsService';
 import {ArrowService} from '@services/animal/ArrowService';
 import {SelectedAnimalServiceService} from '@services/animal/selected-animal-service.service';
@@ -14,7 +14,8 @@ import {PetCulture} from '@components/animal-component/service/PetCulture';
   imports: [
     NgForOf,
     NgStyle,
-    NgClass
+    NgClass,
+    NgIf
   ],
   templateUrl: './animals-view.component.html',
   standalone: true,

@@ -8,10 +8,10 @@
 
       <div class="col-4 animal-div">
         <div class="avatar-selection">
-            <div
-              [ngClass]="[animal?.getAnimationCss().image, animal?.getAnimationCss().current]"
-              [ngStyle]="{ 'background-image': 'url(' + animal?.getImagePath() + ')' }">
-            </div>
+          <div
+            [ngClass]="[animal?.getAnimationCss().image, animal?.getAnimationCss().current]"
+            [ngStyle]="{ 'background-image': 'url(' + animal?.getImagePath() + ')' }">
+          </div>
         </div>
       </div>
 
@@ -35,7 +35,7 @@
               </div>
 
               <div class="chat-message ai">
-<!--                <img *ngIf="messagesList.length > 0" class="chat-avatar" [src]="animal?.getImagePath()" />-->
+                <!--                <img *ngIf="messagesList.length > 0" class="chat-avatar" [src]="animal?.getImagePath()" />-->
                 <div class="message-content ai-style  nes-balloon from-left">
                   <p>{{ message.response || '...' }}</p>
                 </div>
@@ -57,11 +57,10 @@
     <div class="position-absolute" style="right: 10px; top: 100px;">
       <div class="d-flex flex-column  nes-dialog " style="border-radius: 10px; align-items: flex-end; ">
         <button class="nes-btn is-primary mb-2" (click)="togglePopup()">Füttern</button>
-        <app-rollover-popup
+        <!-- <app-rollover-popup
           *ngIf="popupVisible"
           [items]="playerInventory"
-          (itemClicked)="handleItemClick($event)"
-        />
+          (itemClicked)="handleItemClick($event)"></app-rollover-popup> -->
         <button class="nes-btn is-success mb-2">Spielen</button>
         <button class="nes-btn is-error mb-2">Schlafen</button>
       </div>
@@ -73,7 +72,7 @@
       </button>
       <div class="mt-5" style="width: 30vw; opacity: .3" >
         <h6>Geheimer Code: <span class="text-black fw-bold">schwerk</span></h6>
-     </div>
+      </div>
     </div>
   </div>
 </div>

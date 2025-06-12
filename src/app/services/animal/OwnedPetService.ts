@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Pet } from '@components/animal-component/service/Pet';
-import { TokenService } from '@services/token.service';
 import { BackendUrlService } from '@/app/backend/services/backend.url.service';
 import { AuthContextService } from '@/app/backend/services/auth.context.service';
 import {PlayerPetDto} from '@services/animal/PlayerPetDto';
