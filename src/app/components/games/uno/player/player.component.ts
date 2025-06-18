@@ -180,24 +180,8 @@ export class PlayerComponent implements OnInit, OnChanges {
   }
 
   private botPickColor(): string {
-    const hand = this.players[this.player1];
-    const colorCount: { [color: string]: number } = {
-      red: 0,
-      green: 0,
-      blue: 0,
-      yellow: 0
-    };
-
-    for (const card of hand) {
-      const color = this.cardService.extractCardColor(card);
-      if (colorCount[color] !== undefined) {
-        colorCount[color]++;
-      }
-    }
-
-    return Object.entries(colorCount).sort((a, b) => b[1] - a[1])[0][0];
+    return this.botService.getBotPreferredColor(this.player1, this.players);
   }
-
 
   private performBotTurn(): void {
     const bot = this.player1;
