@@ -45,8 +45,8 @@ export class PlayerComponent implements OnInit, OnChanges {
   protected colorSelected: string = "";
 
   private colorOfCardOutPut: string = "";
-  private player1: string = "player1";
-  private player2: string = "player2";
+  private bot: string = "player1";
+  private player: string = "player2";
   private isWaitingForColorPick: boolean = false;
   private pressUnoButton: boolean = false;
   private showChangeColorModal: boolean = false;
@@ -85,14 +85,14 @@ export class PlayerComponent implements OnInit, OnChanges {
 
   handleTurnRound(changes: SimpleChanges): void {
     if (changes["turnRound"]?.currentValue !== changes["turnRound"]?.previousValue) {
-      this.gameService.drawCardForPlayer(this.players, this.isPlayer2 ? this.player2 : this.player1, 1);
+      this.gameService.drawCardForPlayer(this.players, this.isPlayer2 ? this.player : this.bot, 1);
       this.switchToNextPlayer();
     }
   }
 
   playCardIfValid(card: string, player: string): void {
     this.cardService.shuffleAgain(this.deck)
-    const isCurrentPlayer = (player === this.player1 && !this.isPlayer2) || (player === this.player2 && this.isPlayer2);
+    const isCurrentPlayer = (player === this.bot && !this.isPlayer2) || (player === this.player && this.isPlayer2);
 
     if (!isCurrentPlayer) return;
 
@@ -130,7 +130,7 @@ export class PlayerComponent implements OnInit, OnChanges {
     const special = this.cardService.extractSpecialCard(card);
     console.log("extractSpecialCard returns:", special);
 
-    const nextPlayer = this.isPlayer2 ? this.player1 : this.player2;
+    const nextPlayer = this.isPlayer2 ? this.bot : this.player;
 
     switch (special) {
       case "Stop":
@@ -180,28 +180,26 @@ export class PlayerComponent implements OnInit, OnChanges {
   }
 
   private botPickColor(): string {
-    return this.botService.getBotPreferredColor(this.player1, this.players);
+    return this.botService.getBotPreferredColor(this.bot, this.players);
   }
 
   private performBotTurn(): void {
-    const bot = this.player1;
-
     const tryPlayOrDraw = () => {
-      const hand = this.players[bot];
+      const hand = this.players[this.bot];
       this.pressUnoButton = hand.length <= 1;
 
       const playableCards = hand.filter(card => this.cardService.canPlayCard(card, this.getFirstCard));
 
       if (playableCards.length > 0) {
         const bestCard = playableCards.sort((a, b) =>
-          this.botService.getCardPriority(b, this.players[this.player2]?.length || 0, bot, this.players) -
-          this.botService.getCardPriority(a, this.players[this.player2]?.length || 0, bot, this.players)
+          this.botService.getCardPriority(b, this.players[this.player]?.length || 0, this.bot, this.players) -
+          this.botService.getCardPriority(a, this.players[this.player]?.length || 0, this.bot, this.players)
         )[0];
 
         if (bestCard) {
           const isColorChangeCard = bestCard.includes('ChangeColor') || bestCard.includes('4CardPlus');
 
-          this.playCardIfValid(bestCard, bot);
+          this.playCardIfValid(bestCard, this.bot);
 
           if (isColorChangeCard) {
             setTimeout(() => {
@@ -224,12 +222,12 @@ export class PlayerComponent implements OnInit, OnChanges {
       }
 
       this.soundService.playSound("card-draw.mp3");
-      this.players[bot].push(drawnCard);
+      this.players[this.bot].push(drawnCard);
       this.cardAnimation.animateDrawCard(false, this.backCard);
       this.cdr.detectChanges();
 
       if (this.cardService.canPlayCard(drawnCard, this.getFirstCard)) {
-        setTimeout(() => this.playCardIfValid(drawnCard!, bot), 1000);
+        setTimeout(() => this.playCardIfValid(drawnCard!, this.bot), 1000);
       } else {
         setTimeout(() => this.switchToNextPlayer(), 800);
       }
@@ -249,7 +247,7 @@ export class PlayerComponent implements OnInit, OnChanges {
 
   onCompleteRoundClick(): void {
     this.cardService.shuffleAgain(this.deck)
-    const currentPlayer = this.isPlayer2 ? this.player2 : this.player1;
+    const currentPlayer = this.isPlayer2 ? this.player : this.bot;
 
     const playableCards = this.players[currentPlayer].filter(card => this.cardService.canPlayCard(card, this.getFirstCard));
 
@@ -269,7 +267,7 @@ export class PlayerComponent implements OnInit, OnChanges {
 
     this.players[currentPlayer].push(drawnCard);
 
-    const isAnimation: boolean = currentPlayer === this.player2;
+    const isAnimation: boolean = currentPlayer === this.player;
     this.cardAnimation.animateDrawCard(isAnimation, this.backCard);
     this.cdr.detectChanges();
 
@@ -286,10 +284,10 @@ export class PlayerComponent implements OnInit, OnChanges {
     if (this.playerHasNoCards(player)) {
       if (this.checkPlayerPressedUno()) {
 
-        if (player === this.player2) {
+        if (player === this.player) {
           this.playerWinsService.setValue(true)
           alert('Spieler hat gewonnen!');
-        } else if (player === this.player1) {
+        } else if (player === this.bot) {
           alert('Bot hat gewonnen!');
         }
 
