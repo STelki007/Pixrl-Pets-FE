@@ -56,13 +56,13 @@
     </div>
     <div class="position-absolute" style="right: 10px; top: 100px;">
       <div class="d-flex flex-column  nes-dialog " style="border-radius: 10px; align-items: flex-end; ">
+        <p class="mb-2">{{ this.hunger/10 }} / 100</p>
         <button class="nes-btn is-primary mb-2" (click)="togglePopup()">Füttern</button>
-        <!-- <app-rollover-popup
+        <app-rollover-popup
           *ngIf="popupVisible"
           [items]="playerInventory"
-          (itemClicked)="handleItemClick($event)"></app-rollover-popup> -->
+          (itemClicked)="handleItemClick($event)"></app-rollover-popup>
         <button class="nes-btn is-success mb-2">Spielen</button>
-        <button class="nes-btn is-error mb-2">Schlafen</button>
       </div>
     </div>
 
@@ -71,7 +71,7 @@
         <img class="w-100 h-100" src="https://cdn3.iconfinder.com/data/icons/ux-game-pixel-art/100/pixel-18-512.png" alt="Pfeil-Icon" />
       </button>
       <div class="mt-5" style="width: 30vw; opacity: .3" >
-        <h6>Geheimer Code: <span class="text-black fw-bold">schwerk</span></h6>
+        <h6>Geheimer Code: <span class="text-black fw-bold">anter</span></h6>
       </div>
     </div>
   </div>

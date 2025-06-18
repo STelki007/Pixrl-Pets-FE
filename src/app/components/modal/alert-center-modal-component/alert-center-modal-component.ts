@@ -39,7 +39,6 @@ export class AlertCenterModalComponent implements OnDestroy, AfterViewInit {
     });
   }
 
-
   closeModal() {
     this.modalRef?.close();
     this.modalRef = undefined;

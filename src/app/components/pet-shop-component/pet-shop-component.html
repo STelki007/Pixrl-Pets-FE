@@ -11,79 +11,32 @@
 
           <div class="coin-container mb-3" (click)="onClickCoin()" style="color:black">
             <i class="nes-icon coin mx-3"></i>
-            999999
+            {{ animal.price }}
           </div>
 
-          <div class="item-buttons">
-            <div class="info-button-div mx-3">
-              <button (click)="onClickInfo(animal.petInstance ? animal.petInstance.getId() : null)">
-                <i class="bi bi-info-circle-fill"></i>
-              </button>
-            </div>
-
-            <div class="buy-button-div">
-              <button class="buy-button mx-3 nes-btn is-primary" (click)="openBuyModal(animal)">Kaufen</button>
-            </div>
+          <div class="buy-button-div">
+            <button class="buy-button mx-3 nes-btn is-primary" (click)="openBuyModal(animal)">Kaufen</button>
           </div>
-
-          <ng-template #buyModal let-modal>
-            <section class="nes-dialog is-dark is-rounded alert-center">
-              <div class="mt-4 mb-4 text-center">
-                <h3>{{ selectedAnimal.type }} kaufen</h3>
-                <div *ngIf="quantityError" class="nes-text is-error mt-2">
-                  {{ quantityError }}
-                </div>
-              </div>
-
-              <div class="text-center mt-4">
-                <button class="nes-btn is-error mx-3" (click)="modal.close()">Abbrechen</button>
-                <button class="nes-btn is-success mx-3" (click)="confirmBuy(selectedAnimal)">Kaufen</button>
-              </div>
-            </section>
-          </ng-template>
         </div>
+
+        <ng-template #buyModal let-modal>
+          <section class="nes-dialog is-dark is-rounded alert-center">
+            <div class="mt-4 mb-4 text-center">
+              <h3>{{ selectedAnimal.type }} kaufen</h3>
+              <div *ngIf="quantityError" class="nes-text is-error mt-2">
+                {{ quantityError }}
+              </div>
+            </div>
+
+            <div class="text-center mt-4">
+              <button class="nes-btn is-error mx-3" (click)="modal.close()">Abbrechen</button>
+              <button class="nes-btn is-success mx-3" (click)="confirmBuy(selectedAnimal)">Kaufen</button>
+            </div>
+          </section>
+        </ng-template>
       </div>
     </div>
   </div>
 </div>
-
-
-
-
-<div
-  class="offcanvas offcanvas-end custom-offcanvas"
-  [ngClass]="{ 'show': isOffcanvasOpen, 'hide': !isOffcanvasOpen }"
-  tabindex="-1"
-  id="offcanvasRight"
-  aria-labelledby="offcanvasRightLabel"
->
-  <div class="custom-offcanvas-overlay"></div>
-
-  <div class="offcanvas-header border-bottom">
-    <h5 class="offcanvas-title mb-0" id="offcanvasRightLabel">
-      {{ fruit?.name }}
-    </h5>
-    <button
-      type="button"
-      class="btn-close text-reset"
-      (click)="closeOffcanvas()"
-      aria-label="Close"
-    ></button>
-  </div>
-
-  <div class="offcanvas-body">
-    <div class="mb-3">
-      <h6 class="text-muted">Beschreibung</h6>
-      <p class="mb-0">{{ fruit?.description }}</p>
-    </div>
-  </div>
-</div>
-
-<div
-  class="offcanvas-overlay"
-  *ngIf="isOffcanvasOpen"
-  (click)="closeOffcanvas()">
-</div>
-
 <p-toast position="bottom-right" />
 

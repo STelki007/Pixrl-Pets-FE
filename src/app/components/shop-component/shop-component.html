@@ -5,15 +5,18 @@
        'coins-background': selectedTab === 'buyCoins'
      }">
 <div class="nav-buttons d-flex justify-content-center">
+  <button class="nes-btn custom-btn ml-2" [ngClass]="{'is-active': selectedTab === 'buyCoins'}" (click)="onBuyCoinsClick('buyCoins')">
+    Coins kaufen
+  </button>
+
     <button class="nes-btn custom-btn" [ngClass]="{'is-active': selectedTab === 'buy'}" (click)="selectTab('buy')">
       Items
     </button>
+
     <button class="nes-btn custom-btn ml-2" [ngClass]="{'is-active': selectedTab === 'buyPet'}" (click)="emitSelectComponent('buyPet')">
       Tiere
     </button>
-    <button class="nes-btn custom-btn ml-2" [ngClass]="{'is-active': selectedTab === 'buyCoins'}" (click)="onBuyCoinsClick('buyCoins')">
-      Coins kaufen
-    </button>
+
   </div>
 
 

@@ -4,21 +4,21 @@ import {ArrowService} from '@services/animal/ArrowService';
 import {SideBarButtonsService} from '@services/SideBarButtonsService';
 import {OpenAIService} from '@components/animal-component/service/openai.service';
 import {FormsModule} from '@angular/forms';
-import {NgForOf, NgIf} from '@angular/common';
+import {NgClass, NgForOf, NgIf, NgStyle} from '@angular/common';
 import {ChatCompletionResponse} from '@components/animal-component/service/ChatCompletionResponse';
-import {FactoryTarget} from '@angular/compiler';
 import {PetFactory} from '@components/animal-component/service/PetFactory';
 import {ChatMessage} from '@components/animal-component/service/ChatMessage';
 import {SoundService} from '@services/SoundService';
 import {SelectedAnimalServiceService} from '@services/animal/selected-animal-service.service';
 import {Observable} from 'rxjs';
-import {Pet, PetAnimation, PetType} from '@components/animal-component/service/Pet';
-import {NgClass, NgStyle} from '@angular/common';
+import {Pet, PetAnimation} from '@components/animal-component/service/Pet';
 import {PetService} from '@components/animal-component/service/PetService';
 import {KonamiCodeService} from '@services/konamiCode/konami-code.service';
 import {InventoryBackendService} from '@/app/backend/inventory/inventory.backend.service';
 import {ItemsBackendService} from '@/app/backend/items/items.backend.service';
 import {PlayerPetBackendService} from '@/app/backend/pet/PlayerPet.backend.service';
+import {ItemPopupComponent} from '@components/item-popup/item-popup.component';
+import {MessageService} from 'primeng/api';
 
 @Component({
   selector: 'app-animal-component',
@@ -28,8 +28,10 @@ import {PlayerPetBackendService} from '@/app/backend/pet/PlayerPet.backend.servi
     NgForOf,
     NgIf,
     NgClass,
-    NgStyle
+    NgStyle,
+    ItemPopupComponent
   ],
+  providers: [MessageService],
   standalone: true,
   styleUrl: './animal-component.css'
 })
@@ -42,6 +44,7 @@ export class AnimalComponent implements OnInit {
   private petNameValue = "";
   konamiCodeState: boolean = false;
   popupVisible = false;
+  hunger: number = 0;
 
   playerObject: any;
   private itemsId: number[] = [];
@@ -53,6 +56,7 @@ export class AnimalComponent implements OnInit {
               private sideBarButtonsService: SideBarButtonsService,
               private openai: OpenAIService,
               private soundService: SoundService,
+              private messageService: MessageService,
               private selectedAnimalService: SelectedAnimalServiceService,
               private petService: PetService,
               private konamiCodeService: KonamiCodeService,
@@ -67,6 +71,11 @@ export class AnimalComponent implements OnInit {
     this.getAnimal();
     this.saveMessages();
     this.petName();
+
+    if (this.animal)
+      this.playerPetBackendService.getPetHunger(this.animal.getId()).subscribe(hungerValue => {
+        this.hunger = hungerValue;
+      });
 
     this.inventoryBackendService.getInventoryByPlayerSessionId().subscribe(object => {
       this.playerObject = object;
@@ -95,14 +104,44 @@ export class AnimalComponent implements OnInit {
   }
 
   togglePopup() {
+    if (this.playerInventory.length == 0) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Keine Items!',
+        detail: 'Du besietzt keine Items für dieses Tier'
+      });
+      return;
+    }
     this.popupVisible = !this.popupVisible;
   }
 
   handleItemClick(item: any) {
     console.log(this.animal);
     console.log(item)
-    if(this.animal)
-      this.playerPetBackendService.postUseItemForPet(this.animal.getId(), item.id);
+    if (this.animal)
+      this.playerPetBackendService.postUseItemForPet(this.animal.getId(), item.id, () => {
+        this.animal?.setAnimation(PetAnimation.eat);
+        this.togglePopup();
+        this.playerInventory = [];
+        this.inventoryBackendService.getInventoryByPlayerSessionId().subscribe(object => {
+          this.playerObject = object;
+
+          this.itemsId.push(this.playerObject.itemId);
+
+          this.playerObject.map((i: any) => {
+            if (i) {
+              this.getPlayerInventory(i.itemId, i.amount);
+            }
+          });
+        });
+        if (this.animal)
+          this.playerPetBackendService.getPetHunger(this.animal.getId()).subscribe(hungerValue => {
+            this.hunger = hungerValue;
+          });
+      });
+    setTimeout(() => {
+      this.animal?.setAnimation(PetAnimation.idle);
+    }, 3000);
   }
 
   getAnimal() {
@@ -134,6 +173,12 @@ export class AnimalComponent implements OnInit {
     if (!this.userInput.trim()) return;
 
     this.petService.getValue().subscribe(petName => {
+
+      if (!petName) {
+        console.error("petName is null or undefined");
+        return;
+      }
+
       const currentPet = PetFactory.createPet(petName.toLowerCase());
 
       this.openai.messages.push({ role: 'user', content: this.userInput });
@@ -201,7 +246,7 @@ ${PetFactory.convertObjectToPetString(currentPet)}
     }
   }
 
-  getKonamiCodeState () {
+  getKonamiCodeState() {
     this.konamiCodeService.getPetVoiceValue().subscribe(value => {
       this.konamiCodeState = value;
     })

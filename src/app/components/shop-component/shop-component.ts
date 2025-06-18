@@ -21,7 +21,7 @@ import {BuyCoinsComponent} from '@components/buy-coins/buy-coins.component';
   providers: [MessageService]
 })
 export class ShopComponent implements OnInit {
-  protected selectedTab: string = "buy";
+  protected selectedTab: string = "buyCoins";
   protected isOffcanvasOpen: boolean = false;
   @ViewChild('buyModal') buyModal!: TemplateRef<any>;
   private modalRef?: NgbModalRef;
@@ -101,7 +101,7 @@ export class ShopComponent implements OnInit {
     this.soundService.playSound("select-item.mp3");
     this.quantityError = null;
     this.modalRef?.close();
-    this.messageService.add({ severity: 'success', summary: 'Gekauft!', detail: 'Das Item wurde erfolgreich gekauft.' });
+    this.messageService.add({ severity: 'success', summary: 'Gekauft!', detail: 'Das Item wurde erfolgreich gekauft' });
 
     if (this.getItem ) {
       this.sendBoughtItemsToBackend(this.getItem);

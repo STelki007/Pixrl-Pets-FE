@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {AuthContextService} from '@/app/backend/services/auth.context.service';
 import {BackendUrlService} from '@/app/backend/services/backend.url.service';
+import {Observable} from 'rxjs';
 
 @Injectable(
   {
@@ -18,7 +19,7 @@ export class PlayerPetBackendService {
   //   }).subscribe();
   // }
 
-  postUseItemForPet(petId: number, itemId: number) {
+  postUseItemForPet(petId: number, itemId: number,onSuccess: (response: any) => void,) {
     console.log("send");
     return this.http.post(
       `${BackendUrlService.getBackendUrl()}/pet/${petId}/use_item/${itemId}`,
@@ -27,10 +28,21 @@ export class PlayerPetBackendService {
         headers: this.authContextService.headerGetToken()
       }
     ).subscribe({
-      next: (res) => console.log('Item used successfully', res),
+      next: (res) => {
+        console.log('Item used successfully', res)
+        onSuccess(res);
+      },
       error: (err) => console.error('Failed to use item', err)
     });
   }
 
+  getPetHunger(petId: number):Observable<number> {
+    return this.http.get<number>(
+      `${BackendUrlService.getBackendUrl()}/pet/${petId}/hunger`,
+      {
+        headers: this.authContextService.headerGetToken()
+      }
+    )
+  }
 
 }

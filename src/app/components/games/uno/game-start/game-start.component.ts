@@ -7,6 +7,7 @@ import {GameService} from '@components/games/uno/services/uno/GameService';
 import {PlayerWinsUnoService} from '@components/games/uno/services/uno/player-wins-uno.service';
 import {AsyncPipe, NgIf} from '@angular/common';
 import {PlayerEarningComponent} from '@components/games/player-earning/player-earning.component';
+import {PlayerWinsTicTacToService} from '@components/games/tic-tac-toe/services/player.wins.tic.tac.to.service';
 
 @Component({
   selector: 'app-game-start',
@@ -35,7 +36,7 @@ export class GameStartComponent {
     private deck: Deck,
     private soundService: SoundService,
     private gameService: GameService,
-    protected playerWinsService: PlayerWinsUnoService,
+    protected playerWinsService: PlayerWinsTicTacToService,
 
   ) {}
 
