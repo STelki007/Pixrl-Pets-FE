@@ -91,8 +91,8 @@ export class AppComponent implements OnInit, OnDestroy {
           };
 
           this.playerBackendService.createPlayer(newPlayer).subscribe(() => {
-          this.getUserId(keycloakUserId);
-          this.playerCoinService.loadPlayerCoins()
+            this.getUserId(keycloakUserId);
+            this.playerCoinService.loadPlayerCoins()
           });
         } else {
           console.log("Spieler existiert bereits.");

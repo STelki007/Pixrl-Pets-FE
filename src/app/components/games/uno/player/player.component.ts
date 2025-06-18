@@ -50,7 +50,6 @@ export class PlayerComponent implements OnInit, OnChanges {
   private player: string = "player2";
   private isWaitingForColorPick: boolean = false;
   private pressUnoButton: boolean = false;
-  private showChangeColorModal: boolean = false;
 
 
   constructor(

@@ -17,7 +17,7 @@ export class Deck {
     "figmaUnoCard0-9/blue-9.svg",
     "figmaUnoCard0-9/blueStop.svg",
     "figmaUnoCard0-9/blue2cards.svg",
-  //  "figmaUnoCard0-9/blue-arrow.svg",
+    "figmaUnoCard0-9/blue-arrow.svg",
 
     "figmaUnoCard0-9/green-0.svg",
     "figmaUnoCard0-9/green-1.svg",
@@ -31,7 +31,7 @@ export class Deck {
     "figmaUnoCard0-9/green-8.svg",
     "figmaUnoCard0-9/green-9.svg",
     "figmaUnoCard0-9/greenStop.svg",
-   // "figmaUnoCard0-9/green-arrow.svg",
+    "figmaUnoCard0-9/green-arrow.svg",
 
     "figmaUnoCard0-9/red-0.svg",
     "figmaUnoCard0-9/red-1.svg",
@@ -45,7 +45,7 @@ export class Deck {
     "figmaUnoCard0-9/red-8.svg",
     "figmaUnoCard0-9/red-9.svg",
     "figmaUnoCard0-9/redStop.svg",
-    // "figmaUnoCard0-9/red-arrow.svg",
+     "figmaUnoCard0-9/red-arrow.svg",
 
     "figmaUnoCard0-9/yellow-0.svg",
     "figmaUnoCard0-9/yellow-1.svg",
@@ -59,7 +59,7 @@ export class Deck {
     "figmaUnoCard0-9/yellow-8.svg",
     "figmaUnoCard0-9/yellow-9.svg",
     "figmaUnoCard0-9/yellowStop.svg",
-   // "figmaUnoCard0-9/yellow-arrow.svg",
+    "figmaUnoCard0-9/yellow-arrow.svg",
 
     "figmaUnoCard0-9/4CardPlus.svg",
 
