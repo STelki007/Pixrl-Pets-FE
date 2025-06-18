@@ -210,31 +210,32 @@ export class PlayerComponent implements OnInit, OnChanges {
           }
           return;
         }
-
-
         return;
       }
-
-      const drawnCard = this.deck.getDeck().shift();
-
-      if (!drawnCard) {
-        this.switchToNextPlayer();
-        return;
-      }
-
-      this.soundService.playSound("card-draw.mp3");
-      this.players[this.bot].push(drawnCard);
-      this.cardAnimation.animateDrawCard(false, this.backCard);
-      this.cdr.detectChanges();
-
-      if (this.cardService.canPlayCard(drawnCard, this.getFirstCard)) {
-        setTimeout(() => this.playCardIfValid(drawnCard!, this.bot), 1000);
-      } else {
-        setTimeout(() => this.switchToNextPlayer(), 800);
-      }
+      this.handleBotDrawCard();
     };
 
     tryPlayOrDraw();
+  }
+
+  private handleBotDrawCard(): void {
+    const drawnCard = this.deck.getDeck().shift();
+
+    if (!drawnCard) {
+      this.switchToNextPlayer();
+      return;
+    }
+
+    this.soundService.playSound("card-draw.mp3");
+    this.players[this.bot].push(drawnCard);
+    this.cardAnimation.animateDrawCard(false, this.backCard);
+    this.cdr.detectChanges();
+
+    if (this.cardService.canPlayCard(drawnCard, this.getFirstCard)) {
+      setTimeout(() => this.playCardIfValid(drawnCard!, this.bot), 1000);
+    } else {
+      setTimeout(() => this.switchToNextPlayer(), 800);
+    }
   }
 
   getCardTransform(index: number, totalCards: number): string {
