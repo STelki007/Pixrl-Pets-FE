@@ -83,6 +83,8 @@ export class AnimalsViewComponent implements OnInit {
     this.sideBarButtonsService.setValue("animal");
     this.arrowService.setValue(true);
     this.petService.setValue(animal.getImagePath().split("/")[0].toLowerCase());
+    this.petService.getAnimalSoundEffect(animal?.getImagePath().split("/")[0].toLowerCase()!)
+
   }
 
 

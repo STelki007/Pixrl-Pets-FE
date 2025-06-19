@@ -241,7 +241,7 @@ export class AnimalComponent implements OnInit {
   funnySoundEffect() {
     this.getKonamiCodeState();
     if (this.konamiCodeState) {
-      this.petService.getAnimalSoundEffect(this.animal?.getName()!)
+      this.petService.getAnimalSoundEffect(this.animal?.getImagePath().split("/")[0].toLowerCase()!)
       this.soundService.soundValue(0.75);
 
       setTimeout(() => {
