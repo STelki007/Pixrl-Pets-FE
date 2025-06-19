@@ -193,21 +193,7 @@ export class AnimalComponent implements OnInit {
 
       const lastMessages = this.openai.messages.slice(-10);
 
-      const systemPrompt: ChatMessage = {
-        role: 'system',
-        content: `
-Im Backend ist die Tokenbegrenzung auf 100 eingestellt – die Antwort darf daher maximal 30 Wörter enthalten.
-
-Du bist ein digitales Haustier mit folgenden Eigenschaften:
-${PetFactory.convertObjectToPetString(currentPet)}
-          Reagiere immer entsprechend dem Charakter des Tieres.
-          Wenn der Nutzer unangemessene oder beleidigende Nachrichten sendet, antworte freundlich, aber bestimmt – weise auf die Unangemessenheit hin, ohne selbst beleidigend zu werden.
-          Verhalte dich wie ein echtes Haustier: Sag nicht „Wie kann ich helfen?“ oder Ähnliches. Stelle neugierige, verspielte oder tierisch passende Fragen.
-          Wenn der Nutzer etwas über Code, IT oder ein Thema außerhalb deines tierischen Bereichs wissen will, antworte im Charakter: z.B. mit „Willst du mich ausnutzen?“ – stets passend zur Persönlichkeit des Haustiers.
-  `.trim()
-      };
-
-
+      const systemPrompt = this.openai.createSystemPrompt(currentPet)
 
       const messagesToSend: ChatMessage[] = [systemPrompt, ...lastMessages];
 

@@ -8,6 +8,7 @@ import {PetService} from '@components/animal-component/service/PetService';
 import {OwnedPetService} from '@services/animal/OwnedPetService';
 import {PlayerPetDto} from '@services/animal/PlayerPetDto';
 import {PetCulture} from '@components/animal-component/service/PetCulture';
+import {SoundService} from '@services/SoundService';
 
 @Component({
   selector: 'app-animals-view-component',
@@ -32,7 +33,8 @@ export class AnimalsViewComponent implements OnInit {
     private arrowService: ArrowService,
     private selectedAnimalService: SelectedAnimalServiceService,
     private petService: PetService,
-    private ownedPetService: OwnedPetService
+    private ownedPetService: OwnedPetService,
+    private soundService: SoundService
   ) {
   }
 
@@ -82,6 +84,7 @@ export class AnimalsViewComponent implements OnInit {
     this.arrowService.setValue(true);
     this.petService.setValue(animal.getImagePath().split("/")[0].toLowerCase());
   }
+
 
 
 }

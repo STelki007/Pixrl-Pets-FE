@@ -54,7 +54,6 @@ export class PetShopComponent implements OnInit {
 
   ngOnInit(): void {
     this.getPets();
-    this.checkPlayerHasEnoughCoins();
   }
 
   getPets () {
@@ -85,21 +84,6 @@ export class PetShopComponent implements OnInit {
     this.componentSelected.emit(comp);
   }
 
-  checkPlayerHasEnoughCoins() {
-    this.playerCoinsService.playerCoins$.subscribe(playerCoins => {
-      if (playerCoins >= this.petCost) {
-        this.canPlayerBuyPet = true;
-        this.alertText = 'Haustier wurde erfolgreich gekauft.';
-        this.severity = "success";
-      } else {
-        this.canPlayerBuyPet = false;
-        this.alertText = 'Du hast nicht genug Coins!';
-        this.severity = "error";
-      }
-    });
-  }
-
-
   onClickCoin() {
     this.soundService.playSound("coinClickEffect2.mp3");
   }
@@ -109,13 +93,15 @@ export class PetShopComponent implements OnInit {
     this.soundService.playSound("select-item.mp3");
     this.quantityError = null;
     this.modalRef?.close();
-    this.messageService.add({severity: 'success', summary: 'Gekauft!', detail: 'Haustier wurde erfolgreich gekauft.'});
     this.shopService.buyPet(pet.petId, () => {
       this.pets = this.pets.filter(p => p.petId !== pet.petId);
       this.petTypeServiceService.loadData();
       this.playerCoinsService.loadPlayerCoins()
-      
-    }, () => {});
+      this.messageService.add({severity: 'success', summary: 'Gekauft!', detail: 'Haustier wurde erfolgreich gekauft.'});
+
+    }, () => {
+      this.messageService.add({severity: 'error', summary: 'Fehler', detail: 'Du hast nicht genug Coins!'});
+    });
   }
 
   openBuyModal(pet: PetTypeDto) {

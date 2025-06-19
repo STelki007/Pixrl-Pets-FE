@@ -43,6 +43,7 @@ export class ShopComponent implements OnInit {
 
   emitSelectComponent(comp: string) {
     this.selectedTab = comp;
+    this.soundService.playSound("cabinet-door.mp3");
   }
 
   ngOnInit(): void {
@@ -130,5 +131,6 @@ export class ShopComponent implements OnInit {
 
   onBuyCoinsClick(buyCoins: string) {
     this.selectedTab = buyCoins;
+    this.soundService.playSound("cabinet-door.mp3");
   }
 }

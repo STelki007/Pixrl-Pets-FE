@@ -4,17 +4,6 @@
       <div
         class="card coin-pack-card h-100 shadow-lg position-relative overflow-hidden border-0"
       >
-        <div
-          *ngIf="pack.label"
-          class="ribbon"
-          [ngClass]="{
-            'ribbon-success': pack.label === 'Popular',
-            'ribbon-danger': pack.label === 'Best deal!'
-          }"
-        >
-          {{ pack.label }}
-        </div>
-
         <img
           [src]="pack.image"
           class="card-img-top p-4 coin-img"
