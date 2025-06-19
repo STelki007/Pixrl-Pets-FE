@@ -66,7 +66,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.startAudio();
+    // this.startAudio();
     this.getSidebarValue();
     this.getGameServiceValue();
     this.createNewPlayer();
@@ -133,7 +133,7 @@ export class AppComponent implements OnInit, OnDestroy {
   selectComponent(value: string) {
     console.log(value);
     if (!this.isUnoStarted) {
-      this.soundService.playSound("select-sound.mp3");
+      // this.soundService.playSound("select-sound.mp3");
       this.sideBarButtonsService.setValue(value);
 
     }else {
@@ -155,10 +155,10 @@ export class AppComponent implements OnInit, OnDestroy {
         this.arrowServiceValue = value;
       })
       if (this.arrowServiceValue) {
-        this.soundService.playSound("select-sound.mp3");
+        // this.soundService.playSound("select-sound.mp3");
         this.sideBarButtonsService.setValue("animal")
       }else{
-        this.soundService.playSound("select-sound.mp3");
+        // this.soundService.playSound("select-sound.mp3");
         this.sideBarButtonsService.setValue("animals")
       }
     }else {
